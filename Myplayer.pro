@@ -1,4 +1,5 @@
-QT += core
+QT += core \
+      multimedia
 QT -= gui
 
 CONFIG += c++11
@@ -9,7 +10,11 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    test.cpp \
+    nccontroller.cpp \
+    ncurse-wrap/window.cpp \
+    ncurse-wrap/text.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -21,3 +26,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+HEADERS += \
+    test.h \
+    nccontroller.h \
+    exceptions.h \
+    ncurse-wrap/exceptions.h \
+    ncurse-wrap/window.h \
+    ncurse-wrap/text.h \
+    ncurse-wrap/position.h \
+    ncurse-wrap/constants.h \
+    ncurse-wrap/constants_transform.h
+LIBS += -lncursesw
