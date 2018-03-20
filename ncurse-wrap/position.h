@@ -12,8 +12,8 @@ public:
     }
 
     // getter
-    int getRow() { return row; }
-    int getCol() { return col; }
+    int getRow() const { return row; }
+    int getCol() const { return col; }
 
 private:
     int row, col;

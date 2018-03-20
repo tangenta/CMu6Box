@@ -11,7 +11,6 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    test.cpp \
     nccontroller.cpp \
     ncurse-wrap/window.cpp \
     ncurse-wrap/text.cpp
@@ -28,9 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 HEADERS += \
-    test.h \
     nccontroller.h \
-    exceptions.h \
     ncurse-wrap/exceptions.h \
     ncurse-wrap/window.h \
     ncurse-wrap/text.h \

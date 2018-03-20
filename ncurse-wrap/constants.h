@@ -33,7 +33,7 @@ class Color {
 public:
     Color() = delete;
     Color(NC c): icolor(c) {}
-    NC getNC() { return icolor; }
+    NC getNC() const { return icolor; }
 private:
     NC icolor;
 };
@@ -42,7 +42,7 @@ class Font {
 public:
     Font() = delete;
     Font(NF f): ifont(f) {}
-    NF getNF() { return ifont; }
+    NF getNF() const { return ifont; }
 private:
     NF ifont;   //// bugfix: unable to pack fonts through "|"
 };

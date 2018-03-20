@@ -2,10 +2,8 @@
 #define WINDOW_H
 
 #include "constants.h"
+#include "position.h"
 #include "text.h"
-
-struct WINDOW;
-//class NCController;
 
 class Window {
     friend class NCController;
@@ -27,8 +25,8 @@ public:
 
     void addText(Text const&);
 private:
-    WINDOW* wp;
     Color bkColor;
+    void* wp;
 };
 
 #endif // WINDOW_H

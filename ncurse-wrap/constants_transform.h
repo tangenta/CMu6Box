@@ -16,6 +16,7 @@ short transform(Color c) {
     case NC::White: return COLOR_WHITE;
     }
 }
+
 chtype transform(Font f) {
     switch (f.getNF()) {
     case NF::Normal: return A_NORMAL;

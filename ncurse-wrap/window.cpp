@@ -8,14 +8,15 @@
 #define DEFAULT_BKGD_COLOR NC::Black
 #endif
 
-Window::Window() {
+Window::Window(): bkColor(Color(DEFAULT_BKGD_COLOR)) {
     if ((wp = newwin(0,0,0,0)) == NULL) {
         throw FatalError("Window::newwin()");
     }
-    setBkgd(Color(DEFAULT_BKGD_COLOR));
+    setBkgd(bkColor);
 }
 
-Window::Window(int rows, int cols, int org_y, int org_x) {
+Window::Window(int rows, int cols, int org_y, int org_x)
+    : bkColor(Color(DEFAULT_BKGD_COLOR)) {
     if (rows < 0 || cols < 0 || org_y < 0 || org_x < 0) {
         throw OutOfRangeError("newwin-negative");
     }
@@ -23,19 +24,25 @@ Window::Window(int rows, int cols, int org_y, int org_x) {
     if (wp == NULL) {
         throw FatalError("Window::newwin()");
     }
-    setBkgd(Color(DEFAULT_BKGD_COLOR));
+    setBkgd(bkColor);
 }
 
 int Window::getRows() {
-    if (getmaxy(wp) == ERR) {
+    WINDOW* wwp = static_cast<WINDOW*>(wp);
+    int rows;
+    if ((rows = getmaxy(wwp)) == ERR) {
         throw InvalidError("Window::getRows()");
     }
+    return rows;
 }
 
 int Window::getCols() {
-    if (getmaxx(wp) == ERR) {
+    WINDOW* wwp = static_cast<WINDOW*>(wp);
+    int cols;
+    if ((cols = getmaxx(wwp)) == ERR) {
         throw InvalidError("Window::getCols()");
     }
+    return cols;
 }
 
 Color Window::getBkgd() {
@@ -44,16 +51,18 @@ Color Window::getBkgd() {
 
 void Window::setBkgd(Color c) {
     bkColor = c;
-    // 65 is used for background pair and COLOR_WHITE is a placeholder
-    if (init_pair(65, COLOR_WHITE, transform(c)) == ERR) {
+    // 1 is used for background pair and COLOR_WHITE is a placeholder
+    if (init_pair(1, COLOR_WHITE, transform(c)) == ERR) {
         throw InvalidError("Window::setBkgd()");
     }
     // bkgd() change all the text in the window, while bkgdset() only
     // affects new input texts. So we use bkgdset().
-    wbkgdset(wp, COLOR_PAIR(65));
+    WINDOW* wwp = static_cast<WINDOW*>(wp);
+    wbkgdset(wwp, COLOR_PAIR(1));
 }
 
 void Window::addText(Text const& text) {
+    WINDOW* wwp = static_cast<WINDOW*>(wp);
     // move cursor to the position
     int maxRow = getRows();
     int maxCol = getCols();
@@ -62,21 +71,21 @@ void Window::addText(Text const& text) {
     if (textR > maxRow || textC > maxCol || textC + text.getSize() > maxCol) {
         throw OutOfRangeError("Window::addText()");
     }
-    if (wmove(wp, textR, TextC) == ERR) {
+    if (wmove(wwp, textR, textC) == ERR) {
         throw FatalError("Window::addText()");
     }
 
     // set color
-    if (init_pair(66, transform(text.getColor()), text.getBkgd()) == ERR) {
-        // 66 is used for text setting
+    if (init_pair(2, transform(text.getColor()), transform(getBkgd())) == ERR) {
+        // 2 is used for text setting
         throw InvalidError("Window::addText()::init_pair()");
     }
-    if (wattrset(wp, COLOR_PAIR(66)) == ERR) {
+    if (wattrset(wwp, COLOR_PAIR(2)) == ERR) {
         throw InvalidError("Window::addText()::wattrset()");
     }
 
     // set font
-    if (wattron(wp, transform(text.getFont())) == ERR) {
+    if (wattron(wwp, transform(text.getFont())) == ERR) {
         throw InvalidError("Window::addText()::wattron()");
     }
 
@@ -85,14 +94,17 @@ void Window::addText(Text const& text) {
     int blankCharNum = text.getSize() - objstr.size();
     switch (text.getAlignMode()) {
         case AlignMode::Right:
-            objstr.swap(std::string(blankCharNum, ' ') + objstr); break;
+            objstr.assign(std::string(blankCharNum, ' ') + objstr); break;
         case AlignMode::Left:
-            objstr.swap(objstr + std::string(blankCharNum, ' ')); break;
+            objstr.assign(objstr + std::string(blankCharNum, ' ')); break;
         case AlignMode::Center:
-            objstr.swap(std::string(blankCharNum/2, ' ') +
+            objstr.assign(std::string(blankCharNum/2, ' ') +
                         objstr + std::string(text.getSize()-blankCharNum/2, ' ')); break;
     }
-    if (waddstr(wp, objstr.c_str()) == ERR) {
+    if (waddstr(wwp, objstr.c_str()) == ERR) {
         throw InvalidError("Window::addText()::waddstr()");
+    }
+    if (wrefresh(wwp) == ERR) {
+        throw InvalidError("Window::addText()::wrefresh()");
     }
 }

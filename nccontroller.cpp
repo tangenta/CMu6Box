@@ -34,7 +34,7 @@ Window* NCController::newWin(int rows, int cols, int org_y, int org_x) {
 }
 
 void NCController::delWin(Window *wp) {
-    if (delwin(wp->wp) == ERR) {
+    if (delwin(static_cast<WINDOW*>(wp->wp)) == ERR) {
         throw FatalError("delwin()");
     }
     delete wp;

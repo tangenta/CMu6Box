@@ -11,13 +11,13 @@ public:
          Color color, Font font, AlignMode mode);
 
     // getter
-    int getRow() { return ipos.getRow(); }
-    int getCol() { return ipos.getCol(); }
-    std::string getText() { return itext; }
-    int getSize() { return isize; }
-    Color getColor() { return icolor; }
-    Font getFont() { return ifont; }
-    AlignMode getAlignMode() { return imode; }
+    int getRow() const { return ipos.getRow(); }
+    int getCol() const { return ipos.getCol(); }
+    std::string getText() const { return itext; }
+    int getSize() const { return isize; }
+    Color getColor() const { return icolor; }
+    Font getFont() const { return ifont; }
+    AlignMode getAlignMode() const { return imode; }
 
     // setter
     void setRow(int r) { ipos = Position(r, ipos.getCol()); }
@@ -42,8 +42,8 @@ public:
 private:
     std::string itext;
     Position ipos;
-    Color icolor;
     int isize;
+    Color icolor;
     Font ifont;
     AlignMode imode;
 };
