@@ -52,7 +52,7 @@ Color Window::getBkgd() {
 void Window::setBkgd(Color c) {
     bkColor = c;
     // 1 is used for background pair and COLOR_WHITE is a placeholder
-    if (init_pair(1, COLOR_WHITE, /*transform(c)*/COLOR_BLACK) == ERR) {
+    if (init_pair(1, COLOR_WHITE, transform(c)) == ERR) {
         throw InvalidError("Window::setBkgd()");
     }
     // bkgd() change all the text in the window, while bkgdset() only
@@ -110,10 +110,10 @@ void Window::addText(Text const& text) {
     if (waddstr(wwp, objstr.c_str()) == ERR) {
         throw InvalidError("Window::addText()::waddstr()");
     }
-    if (wrefresh(wwp) == ERR) {
+    if (wmove(wwp, 0, 0) == ERR) {
         throw InvalidError("Window::addText()::wrefresh()");
     }
-    if (wmove(wwp, 0, 0) == ERR) {
+    if (wrefresh(wwp) == ERR) {
         throw InvalidError("Window::addText()::wrefresh()");
     }
 }
