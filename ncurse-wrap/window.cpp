@@ -2,7 +2,8 @@
 #include <ncurses.h>
 #include "exceptions.h"
 #include "text.h"
-#include "constants_transform.h"
+#include "constants.h"
+
 
 #ifndef DEFAULT_BKGD_COLOR
 #define DEFAULT_BKGD_COLOR NC::Black
@@ -77,7 +78,7 @@ void Window::addText(Text const& text) {
     }
 
     // set color
-    if (init_pair(2, transform(text.getColor()), transform(getBkgd())) == ERR) {
+    if (init_pair(2, text.getColor().getNC(), getBkgd().getNC()) == ERR) {
         // 2 is used for text setting
         throw InvalidError("Window::addText()::init_pair()");
     }
@@ -86,7 +87,7 @@ void Window::addText(Text const& text) {
     }
 
     // set font
-    if (wattron(wwp, transform(text.getFont())) == ERR) {
+    if (wattron(wwp, text.getFont().getNF()) == ERR) {
         throw InvalidError("Window::addText()::wattron()");
     }
 
