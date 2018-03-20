@@ -2,7 +2,6 @@
 #include <ncurses.h>
 #include "window.h"
 #include "exceptions.h"
-#include "constants.h"
 
 Text::Text(std::string const& text, Position pos, int size,
            Color color, Font font, AlignMode mode)

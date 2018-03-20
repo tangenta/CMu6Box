@@ -3,7 +3,6 @@
 #include <string>
 #include "exceptions.h"
 #include "window.h"
-#include "constants.h"
 
 NCController::NCController() {
 
