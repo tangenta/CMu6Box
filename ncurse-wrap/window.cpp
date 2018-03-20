@@ -52,7 +52,7 @@ Color Window::getBkgd() {
 void Window::setBkgd(Color c) {
     bkColor = c;
     // 1 is used for background pair and COLOR_WHITE is a placeholder
-    if (init_pair(1, COLOR_WHITE, transform(c)) == ERR) {
+    if (init_pair(1, COLOR_WHITE, /*transform(c)*/COLOR_BLACK) == ERR) {
         throw InvalidError("Window::setBkgd()");
     }
     // bkgd() change all the text in the window, while bkgdset() only
@@ -63,6 +63,7 @@ void Window::setBkgd(Color c) {
 
 void Window::addText(Text const& text) {
     WINDOW* wwp = static_cast<WINDOW*>(wp);
+
     // move cursor to the position
     int maxRow = getRows();
     int maxCol = getCols();
@@ -91,6 +92,11 @@ void Window::addText(Text const& text) {
 
     // fill the area with text.getText()
     std::string objstr(text.getText());
+    for (auto i: objstr) {
+        if (i == '\n' || i == '\t') {
+            throw InvalidError("addText()::multilines");
+        }
+    }
     int blankCharNum = text.getSize() - objstr.size();
     switch (text.getAlignMode()) {
         case AlignMode::Right:
@@ -105,6 +111,9 @@ void Window::addText(Text const& text) {
         throw InvalidError("Window::addText()::waddstr()");
     }
     if (wrefresh(wwp) == ERR) {
+        throw InvalidError("Window::addText()::wrefresh()");
+    }
+    if (wmove(wwp, 0, 0) == ERR) {
         throw InvalidError("Window::addText()::wrefresh()");
     }
 }

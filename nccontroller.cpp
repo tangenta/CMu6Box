@@ -6,10 +6,11 @@
 
 
 NCController::NCController(QObject *parent)
-    : QObject(parent), hasColors(has_colors()) {
+    : QObject(parent) {
     if (initscr() == NULL) {
         throw FatalError("initscr()");
     }
+    hasColors = has_colors() == TRUE ? true : false;
     if (hasColors) {
         start_color();
     }
