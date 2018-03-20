@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "ncurse-wrap/window.h"
+#include "ncurse-wrap/constants.h"
 
 class NCController : public QObject {
     Q_OBJECT

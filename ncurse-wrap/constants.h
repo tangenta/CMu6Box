@@ -44,7 +44,7 @@ public:
     Font(unsigned long f): ifont(f) {}
     unsigned long getNF() const { return ifont; }
 private:
-    unsigned long ifont;   //// bugfix: unable to pack fonts through "|"
+    unsigned long ifont;
 };
 
 

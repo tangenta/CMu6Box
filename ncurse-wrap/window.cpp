@@ -53,7 +53,7 @@ Color Window::getBkgd() {
 void Window::setBkgd(Color c) {
     bkColor = c;
     // 1 is used for background pair and COLOR_WHITE is a placeholder
-    if (init_pair(1, COLOR_WHITE, transform(c)) == ERR) {
+    if (init_pair(1, COLOR_WHITE, c.getNC()) == ERR) {
         throw InvalidError("Window::setBkgd()");
     }
     // bkgd() change all the text in the window, while bkgdset() only
