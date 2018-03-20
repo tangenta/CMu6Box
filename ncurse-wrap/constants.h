@@ -1,26 +1,26 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-enum class NC {
-    Black,
-    Red,
-    Green,
-    Yellow,
-    Blue,
-    Magenta,
-    Cyan,
-    White,
+struct NC {
+    static short Black;
+    static short Red;
+    static short Green;
+    static short Yellow;
+    static short Blue;
+    static short Magenta;
+    static short Cyan;
+    static short White;
 };
 
-enum class NF {
-    Normal,
-    Standout,
-    Underline,
-    Reverse,
-    Blink,
-    Dim,
-    Bold,
-    AltCharSet,
+struct NF {
+    static unsigned long Normal;
+    static unsigned long Standout;
+    static unsigned long Underline;
+    static unsigned long Reverse;
+    static unsigned long Blink;
+    static unsigned long Dim;
+    static unsigned long Bold;
+    static unsigned long AltCharSet;
 };
 
 enum class AlignMode {
@@ -32,19 +32,19 @@ enum class AlignMode {
 class Color {
 public:
     Color() = delete;
-    Color(NC c): icolor(c) {}
-    NC getNC() const { return icolor; }
+    Color(short c): icolor(c) {}
+    short getNC() const { return icolor; }
 private:
-    NC icolor;
+    short icolor;
 };
 
 class Font {
 public:
     Font() = delete;
-    Font(NF f): ifont(f) {}
-    NF getNF() const { return ifont; }
+    Font(unsigned long f): ifont(f) {}
+    unsigned long getNF() const { return ifont; }
 private:
-    NF ifont;   //// bugfix: unable to pack fonts through "|"
+    unsigned long ifont;   //// bugfix: unable to pack fonts through "|"
 };
 
 
