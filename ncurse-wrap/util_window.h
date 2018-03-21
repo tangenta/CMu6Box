@@ -1,9 +1,9 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "constants.h"
-#include "position.h"
-#include "text.h"
+#include "uitl_position.h"
+#include "util_text.h"
+#include "ncurses_wrapper.h"
 
 class Window {
     friend class NCController;
@@ -26,7 +26,7 @@ public:
     void addText(Text const&);
 private:
     Color bkColor;
-    void* wp;
+    NWINDOW* wp;
 };
 
 #endif // WINDOW_H

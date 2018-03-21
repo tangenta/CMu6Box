@@ -1,7 +1,8 @@
-#ifndef TEXT_H
-#define TEXT_H
-#include "position.h"
-#include "constants.h"
+#ifndef UTIL_TEXT_H
+#define UTIL_TEXT_H
+
+#include "uitl_position.h"
+#include "ncurses_wrapper.h"
 #include <string>
 
 class Text {

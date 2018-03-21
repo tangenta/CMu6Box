@@ -2,8 +2,9 @@
 #define NCCONTROLLER_H
 
 #include <QObject>
-#include "ncurse-wrap/window.h"
-#include "ncurse-wrap/constants.h"
+#include "ncurse-wrap/util_window.h"
+#include "ncurse-wrap/ncurses_wrapper.h"
+#include <list>
 
 class NCController : public QObject {
     Q_OBJECT
@@ -14,15 +15,16 @@ public:
     NCController& operator=(NCController const&) = delete;
     NCController& operator=(NCController&&) = delete;
     ~NCController();
-    Window* newWin(int rows, int cols, int org_y, int org_x);
-    Window* newWin();
-    void delWin(Window*);
+    Window* newwin(int rows, int cols, int org_y, int org_x);
+    Window* newwin();
+    void delwin(Window*);
 signals:
 
 public slots:
 
 private:
     bool hasColors;
+    std::list<Window*> winList;
 };
 
 #endif // NCCONTROLLER_H

@@ -1,5 +1,5 @@
-#ifndef POSITION_H
-#define POSITION_H
+#ifndef UTIL_POSITION_H
+#define UTIL_POSITION_H
 
 #include "exceptions.h"
 

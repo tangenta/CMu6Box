@@ -1,6 +1,6 @@
-#include "text.h"
+#include "util_text.h"
 #include <ncurses.h>
-#include "window.h"
+#include "util_window.h"
 #include "exceptions.h"
 
 Text::Text(std::string const& text, Position pos, int size,

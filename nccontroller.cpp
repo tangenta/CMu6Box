@@ -1,42 +1,42 @@
 #include "nccontroller.h"
-#include <ncurses.h>
+#include "ncurse-wrap/ncurses_wrapper.h"
 #include <string>
 #include "ncurse-wrap/exceptions.h"
-#include "ncurse-wrap/window.h"
+#include "ncurse-wrap/util_window.h"
 
 
 NCController::NCController(QObject *parent)
     : QObject(parent) {
-    if (initscr() == NULL) {
-        throw FatalError("initscr()");
+    Ncurses::initscr_s();
+    if (Ncurses::has_color_s()) {
+        Ncurses::start_color_s();
     }
-    hasColors = has_colors() == TRUE ? true : false;
-    if (hasColors) {
-        start_color();
-    }
-    refresh();
+
+    Ncurses::refresh_s();
 }
 
 NCController::~NCController() {
-    getch();
-    if (endwin() == ERR) {
-        throw FatalError("endwin()");
+    Ncurses::getch_s();
+    for (auto i: winList) {
+        delwin(i);
     }
+    Ncurses::endwin_s();
 }
 
-Window* NCController::newWin() {
+Window* NCController::newwin() {
     Window* ret = new Window();
+    winList.push_back(ret);
     return ret;
 }
 
-Window* NCController::newWin(int rows, int cols, int org_y, int org_x) {
+Window* NCController::newwin(int rows, int cols, int org_y, int org_x) {
     Window* ret = new Window(rows, cols, org_y, org_x);
+    winList.push_back(ret);
     return ret;
 }
 
-void NCController::delWin(Window *wp) {
-    if (delwin(static_cast<WINDOW*>(wp->wp)) == ERR) {
-        throw FatalError("delwin()");
-    }
+void NCController::delwin(Window* wp) {
+    Ncurses::delwin_s(wp->wp);
+    winList.remove(wp);
     delete wp;
 }

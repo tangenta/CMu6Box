@@ -12,9 +12,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     nccontroller.cpp \
-    ncurse-wrap/window.cpp \
-    ncurse-wrap/text.cpp \
-    ncurse-wrap/constants.cpp
+    ncurse-wrap/util_text.cpp \
+    ncurse-wrap/ncurses_wrapper.cpp \
+    ncurse-wrap/util_window.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -30,9 +30,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
     nccontroller.h \
     ncurse-wrap/exceptions.h \
-    ncurse-wrap/window.h \
-    ncurse-wrap/text.h \
-    ncurse-wrap/position.h \
-    ncurse-wrap/constants.h
+    ncurse-wrap/util_text.h \
+    ncurse-wrap/ncurses_wrapper.h \
+    ncurse-wrap/uitl_position.h \
+    ncurse-wrap/util_window.h
 
 LIBS += -lncursesw
