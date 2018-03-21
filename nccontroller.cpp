@@ -21,7 +21,8 @@ NCController::NCController(QObject *parent)
 NCController::~NCController() {
     Ncurses::getch_s();
     for (auto i: winList) {
-        delwin(i);
+        Ncurses::delwin_s(i->wp);
+        delete i;
     }
     Ncurses::endwin_s();
 }
