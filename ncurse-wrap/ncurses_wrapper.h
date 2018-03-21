@@ -1,6 +1,8 @@
 #ifndef NCURSES_WRAPPER_H
 #define NCURSES_WRAPPER_H
 
+#include <initializer_list>
+
 // Ncurses Color value
 struct NC {
     static short Black;
@@ -37,7 +39,7 @@ class Color {
 public:
     Color() = delete;
     Color(short c): icolor(c) {}
-    short getNC() const { return icolor; }
+    short toBit() const { return icolor; }
 private:
     short icolor;
 };
@@ -45,15 +47,14 @@ private:
 class Font {
 public:
     Font() = delete;
-    Font(unsigned long f): ifont(f) {}
-    unsigned long getNF() const { return ifont; }
+    // Font(unsigned long f): ifont(f) {}
+    Font(std::initializer_list<unsigned long> fl);
+    unsigned long toBit() const { return ifont; }
 private:
     unsigned long ifont;
 };
 
-class Ncurses {
-public:
-    Ncurses() = delete;
+struct Ncurses {
     static void initscr_s();
     static bool has_color_s();
     static void start_color_s();
@@ -64,12 +65,13 @@ public:
     static void endwin_s();
     static int getmaxy_s(NWINDOW*);
     static int getmaxx_s(NWINDOW*);
-    static void init_pair_s(short, Color, Color);
+    static void init_pair_s(short, short, short);
     static int COLOR_PAIR_s(int);
     static void wbkgdset_s(NWINDOW*, int);
     static void wmove_s(NWINDOW*, int, int);
     static void wattrset_s(NWINDOW*, unsigned long);
-    static void wattron_s(NWINDOW*, Font);
+    static void wattron_s(NWINDOW*, unsigned long);
+    static void wattroff_s(NWINDOW*, unsigned long);
     static void waddstr_s(NWINDOW*, const char*);
     static void wrefresh_s(NWINDOW*);
 };

@@ -34,10 +34,10 @@ Color Window::getBkgd() {
 void Window::setBkgd(Color c) {
     bkColor = c;
     // 1 is used for background pair and COLOR_WHITE is a placeholder
-    Ncurses::init_pair_s(1, Color(NC::White), c);
+    Ncurses::init_pair_s(colorPair, NC::White, c.toBit());
     // bkgd() change all the text in the window, while bkgdset() only
     // affects new input texts. So we use bkgdset().
-    Ncurses::wbkgdset_s(wp, Ncurses::COLOR_PAIR_s(1));
+    Ncurses::wbkgdset_s(wp, Ncurses::COLOR_PAIR_s(colorPair++));
 }
 
 void Window::addText(Text const& text) {
@@ -53,14 +53,6 @@ void Window::addText(Text const& text) {
 
     Ncurses::wmove_s(wp, textR, textC);
 
-    // set color
-    Ncurses::init_pair_s(2, text.getColor(), getBkgd());
-
-    Ncurses::wattrset_s(wp, Ncurses::COLOR_PAIR_s(2));
-
-    // set font
-
-    Ncurses::wattron_s(wp, text.getFont());
 
     // fill the area with text.getText()
     std::string objstr(text.getText());
@@ -83,9 +75,19 @@ void Window::addText(Text const& text) {
                                              objstr.size(), ' ')); break;
     }
 
+    // init color
+    Ncurses::init_pair_s(colorPair, text.getColor().toBit(), getBkgd().toBit());
+
+    // set attr
+    Ncurses::wattron_s(wp, Ncurses::COLOR_PAIR_s(colorPair) | text.getFont().toBit());
+
     Ncurses::waddstr_s(wp, objstr.c_str());
+
+    Ncurses::wattroff_s(wp, Ncurses::COLOR_PAIR_s(colorPair++) | text.getFont().toBit());
 
     Ncurses::wmove_s(wp, 0, 0);
 
     Ncurses::wrefresh_s(wp);
 }
+
+int Window::colorPair = 1;

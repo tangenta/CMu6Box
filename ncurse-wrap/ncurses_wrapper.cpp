@@ -7,6 +7,15 @@ inline WINDOW* RC(NWINDOW* ptr) {
     return reinterpret_cast<WINDOW*>(ptr);
 }
 
+Font::Font(std::initializer_list<unsigned long> fl) {
+    unsigned long t = 0;
+    for (auto i : fl) {
+        t |= i;
+    }
+    ifont = t;
+};
+
+
 void Ncurses::initscr_s() {
     if (initscr() == NULL) {
         throw FatalError("initscr()");
@@ -43,7 +52,7 @@ NWINDOW* Ncurses::newwin_s(int rows, int cols, int org_y, int org_x) {
         throw OutOfRangeError("newwin()::negative");
     }
     WINDOW* ret;
-    if ((ret = ::newwin(rows, cols, org_y, org_x)) == NULL) {
+    if ((ret = newwin(rows, cols, org_y, org_x)) == NULL) {
         throw FatalError("newwin()::NULL");
     }
     return reinterpret_cast<NWINDOW*>(ret);
@@ -77,8 +86,8 @@ int Ncurses::getmaxx_s(NWINDOW* wp) {
     return ret;
 }
 
-void Ncurses::init_pair_s(short pair, Color fg, Color bg) {
-    if (init_pair(pair, fg.getNC(), bg.getNC()) == ERR) {
+void Ncurses::init_pair_s(short pair, short fg, short bg) {
+    if (init_pair(pair, fg, bg) == ERR) {
         throw InvalidError("init_pair()::ERR");
     }
 }
@@ -110,8 +119,14 @@ void Ncurses::wattrset_s(NWINDOW* wp, unsigned long colorPair) {
     }
 }
 
-void Ncurses::wattron_s(NWINDOW* wp, Font fonts) {
-    if (wattron(RC(wp), fonts.getNF()) == ERR) {
+void Ncurses::wattron_s(NWINDOW* wp, unsigned long attr) {
+    if (wattron(RC(wp), attr) == ERR) {
+        throw InvalidError("wattron()::ERR");
+    }
+}
+
+void Ncurses::wattroff_s(NWINDOW* wp, unsigned long attr) {
+    if (wattroff(RC(wp), attr) == ERR) {
         throw InvalidError("wattron()::ERR");
     }
 }

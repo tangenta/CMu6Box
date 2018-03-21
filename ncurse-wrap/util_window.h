@@ -27,6 +27,7 @@ public:
 private:
     Color bkColor;
     NWINDOW* wp;
+    static int colorPair;
 };
 
 #endif // WINDOW_H
