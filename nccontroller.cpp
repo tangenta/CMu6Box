@@ -4,6 +4,9 @@
 #include "ncurse-wrap/exceptions.h"
 #include "ncurse-wrap/util_window.h"
 
+#ifndef DEFAULT_INTERVAL
+#define DEFAULT_INTERVAL 10
+#endif
 
 NCController::NCController(QObject *parent)
     : QObject(parent) {
@@ -39,4 +42,35 @@ void NCController::delwin(Window* wp) {
     Ncurses::delwin_s(wp->wp);
     winList.remove(wp);
     delete wp;
+}
+
+void NCController::exec() {
+    Ncurses::noecho_s();
+    Ncurses::nodelay_s(Ncurses::getStdscr(), true);
+    Ncurses::keypad_s(Ncurses::getStdscr(), true);
+    int input;
+    while ((input = Ncurses::getch_s()) == -1) {
+        Ncurses::napms_s(DEFAULT_INTERVAL);
+    }
+    if (input == 'q') {
+        return;
+    } else {
+        parseInput(input);
+    }
+    return exec();
+}
+
+void NCController::parseInput(int ch) {
+    if (ch == NK::Up) {
+        Ncurses::waddstr_s(Ncurses::getStdscr(), "up ");
+    }
+    if (ch == NK::Down) {
+        Ncurses::waddstr_s(Ncurses::getStdscr(), "down ");
+    }
+    if (ch == NK::Right) {
+        Ncurses::waddstr_s(Ncurses::getStdscr(), "right ");
+    }
+    if (ch == NK::Left) {
+        Ncurses::waddstr_s(Ncurses::getStdscr(), "left ");
+    }
 }

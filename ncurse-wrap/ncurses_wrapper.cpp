@@ -33,7 +33,7 @@ void Ncurses::refresh_s() {
 int Ncurses::getch_s() {
     int ret = getch();
     if (ret == ERR) {
-        throw InvalidError("getch()::ERR");
+        return -1;
     }
     return ret;
 }
@@ -128,21 +128,64 @@ void Ncurses::wrefresh_s(NWINDOW* wp) {
     }
 }
 
+void Ncurses::echo_s() {
+    if (echo() == ERR) {
+        throw FatalError("echo()::ERR");
+    }
+}
 
-short NC::Black = COLOR_BLACK;
-short NC::Red = COLOR_RED;
-short NC::Green = COLOR_GREEN;
-short NC::Yellow = COLOR_YELLOW;
-short NC::Blue = COLOR_BLUE;
-short NC::Magenta = COLOR_MAGENTA;
-short NC::Cyan = COLOR_CYAN;
-short NC::White = COLOR_WHITE;
+void Ncurses::noecho_s() {
+    if (noecho() == ERR) {
+        throw FatalError("unecho()::ERR");
+    }
+}
 
-unsigned long NF::Normal = A_NORMAL;
-unsigned long NF::Standout = A_STANDOUT;
-unsigned long NF::Underline = A_UNDERLINE;
-unsigned long NF::Reverse = A_REVERSE;
-unsigned long NF::Blink = A_BLINK;
-unsigned long NF::Dim = A_DIM;
-unsigned long NF::Bold = A_BOLD;
-unsigned long NF::AltCharSet = A_ALTCHARSET;
+void Ncurses::nodelay_s(NWINDOW* wp, bool flag) {
+    int res = flag ? nodelay(RC(wp), true)
+                   : nodelay(RC(wp), false);
+    if (res == ERR) {
+        throw FatalError("nodelay()::ERR");
+    }
+}
+
+void Ncurses::napms_s(int ms) {
+    if (ms < 0) {
+        throw FatalError("napms()::negative");
+    }
+    napms(ms);
+}
+
+void Ncurses::keypad_s(NWINDOW* wp, bool flag) {
+    int res = flag ? keypad(RC(wp), true)
+                   : keypad(RC(wp), false);
+    if (res == ERR) {
+        throw FatalError("keypad()::ERR");
+    }
+}
+
+NWINDOW* Ncurses::getStdscr() {
+    return reinterpret_cast<NWINDOW*>(stdscr);
+}
+
+short const NC::Black = COLOR_BLACK;
+short const NC::Red = COLOR_RED;
+short const NC::Green = COLOR_GREEN;
+short const NC::Yellow = COLOR_YELLOW;
+short const NC::Blue = COLOR_BLUE;
+short const NC::Magenta = COLOR_MAGENTA;
+short const NC::Cyan = COLOR_CYAN;
+short const NC::White = COLOR_WHITE;
+
+unsigned long const NF::Normal = A_NORMAL;
+unsigned long const NF::Standout = A_STANDOUT;
+unsigned long const NF::Underline = A_UNDERLINE;
+unsigned long const NF::Reverse = A_REVERSE;
+unsigned long const NF::Blink = A_BLINK;
+unsigned long const NF::Dim = A_DIM;
+unsigned long const NF::Bold = A_BOLD;
+unsigned long const NF::AltCharSet = A_ALTCHARSET;
+
+int const NK::Up = KEY_UP;
+int const NK::Down = KEY_DOWN;
+int const NK::Right = KEY_RIGHT;
+int const NK::Left = KEY_LEFT;

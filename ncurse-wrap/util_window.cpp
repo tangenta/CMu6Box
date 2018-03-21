@@ -33,11 +33,12 @@ Color Window::getBkgd() {
 
 void Window::setBkgd(Color c) {
     bkColor = c;
-    // 1 is used for background pair and COLOR_WHITE is a placeholder
-    Ncurses::init_pair_s(1, Color(NC::White), c);
+    // 2 is used for background pair and
+    // COLOR_WHITE is a placeholder
+    Ncurses::init_pair_s(2, Color(NC::White), c);
     // bkgd() change all the text in the window, while bkgdset() only
     // affects new input texts. So we use bkgdset().
-    Ncurses::wbkgdset_s(wp, Ncurses::COLOR_PAIR_s(1));
+    Ncurses::wbkgdset_s(wp, Ncurses::COLOR_PAIR_s(2));
 }
 
 void Window::addText(Text const& text) {
@@ -54,12 +55,12 @@ void Window::addText(Text const& text) {
     Ncurses::wmove_s(wp, textR, textC);
 
     // set color
-    Ncurses::init_pair_s(2, text.getColor(), getBkgd());
+    // 3 is used for
+    Ncurses::init_pair_s(3, text.getColor(), getBkgd());
 
-    Ncurses::wattrset_s(wp, Ncurses::COLOR_PAIR_s(2));
+    Ncurses::wattrset_s(wp, Ncurses::COLOR_PAIR_s(3));
 
     // set font
-
     Ncurses::wattron_s(wp, text.getFont());
 
     // fill the area with text.getText()
@@ -69,7 +70,6 @@ void Window::addText(Text const& text) {
             throw InvalidError("addText()::multilines");
         }
     }
-
     int blankCharNum = text.getSize() - objstr.size();
     switch (text.getAlignMode()) {
         case AlignMode::Right:
@@ -85,7 +85,9 @@ void Window::addText(Text const& text) {
 
     Ncurses::waddstr_s(wp, objstr.c_str());
 
+    // restore the cursor and attribute
     Ncurses::wmove_s(wp, 0, 0);
+    Ncurses::wattrset_s(wp, NF::Normal);
 
     Ncurses::wrefresh_s(wp);
 }

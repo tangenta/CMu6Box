@@ -3,26 +3,34 @@
 
 // Ncurses Color value
 struct NC {
-    static short Black;
-    static short Red;
-    static short Green;
-    static short Yellow;
-    static short Blue;
-    static short Magenta;
-    static short Cyan;
-    static short White;
+    static short const Black;
+    static short const Red;
+    static short const Green;
+    static short const Yellow;
+    static short const Blue;
+    static short const Magenta;
+    static short const Cyan;
+    static short const White;
 };
 
 // Ncurses Font value
 struct NF {
-    static unsigned long Normal;
-    static unsigned long Standout;
-    static unsigned long Underline;
-    static unsigned long Reverse;
-    static unsigned long Blink;
-    static unsigned long Dim;
-    static unsigned long Bold;
-    static unsigned long AltCharSet;
+    static unsigned long const Normal;
+    static unsigned long const Standout;
+    static unsigned long const Underline;
+    static unsigned long const Reverse;
+    static unsigned long const Blink;
+    static unsigned long const Dim;
+    static unsigned long const Bold;
+    static unsigned long const AltCharSet;
+};
+
+// Ncurses Key value
+struct NK {
+    static int const Up;
+    static int const Down;
+    static int const Left;
+    static int const Right;
 };
 
 class NWINDOW {};
@@ -58,7 +66,7 @@ public:
     static bool has_color_s();
     static void start_color_s();
     static void refresh_s();
-    static int getch_s();
+    static int getch_s();   // if getch() returns an ERR, getch_s() returns -1
     static NWINDOW* newwin_s(int, int, int, int);
     static void delwin_s(NWINDOW*);
     static void endwin_s();
@@ -72,6 +80,13 @@ public:
     static void wattron_s(NWINDOW*, Font);
     static void waddstr_s(NWINDOW*, const char*);
     static void wrefresh_s(NWINDOW*);
+    static void echo_s();
+    static void noecho_s();
+    static void nodelay_s(NWINDOW*, bool);
+    static void napms_s(int ms);
+    static void keypad_s(NWINDOW*, bool);
+    // extend functions
+    static NWINDOW* getStdscr();
 };
 
 

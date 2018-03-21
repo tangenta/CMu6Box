@@ -15,14 +15,19 @@ public:
     NCController& operator=(NCController const&) = delete;
     NCController& operator=(NCController&&) = delete;
     ~NCController();
+    // windows control
     Window* newwin(int rows, int cols, int org_y, int org_x);
     Window* newwin();
     void delwin(Window*);
+
+    // main loop
+    void exec();
 signals:
 
 public slots:
 
 private:
+    void parseInput(int ch);
     bool hasColors;
     std::list<Window*> winList;
 };
