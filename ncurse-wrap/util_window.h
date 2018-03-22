@@ -23,6 +23,7 @@ public:
     void setBkgd(Color);
 
     //void addText(std::string const&, Position const&, int size, Color const&, Font const&, AlignMode);
+    void addText(std::string const&);
     void addText(std::string const&, Position const&,
                  Color const& = Color(NC::White),
                  Font const& = Font({NF::Normal}),

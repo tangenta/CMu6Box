@@ -34,6 +34,11 @@ void Window::setBkgd(Color c) {
     Ncurses::wbkgdset_s(wp, Ncurses::COLOR_PAIR_s(c.getPair()));
 }
 
+void Window::addText(std::string const& text) {
+    Ncurses::waddstr_s(wp, text.c_str());
+    Ncurses::wrefresh_s(wp);    
+}
+
 void Window::addText(std::string const& text, Position const& pos,
                      Color const& color, Font const& font, AlignMode mode,
                      int spaceLength) {
@@ -82,8 +87,7 @@ void Window::addText(std::string const& text, Position const& pos,
 
     Ncurses::wattroff_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()) | font.toBit());
 
-    // restore the cursor and attribute
-    Ncurses::wmove_s(wp, 0, 0);
-    Ncurses::wattrset_s(wp, NF::Normal);
+    // // restore the cursor and attribute
+    // Ncurses::wmove_s(wp, 0, 0);
     Ncurses::wrefresh_s(wp);
 }
