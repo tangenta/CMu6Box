@@ -33,7 +33,7 @@ Color Window::getBkgd() {
 
 void Window::setBkgd(Color c) {
     bkColor = c;
-    // 1 is used for background pair and COLOR_WHITE is a placeholder
+
     Ncurses::init_pair_s(colorPair, NC::White, c.toBit());
     // bkgd() change all the text in the window, while bkgdset() only
     // affects new input texts. So we use bkgdset().
@@ -53,7 +53,6 @@ void Window::addText(Text const& text) {
 
     Ncurses::wmove_s(wp, textR, textC);
 
-
     // fill the area with text.getText()
     std::string objstr(text.getText());
     for (auto i: objstr) {
@@ -61,7 +60,6 @@ void Window::addText(Text const& text) {
             throw InvalidError("addText()::multilines");
         }
     }
-
     int blankCharNum = text.getSize() - objstr.size();
     switch (text.getAlignMode()) {
         case AlignMode::Right:
@@ -82,11 +80,13 @@ void Window::addText(Text const& text) {
     Ncurses::wattron_s(wp, Ncurses::COLOR_PAIR_s(colorPair) | text.getFont().toBit());
 
     Ncurses::waddstr_s(wp, objstr.c_str());
-
+  
+    // reset attr
     Ncurses::wattroff_s(wp, Ncurses::COLOR_PAIR_s(colorPair++) | text.getFont().toBit());
 
+    // restore the cursor and attribute
     Ncurses::wmove_s(wp, 0, 0);
-
+    Ncurses::wattrset_s(wp, NF::Normal);
     Ncurses::wrefresh_s(wp);
 }
 
