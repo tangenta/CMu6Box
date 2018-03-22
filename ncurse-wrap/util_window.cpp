@@ -47,25 +47,26 @@ void Window::addText(std::string const& text, Position const& pos,
     Ncurses::wmove_s(wp, textR, textC);
 
     // fill the area with text.getText()
+    static std::string const invalidEscapeChars = "\a\n\b\f\r\t\v\e";
     std::string objstr(text);
     for (auto i: objstr) {
-        if (i == '\n' || i == '\t') {
+        if (std::count(invalidEscapeChars.begin(),
+                       invalidEscapeChars.end(), i) > 0) {
             throw InvalidError("addText()::multilines");
         }
     }
 
     int blankCharNum = spaceLength - objstr.size();
+    std::string tmp(blankCharNum, ' ');
     switch (mode) {
         case AlignMode::Right:
-            objstr.assign(std::string(blankCharNum, ' ') + objstr); break;
+            tmp.append(objstr); break;
         case AlignMode::Left:
-            objstr.assign(objstr + std::string(blankCharNum, ' ')); break;
+            tmp.insert(0, objstr, 0, objstr.npos); break;
         case AlignMode::Center:
-            objstr.assign(std::string(blankCharNum/2, ' ') +
-                        objstr + std::string(spaceLength -
-                                             blankCharNum/2 -
-                                             objstr.size(), ' ')); break;
+            tmp.insert(blankCharNum/2, objstr, 0, objstr.npos); break;
     }
+    objstr.swap(tmp);
 
     // set attr
     Ncurses::wattron_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()) | font.toBit());

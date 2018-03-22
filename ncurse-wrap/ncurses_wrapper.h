@@ -87,7 +87,7 @@ struct Ncurses {
     static void nodelay_s(NWINDOW*, bool);
     static void napms_s(int ms);
     static void keypad_s(NWINDOW*, bool);
-    // extend functions
+    // extended functions
     static NWINDOW* getStdscr();
 };
 

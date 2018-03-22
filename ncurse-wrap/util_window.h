@@ -18,14 +18,12 @@ public:
     int getRows();
     int getCols();
 
-
-    //void addText(std::string const&, Position const&, int size, Color const&, Font const&, AlignMode);
+    // utilities
     void addText(std::string const&);
     void addText(std::string const&, Position const&,
                  Color const& = Color(NC::White),
                  Font const& = Font({NF::Normal}),
                  AlignMode = AlignMode::Left, int = -1);
-
 private:
     NWINDOW* wp;
 };

@@ -15,5 +15,7 @@ int main(int argc, char** argv) {
     mywin->addText("second line", Position(1, 0), Color(NC::Cyan),
                    Font({NF::Normal}), AlignMode::Right, 20);
     mywin->addText(" Hello Kitty");
+    mywin->addText("left align test", Position(3, 0), Color(NC::White),
+                   Font({NF::Underline}), AlignMode::Left, 40);
     //return a.exec();
 }

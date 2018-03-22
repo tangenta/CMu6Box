@@ -2,6 +2,13 @@
 #include <ncurses.h>
 #include "exceptions.h"
 
+#ifndef DEFAULT_FGCOLOR
+#define DEFAULT_FGCOLOR NC::White
+#endif
+#ifndef DEFAULT_BGCOLOR
+#define DEFAULT_BGCOLOR NC::Black
+#endif
+
 // for convenient
 inline WINDOW* RC(NWINDOW* ptr) {
     return reinterpret_cast<WINDOW*>(ptr);
@@ -11,12 +18,12 @@ static int colorPair = 1;
 
 Color::Color() {
     this->clrPair = colorPair;
-    Ncurses::init_pair_s(colorPair++, COLOR_WHITE, COLOR_BLACK);
+    Ncurses::init_pair_s(colorPair++, DEFAULT_FGCOLOR, DEFAULT_BGCOLOR);
 }
 
 Color::Color(short fg) {
     this->clrPair = colorPair;
-    Ncurses::init_pair_s(colorPair++, fg, COLOR_BLACK);
+    Ncurses::init_pair_s(colorPair++, fg, DEFAULT_BGCOLOR);
 }
 
 Color::Color(short fg, short bg) {
@@ -150,7 +157,7 @@ void Ncurses::wattroff_s(NWINDOW* wp, unsigned long attr) {
 
 void Ncurses::waddstr_s(NWINDOW* wp, char const* str) {
     if (waddstr(RC(wp), str) == ERR) {
-        throw OutOfRangeError("waddstr()::ERR");  // should this be OutOfRange or Fatal?
+        throw FatalError("waddstr()::ERR");
     }
 }
 
