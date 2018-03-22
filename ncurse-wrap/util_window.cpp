@@ -4,15 +4,12 @@
 #include <algorithm>
 #include <climits>
 
-Window::Window(): bkColor(Color()) {
+Window::Window() {
     wp = Ncurses::newwin_s(0, 0, 0, 0);
-    setBkgd(bkColor);
 }
 
-Window::Window(int rows, int cols, int org_y, int org_x)
-    : bkColor(Color()) {
+Window::Window(int rows, int cols, int org_y, int org_x) {
     wp = Ncurses::newwin_s(rows, cols, org_y, org_x);
-    setBkgd(bkColor);
 }
 
 int Window::getRows() {
@@ -23,16 +20,6 @@ int Window::getCols() {
     return Ncurses::getmaxx_s(wp);
 }
 
-Color Window::getBkgd() {
-    return bkColor;
-}
-
-void Window::setBkgd(Color c) {
-    bkColor = c;
-    // bkgd() change all the text in the window, while bkgdset() only
-    // affects new input texts. So we use bkgdset().
-    Ncurses::wbkgdset_s(wp, Ncurses::COLOR_PAIR_s(c.getPair()));
-}
 
 void Window::addText(std::string const& text) {
     Ncurses::waddstr_s(wp, text.c_str());

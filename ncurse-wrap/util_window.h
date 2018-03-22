@@ -17,10 +17,7 @@ public:
     // getter
     int getRows();
     int getCols();
-    Color getBkgd();
 
-    // setter
-    void setBkgd(Color);
 
     //void addText(std::string const&, Position const&, int size, Color const&, Font const&, AlignMode);
     void addText(std::string const&);
@@ -29,10 +26,7 @@ public:
                  Font const& = Font({NF::Normal}),
                  AlignMode = AlignMode::Left, int = -1);
 
-    // debug
-    NWINDOW* getWp() { return wp; }
 private:
-    Color bkColor;
     NWINDOW* wp;
 };
 
