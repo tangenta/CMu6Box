@@ -29,18 +29,18 @@ void Window::addText(std::string const& text) {
 void Window::addText(std::string const& text, Position const& pos,
                      Color const& color, Font const& font, AlignMode mode,
                      int spaceLength) {
-    // if the spaceLength is not big enough, set it with text.size()
-    if (text.size() > static_cast<size_t>(INT_MAX)) {
+    // if the spaceLength is not big enough, set it with text.length()
+    if (text.length() > static_cast<size_t>(INT_MAX)) {
         throw InvalidError("addText()::overflow");
     }
-    spaceLength = std::max(spaceLength, static_cast<int>(text.size()));
+    int slen = std::max(spaceLength, static_cast<int>(text.length()));
 
     // move cursor to the position
     int maxRow = getRows();
     int maxCol = getCols();
     int textR = pos.getRow();
     int textC = pos.getCol();
-    if (textR > maxRow || textC > maxCol || textC + spaceLength > maxCol) {
+    if (textR > maxRow || textC > maxCol || textC + slen > maxCol) {
         throw OutOfRangeError("Window::addText()");
     }
 
@@ -48,30 +48,28 @@ void Window::addText(std::string const& text, Position const& pos,
 
     // fill the area with text.getText()
     static std::string const invalidEscapeChars = "\a\n\b\f\r\t\v\e";
-    std::string objstr(text);
-    for (auto i: objstr) {
+    for (auto i: text) {
         if (std::count(invalidEscapeChars.begin(),
                        invalidEscapeChars.end(), i) > 0) {
             throw InvalidError("addText()::multilines");
         }
     }
 
-    int blankCharNum = spaceLength - objstr.size();
-    std::string tmp(blankCharNum, ' ');
+    int blankCharNum = slen - text.length();
+    std::string tstr(blankCharNum, ' ');
     switch (mode) {
         case AlignMode::Right:
-            tmp.append(objstr); break;
+            tstr.append(text); break;
         case AlignMode::Left:
-            tmp.insert(0, objstr, 0, objstr.npos); break;
+            tstr.insert(0, text, 0, text.npos); break;
         case AlignMode::Center:
-            tmp.insert(blankCharNum/2, objstr, 0, objstr.npos); break;
+            tstr.insert(blankCharNum/2, text, 0, text.npos); break;
     }
-    objstr.swap(tmp);
 
     // set attr
     Ncurses::wattron_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()) | font.toBit());
 
-    Ncurses::waddstr_s(wp, objstr.c_str());
+    Ncurses::waddstr_s(wp, tstr.c_str());
 
     Ncurses::wattroff_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()) | font.toBit());
 

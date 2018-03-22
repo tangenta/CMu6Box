@@ -72,7 +72,5 @@ Thumbs.db
 *.exe
 *.out
 
-.vscode/settings.json
-gfTest/nccontroller.cpp
-gfTest/nccontroller.h
-gfTest/main.cpp
+.vscode/*
+gfTest/*
