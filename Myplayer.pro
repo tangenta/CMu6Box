@@ -12,7 +12,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     nccontroller.cpp \
-    ncurse-wrap/util_text.cpp \
     ncurse-wrap/ncurses_wrapper.cpp \
     ncurse-wrap/util_window.cpp
 
@@ -30,7 +29,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
     nccontroller.h \
     ncurse-wrap/exceptions.h \
-    ncurse-wrap/util_text.h \
     ncurse-wrap/ncurses_wrapper.h \
     ncurse-wrap/uitl_position.h \
     ncurse-wrap/util_window.h

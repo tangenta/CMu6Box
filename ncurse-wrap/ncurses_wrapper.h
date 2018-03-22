@@ -56,7 +56,6 @@ private:
 class Font {
 public:
     Font() = delete;
-    // Font(unsigned long f): ifont(f) {}
     Font(std::initializer_list<unsigned long> fl);
     unsigned long toBit() const { return ifont; }
 private:

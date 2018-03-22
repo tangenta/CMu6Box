@@ -11,17 +11,17 @@ static int colorPair = 1;
 
 Color::Color() {
     this->clrPair = colorPair;
-    init_pair(colorPair++, COLOR_WHITE, COLOR_BLACK);  
+    Ncurses::init_pair_s(colorPair++, COLOR_WHITE, COLOR_BLACK);
 }
 
 Color::Color(short fg) {
-    this->clrPair = colorPair;    
-    init_pair(colorPair++, fg, COLOR_BLACK);    
+    this->clrPair = colorPair;
+    Ncurses::init_pair_s(colorPair++, fg, COLOR_BLACK);
 }
 
 Color::Color(short fg, short bg) {
-    this->clrPair = colorPair;    
-    init_pair(colorPair++, fg, bg);
+    this->clrPair = colorPair;
+    Ncurses::init_pair_s(colorPair++, fg, bg);
 }
 
 Font::Font(std::initializer_list<unsigned long> fl) {
@@ -30,7 +30,7 @@ Font::Font(std::initializer_list<unsigned long> fl) {
         t |= i;
     }
     ifont = t;
-};
+}
 
 
 void Ncurses::initscr_s() {

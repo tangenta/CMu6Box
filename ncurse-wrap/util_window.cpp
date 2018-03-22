@@ -2,10 +2,7 @@
 #include "ncurses_wrapper.h"
 #include "exceptions.h"
 #include <algorithm>
-
-// #ifndef DEFAULT_BKGD_COLOR
-// #define DEFAULT_BKGD_COLOR NC::Black
-// #endif
+#include <climits>
 
 Window::Window(): bkColor(Color()) {
     wp = Ncurses::newwin_s(0, 0, 0, 0);
@@ -32,26 +29,26 @@ Color Window::getBkgd() {
 
 void Window::setBkgd(Color c) {
     bkColor = c;
-    // 1 is used for background pair and COLOR_WHITE is a placeholder
-    // Ncurses::init_pair_s(colorPair, NC::White, c.toBit());
     // bkgd() change all the text in the window, while bkgdset() only
     // affects new input texts. So we use bkgdset().
     Ncurses::wbkgdset_s(wp, Ncurses::COLOR_PAIR_s(c.getPair()));
 }
 
-void Window::addText(std::string const& text, 
-                     Position const& pos,
-                     int size,
-                     Color const& color, 
-                     Font const& font, 
-                     AlignMode mode) {
+void Window::addText(std::string const& text, Position const& pos,
+                     Color const& color, Font const& font, AlignMode mode,
+                     int spaceLength) {
+    // if the spaceLength is not big enough, set it with text.size()
+    if (text.size() > static_cast<size_t>(INT_MAX)) {
+        throw InvalidError("addText()::overflow");
+    }
+    spaceLength = std::max(spaceLength, static_cast<int>(text.size()));
 
     // move cursor to the position
     int maxRow = getRows();
     int maxCol = getCols();
     int textR = pos.getRow();
     int textC = pos.getCol();
-    if (textR > maxRow || textC > maxCol || textC + size > maxCol) {
+    if (textR > maxRow || textC > maxCol || textC + spaceLength > maxCol) {
         throw OutOfRangeError("Window::addText()");
     }
 
@@ -65,7 +62,7 @@ void Window::addText(std::string const& text,
         }
     }
 
-    int blankCharNum = size - objstr.size();
+    int blankCharNum = spaceLength - objstr.size();
     switch (mode) {
         case AlignMode::Right:
             objstr.assign(std::string(blankCharNum, ' ') + objstr); break;
@@ -73,7 +70,7 @@ void Window::addText(std::string const& text,
             objstr.assign(objstr + std::string(blankCharNum, ' ')); break;
         case AlignMode::Center:
             objstr.assign(std::string(blankCharNum/2, ' ') +
-                        objstr + std::string(size -
+                        objstr + std::string(spaceLength -
                                              blankCharNum/2 -
                                              objstr.size(), ' ')); break;
     }
