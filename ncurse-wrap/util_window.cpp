@@ -57,7 +57,6 @@ void Window::addText(std::string const& text,
 
     Ncurses::wmove_s(wp, textR, textC);
 
-
     // fill the area with text.getText()
     std::string objstr(text);
     for (auto i: objstr) {
@@ -86,7 +85,8 @@ void Window::addText(std::string const& text,
 
     Ncurses::wattroff_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()) | font.toBit());
 
+    // restore the cursor and attribute
     Ncurses::wmove_s(wp, 0, 0);
-
+    Ncurses::wattrset_s(wp, NF::Normal);
     Ncurses::wrefresh_s(wp);
 }
