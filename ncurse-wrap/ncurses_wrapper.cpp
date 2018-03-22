@@ -7,6 +7,23 @@ inline WINDOW* RC(NWINDOW* ptr) {
     return reinterpret_cast<WINDOW*>(ptr);
 }
 
+static int colorPair = 1;
+
+Color::Color() {
+    this->clrPair = colorPair;
+    init_pair(colorPair++, COLOR_WHITE, COLOR_BLACK);  
+}
+
+Color::Color(short fg) {
+    this->clrPair = colorPair;    
+    init_pair(colorPair++, fg, COLOR_BLACK);    
+}
+
+Color::Color(short fg, short bg) {
+    this->clrPair = colorPair;    
+    init_pair(colorPair++, fg, bg);
+}
+
 Font::Font(std::initializer_list<unsigned long> fl) {
     unsigned long t = 0;
     for (auto i : fl) {

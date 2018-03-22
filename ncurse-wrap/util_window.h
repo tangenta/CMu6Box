@@ -2,7 +2,6 @@
 #define WINDOW_H
 
 #include "uitl_position.h"
-#include "util_text.h"
 #include "ncurses_wrapper.h"
 
 class Window {
@@ -23,11 +22,14 @@ public:
     // setter
     void setBkgd(Color);
 
-    void addText(Text const&);
+    void addText(std::string const&, Position const&, int size, Color const&, Font const&, AlignMode);
+
+
+    // debug
+    NWINDOW* getWp() { return wp; }
 private:
     Color bkColor;
     NWINDOW* wp;
-    static int colorPair;
 };
 
 #endif // WINDOW_H

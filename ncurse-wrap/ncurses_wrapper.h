@@ -37,11 +37,12 @@ enum class AlignMode {
 
 class Color {
 public:
-    Color() = delete;
-    Color(short c): icolor(c) {}
-    short toBit() const { return icolor; }
+    Color();
+    Color(short);
+    Color(short, short);
+    int getPair() const { return clrPair; }
 private:
-    short icolor;
+    int clrPair;
 };
 
 class Font {
