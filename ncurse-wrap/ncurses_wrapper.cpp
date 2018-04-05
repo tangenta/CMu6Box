@@ -202,6 +202,18 @@ void Ncurses::keypad_s(NWINDOW* wp, bool flag) {
     }
 }
 
+void Ncurses::cbreak_s() {
+    if (cbreak() == ERR) {
+        throw FatalError("cbreak()::ERR");
+    }
+}
+
+void Ncurses::nocbreak_s() {
+    if (nocbreak() == ERR) {
+        throw FatalError("nocbreak()::ERR");
+    }
+}
+
 NWINDOW* Ncurses::getStdscr() {
     return reinterpret_cast<NWINDOW*>(stdscr);
 }
@@ -228,3 +240,4 @@ int const NK::Up = KEY_UP;
 int const NK::Down = KEY_DOWN;
 int const NK::Right = KEY_RIGHT;
 int const NK::Left = KEY_LEFT;
+int const NK::Esc = 27;

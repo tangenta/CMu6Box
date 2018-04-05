@@ -15,10 +15,9 @@ public:
     NCController& operator=(NCController const&) = delete;
     NCController& operator=(NCController&&) = delete;
     ~NCController();
-    // windows control
-    Window* newwin(int rows, int cols, int org_y, int org_x);
-    Window* newwin();
-    void delwin(Window*);
+    // window management
+    void addWin(Window* win);
+    void delWin(Window* win);
 
     // main loop
     void exec();

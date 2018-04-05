@@ -8,6 +8,7 @@ class Window {
     friend class NCController;
 public:
     Window();
+    virtual ~Window();
     Window(int rows, int cols, int org_x, int org_y);
     Window(Window const&) = delete;
     Window(Window &&) = delete;
@@ -24,6 +25,15 @@ public:
                  Color const& = Color(NC::White),
                  Font const& = Font({NF::Normal}),
                  AlignMode = AlignMode::Left, int = -1);
+    void addBorder(Position const& topLeft,
+                   Position const& bottomRight,
+                   Color const& = Color(NC::White),
+                   char horizontal = '-',
+                   char vertical = '|',
+                   char corner = '+');
+
+    // update
+    virtual void handleInput(int ch) = 0;
 private:
     NWINDOW* wp;
 };

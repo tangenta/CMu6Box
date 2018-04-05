@@ -3,6 +3,7 @@
 #include <string>
 #include "ncurse-wrap/exceptions.h"
 #include "ncurse-wrap/util_window.h"
+#include <sstream>
 
 #ifndef DEFAULT_INTERVAL
 #define DEFAULT_INTERVAL 10
@@ -15,45 +16,37 @@ NCController::NCController(QObject *parent)
         Ncurses::start_color_s();
     }
 
+    Ncurses::nodelay_s(Ncurses::getStdscr(), true);
+    Ncurses::keypad_s(Ncurses::getStdscr(), true);
+    Ncurses::cbreak_s();
     Ncurses::refresh_s();
 }
 
 NCController::~NCController() {
+    Ncurses::nodelay_s(Ncurses::getStdscr(), false);
     Ncurses::getch_s();
     for (auto i: winList) {
-        Ncurses::delwin_s(i->wp);
         delete i;
     }
     Ncurses::endwin_s();
 }
 
-Window* NCController::newwin() {
-    Window* ret = new Window();
-    winList.push_back(ret);
-    return ret;
+void NCController::addWin(Window *win) {
+    winList.push_back(win);
 }
 
-Window* NCController::newwin(int rows, int cols, int org_y, int org_x) {
-    Window* ret = new Window(rows, cols, org_y, org_x);
-    winList.push_back(ret);
-    return ret;
+void NCController::delWin(Window *win) {
+    winList.remove(win);
 }
 
-void NCController::delwin(Window* wp) {
-    Ncurses::delwin_s(wp->wp);
-    winList.remove(wp);
-    delete wp;
-}
 
 void NCController::exec() {
     Ncurses::noecho_s();
-    Ncurses::nodelay_s(Ncurses::getStdscr(), true);
-    Ncurses::keypad_s(Ncurses::getStdscr(), true);
     int input;
     while ((input = Ncurses::getch_s()) == -1) {
         Ncurses::napms_s(DEFAULT_INTERVAL);
     }
-    if (input == 'q') {
+    if (input == NK::Esc) {
         return;
     } else {
         parseInput(input);
@@ -62,16 +55,24 @@ void NCController::exec() {
 }
 
 void NCController::parseInput(int ch) {
-    if (ch == NK::Up) {
-        Ncurses::waddstr_s(Ncurses::getStdscr(), "up ");
-    }
-    if (ch == NK::Down) {
-        Ncurses::waddstr_s(Ncurses::getStdscr(), "down ");
-    }
-    if (ch == NK::Right) {
-        Ncurses::waddstr_s(Ncurses::getStdscr(), "right ");
-    }
-    if (ch == NK::Left) {
-        Ncurses::waddstr_s(Ncurses::getStdscr(), "left ");
-    }
+    winList.back()->handleInput(ch);
+//    if (ch == NK::Up) {
+//        Ncurses::waddstr_s(Ncurses::getStdscr(), "up ");
+//    }
+//    if (ch == NK::Down) {
+//        Ncurses::waddstr_s(Ncurses::getStdscr(), "down ");
+//    }
+//    if (ch == NK::Right) {
+//        Ncurses::waddstr_s(Ncurses::getStdscr(), "right ");
+//    }
+//    if (ch == NK::Left) {
+//        Ncurses::waddstr_s(Ncurses::getStdscr(), "left ");
+//    }
+//    else {
+//        std::stringstream ss;
+//        ss << ch;
+//        std::string tmp;
+//        ss >> tmp;
+//        Ncurses::waddstr_s(Ncurses::getStdscr(), tmp.c_str());
+//    }
 }

@@ -8,6 +8,10 @@ Window::Window() {
     wp = Ncurses::newwin_s(0, 0, 0, 0);
 }
 
+Window::~Window() {
+    Ncurses::delwin_s(wp);
+}
+
 Window::Window(int rows, int cols, int org_y, int org_x) {
     wp = Ncurses::newwin_s(rows, cols, org_y, org_x);
 }
@@ -75,5 +79,39 @@ void Window::addText(std::string const& text, Position const& pos,
 
     // // restore the cursor and attribute
     // Ncurses::wmove_s(wp, 0, 0);
+    Ncurses::wrefresh_s(wp);
+}
+
+void Window::addBorder(Position const& topLeft,
+                       Position const& bottomRight,
+                       Color const& color,
+                       char horizontal,
+                       char vertical,
+                       char corner) {
+    int width = bottomRight.getCol()-topLeft.getCol()-1;
+    int height = bottomRight.getRow()-topLeft.getRow()-1;
+    if (width < 0 || height < 0) {
+        throw InvalidError("addBorder()::overflow");
+    }
+    std::string line(width+2, horizontal);
+    line[0] = line[line.size()-1] = corner;
+    Ncurses::wattron_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()));
+
+    // draw horizontal
+    Ncurses::wmove_s(wp, topLeft.getRow(), topLeft.getCol());
+    Ncurses::waddstr_s(wp, line.c_str());
+    Ncurses::wmove_s(wp, bottomRight.getRow(), topLeft.getCol());
+    Ncurses::waddstr_s(wp, line.c_str());
+
+    // draw vertical
+    std::string col(1, vertical);
+    for (int i = 0; i != height; ++i) {
+        Ncurses::wmove_s(wp, topLeft.getRow()+1+i, topLeft.getCol());
+        Ncurses::waddstr_s(wp, col.c_str());
+        Ncurses::wmove_s(wp, topLeft.getRow()+1+i, bottomRight.getCol());
+        Ncurses::waddstr_s(wp, col.c_str());
+    }
+
+    Ncurses::wattroff_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()));
     Ncurses::wrefresh_s(wp);
 }
