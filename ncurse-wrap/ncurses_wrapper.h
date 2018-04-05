@@ -46,9 +46,7 @@ enum class AlignMode {
 
 class Color {
 public:
-    Color();
-    Color(short);
-    Color(short, short);
+    Color(short = NC::White, short = NC::Black);
     int getPair() const { return clrPair; }
 private:
     int clrPair;

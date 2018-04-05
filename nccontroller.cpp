@@ -15,7 +15,6 @@ NCController::NCController(QObject *parent)
     if (Ncurses::has_color_s()) {
         Ncurses::start_color_s();
     }
-
     Ncurses::nodelay_s(Ncurses::getStdscr(), true);
     Ncurses::keypad_s(Ncurses::getStdscr(), true);
     Ncurses::cbreak_s();

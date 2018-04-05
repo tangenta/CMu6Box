@@ -1,13 +1,8 @@
 #include "ncurses_wrapper.h"
 #include <ncurses.h>
 #include "exceptions.h"
-
-#ifndef DEFAULT_FGCOLOR
-#define DEFAULT_FGCOLOR NC::White
-#endif
-#ifndef DEFAULT_BGCOLOR
-#define DEFAULT_BGCOLOR NC::Black
-#endif
+#include <map>
+#include <utility>
 
 // for convenient
 inline WINDOW* RC(NWINDOW* ptr) {
@@ -15,20 +10,20 @@ inline WINDOW* RC(NWINDOW* ptr) {
 }
 
 static int colorPair = 1;
-
-Color::Color() {
-    this->clrPair = colorPair;
-    Ncurses::init_pair_s(colorPair++, DEFAULT_FGCOLOR, DEFAULT_BGCOLOR);
-}
-
-Color::Color(short fg) {
-    this->clrPair = colorPair;
-    Ncurses::init_pair_s(colorPair++, fg, DEFAULT_BGCOLOR);
-}
+static std::map<std::pair<short, short>, int> colorPairMap;
 
 Color::Color(short fg, short bg) {
+    auto key = std::make_pair(fg, bg);
+    if (colorPairMap.find(key) != colorPairMap.end()) {  // previous color pair is found
+        clrPair = colorPairMap.at(key);
+        return;
+    }
+    colorPairMap[key] = colorPair;
     this->clrPair = colorPair;
     Ncurses::init_pair_s(colorPair++, fg, bg);
+    if (colorPair >= 256) {
+        throw InvalidError("Color()::colorPairOverflow");
+    }
 }
 
 Font::Font(std::initializer_list<unsigned long> fl) {
