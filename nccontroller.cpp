@@ -3,7 +3,7 @@
 #include <string>
 #include "ncurse-wrap/exceptions.h"
 #include "ncurse-wrap/util_window.h"
-#include <sstream>
+#include "user-interfaces/menu_win.h"
 
 #ifndef DEFAULT_INTERVAL
 #define DEFAULT_INTERVAL 10
@@ -19,25 +19,16 @@ NCController::NCController(QObject *parent)
     Ncurses::keypad_s(Ncurses::getStdscr(), true);
     Ncurses::cbreak_s();
     Ncurses::refresh_s();
+    currentWindow = new MenuWin;
+    Ncurses::wrefresh_s(currentWindow->wp);
 }
 
 NCController::~NCController() {
-    Ncurses::nodelay_s(Ncurses::getStdscr(), false);
-    Ncurses::getch_s();
-    for (auto i: winList) {
-        delete i;
-    }
+//    Ncurses::nodelay_s(Ncurses::getStdscr(), false);
+//    Ncurses::getch_s();
+    delete currentWindow;
     Ncurses::endwin_s();
 }
-
-void NCController::addWin(Window *win) {
-    winList.push_back(win);
-}
-
-void NCController::delWin(Window *win) {
-    winList.remove(win);
-}
-
 
 void NCController::exec() {
     Ncurses::noecho_s();
@@ -48,30 +39,14 @@ void NCController::exec() {
     if (input == NK::Esc) {
         return;
     } else {
-        parseInput(input);
+        Window* nextWindow = currentWindow->handleInput(input);
+        if (nextWindow) changeCurrentWindow(nextWindow);
+        Ncurses::wrefresh_s(currentWindow->wp);
     }
     return exec();
 }
 
-void NCController::parseInput(int ch) {
-    winList.back()->handleInput(ch);
-//    if (ch == NK::Up) {
-//        Ncurses::waddstr_s(Ncurses::getStdscr(), "up ");
-//    }
-//    if (ch == NK::Down) {
-//        Ncurses::waddstr_s(Ncurses::getStdscr(), "down ");
-//    }
-//    if (ch == NK::Right) {
-//        Ncurses::waddstr_s(Ncurses::getStdscr(), "right ");
-//    }
-//    if (ch == NK::Left) {
-//        Ncurses::waddstr_s(Ncurses::getStdscr(), "left ");
-//    }
-//    else {
-//        std::stringstream ss;
-//        ss << ch;
-//        std::string tmp;
-//        ss >> tmp;
-//        Ncurses::waddstr_s(Ncurses::getStdscr(), tmp.c_str());
-//    }
+void NCController::changeCurrentWindow(Window * win) {
+    delete currentWindow;
+    currentWindow = win;
 }

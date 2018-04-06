@@ -4,7 +4,6 @@
 #include <QObject>
 #include "ncurse-wrap/util_window.h"
 #include "ncurse-wrap/ncurses_wrapper.h"
-#include <list>
 
 class NCController : public QObject {
     Q_OBJECT
@@ -15,20 +14,16 @@ public:
     NCController& operator=(NCController const&) = delete;
     NCController& operator=(NCController&&) = delete;
     ~NCController();
-    // window management
-    void addWin(Window* win);
-    void delWin(Window* win);
 
     // main loop
     void exec();
 signals:
 
 public slots:
+    void changeCurrentWindow(Window*);
 
 private:
-    void parseInput(int ch);
-    bool hasColors;
-    std::list<Window*> winList;
+    Window* currentWindow;
 };
 
 #endif // NCCONTROLLER_H

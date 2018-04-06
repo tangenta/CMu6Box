@@ -2,7 +2,6 @@
 #include <QMediaPlayer>
 #include <QFile>
 #include "nccontroller.h"
-#include "user-interfaces/menu_win.h"
 
 int main(int argc, char** argv) {
     NCController nc;
@@ -18,7 +17,6 @@ int main(int argc, char** argv) {
 //    mywin->addText(" Hello Kitty");
 //    mywin->addText("left align test", Position(3, 0), Color(NC::White),
 //                   Font({NF::Underline}), AlignMode::Left, 40);
-    nc.addWin(new MenuWin());
     nc.exec();
 
 

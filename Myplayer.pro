@@ -14,7 +14,8 @@ SOURCES += main.cpp \
     nccontroller.cpp \
     ncurse-wrap/ncurses_wrapper.cpp \
     ncurse-wrap/util_window.cpp \
-    user-interfaces/menu_win.cpp
+    user-interfaces/menu_win.cpp \
+    user-interfaces/playing_win.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -33,6 +34,7 @@ HEADERS += \
     ncurse-wrap/ncurses_wrapper.h \
     ncurse-wrap/uitl_position.h \
     ncurse-wrap/util_window.h \
-    user-interfaces/menu_win.h
+    user-interfaces/menu_win.h \
+    user-interfaces/playing_win.h
 
 LIBS += -lncursesw

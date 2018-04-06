@@ -1,6 +1,6 @@
 #include "menu_win.h"
 #include "../ncurse-wrap/ncurses_wrapper.h"
-
+#include "playing_win.h"
 
 MenuWin::MenuWin()
 {
@@ -16,15 +16,19 @@ MenuWin::MenuWin()
     focus = 0;
 }
 
-void MenuWin::handleInput(int ch) {
+Window* MenuWin::handleInput(int ch) {
     if (ch == NK::Left) {
         if (--focus < 0) focus += 3;
         updateFocus();
-    }
-    else if (ch == NK::Right) {
+    } else if (ch == NK::Right) {
         focus = (focus+1) % 3;
         updateFocus();
+    } else if (ch == NK::Enter) {
+        if (focus == 0) {
+            return new PlayingWin;
+        }
     }
+    return nullptr;
 }
 
 void MenuWin::updateFocus() {

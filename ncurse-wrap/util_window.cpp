@@ -29,7 +29,7 @@ int Window::getCols() {
 
 void Window::addText(std::string const& text) {
     Ncurses::waddstr_s(wp, text.c_str());
-    Ncurses::wrefresh_s(wp);    
+    // Ncurses::wrefresh_s(wp);
 }
 
 void Window::addText(std::string const& text, Position const& pos,
@@ -81,7 +81,7 @@ void Window::addText(std::string const& text, Position const& pos,
 
     // // restore the cursor and attribute
     // Ncurses::wmove_s(wp, 0, 0);
-    Ncurses::wrefresh_s(wp);
+    // Ncurses::wrefresh_s(wp);
 }
 
 void Window::addBorder(Position const& topLeft,
@@ -115,5 +115,5 @@ void Window::addBorder(Position const& topLeft,
     }
 
     Ncurses::wattroff_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()));
-    Ncurses::wrefresh_s(wp);
+    // Ncurses::wrefresh_s(wp);
 }

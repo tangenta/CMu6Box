@@ -33,7 +33,7 @@ public:
                    char corner = '+');
 
     // update
-    virtual void handleInput(int ch) = 0;
+    virtual Window* handleInput(int ch) = 0;
 private:
     NWINDOW* wp;
 };
