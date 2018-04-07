@@ -31,6 +31,15 @@ public:
                    char horizontal = '-',
                    char vertical = '|',
                    char corner = '+');
+    
+    void addBlock(Position const& topLeft,
+                  Position const& bottomRight,
+                  std::initializer_list<std::string> textList,
+                  Color const& = Color(NC::White),
+                  Font const& = Font({NF::Normal}),
+                  char horizontal = '-',
+                  char vertical = '|',
+                  char corner = '+');
 
     // update
     virtual Window* handleInput(int ch) = 0;

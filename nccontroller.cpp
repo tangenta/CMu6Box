@@ -17,6 +17,7 @@ NCController::NCController(QObject *parent)
     }
     Ncurses::nodelay_s(Ncurses::getStdscr(), true);
     Ncurses::keypad_s(Ncurses::getStdscr(), true);
+    Ncurses::set_escdelay_s(25);  // 原Esc键延迟为1000ms, 改为25ms    
     Ncurses::cbreak_s();
     Ncurses::refresh_s();
     currentWindow = new MenuWin;
@@ -36,14 +37,19 @@ void NCController::exec() {
     while ((input = Ncurses::getch_s()) == -1) {
         Ncurses::napms_s(DEFAULT_INTERVAL);
     }
-    if (input == NK::Esc) {
-        return;
-    } else {
-        Window* nextWindow = currentWindow->handleInput(input);
-        if (nextWindow) changeCurrentWindow(nextWindow);
+
+    Window* nextWindow = currentWindow->handleInput(input);
+
+    if (nextWindow == currentWindow) {            // 当前窗口
         Ncurses::wrefresh_s(currentWindow->wp);
+        return exec();
+    } else if (nextWindow) {                      // 新窗口
+        changeCurrentWindow(nextWindow);
+        Ncurses::wrefresh_s(currentWindow->wp);
+        return exec();
+    } else {                                      // 退出程序
+        return;
     }
-    return exec();
 }
 
 void NCController::changeCurrentWindow(Window * win) {
