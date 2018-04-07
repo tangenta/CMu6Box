@@ -17,6 +17,7 @@ NCController::NCController(QObject *parent)
     }
     Ncurses::nodelay_s(Ncurses::getStdscr(), true);
     Ncurses::keypad_s(Ncurses::getStdscr(), true);
+    Ncurses::set_escdelay_s(25);  // 原Esc键延迟为1000ms, 改为25ms    
     Ncurses::cbreak_s();
     Ncurses::refresh_s();
     currentWindow = new MenuWin;
