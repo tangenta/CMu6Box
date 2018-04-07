@@ -209,6 +209,15 @@ void Ncurses::nocbreak_s() {
     }
 }
 
+int Ncurses::set_escdelay_s(int delay) {
+    return set_escdelay(delay);
+}
+
+void Ncurses::beep_s() {
+    beep(); // 说出来你可能不信，这是DEBUG用的
+}
+
+
 NWINDOW* Ncurses::getStdscr() {
     return reinterpret_cast<NWINDOW*>(stdscr);
 }

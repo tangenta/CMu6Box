@@ -36,14 +36,19 @@ void NCController::exec() {
     while ((input = Ncurses::getch_s()) == -1) {
         Ncurses::napms_s(DEFAULT_INTERVAL);
     }
-    if (input == NK::Esc) {
-        return;
-    } else {
-        Window* nextWindow = currentWindow->handleInput(input);
-        if (nextWindow) changeCurrentWindow(nextWindow);
+
+    Window* nextWindow = currentWindow->handleInput(input);
+
+    if (nextWindow == currentWindow) {            // 当前窗口
         Ncurses::wrefresh_s(currentWindow->wp);
+        return exec();
+    } else if (nextWindow) {                      // 新窗口
+        changeCurrentWindow(nextWindow);
+        Ncurses::wrefresh_s(currentWindow->wp);
+        return exec();
+    } else {                                      // 退出程序
+        return;
     }
-    return exec();
 }
 
 void NCController::changeCurrentWindow(Window * win) {

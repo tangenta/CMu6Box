@@ -89,6 +89,8 @@ struct Ncurses {
     static void keypad_s(NWINDOW*, bool);
     static void cbreak_s();
     static void nocbreak_s();
+    static int set_escdelay_s(int);
+    static void beep_s();
     // extended functions
     static NWINDOW* getStdscr();
 };

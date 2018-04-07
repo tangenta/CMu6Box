@@ -3,6 +3,7 @@
 #include "exceptions.h"
 #include <algorithm>
 #include <climits>
+#include <initializer_list>
 
 Window::Window() {
     wp = Ncurses::newwin_s(0, 0, 0, 0);
@@ -61,7 +62,7 @@ void Window::addText(std::string const& text, Position const& pos,
         }
     }
 
-    int blankCharNum = slen - text.length();
+    int blankCharNum = slen - text.length() - 1; // 减1是为了使差1长度可以左对齐
     std::string tstr(blankCharNum, ' ');
     switch (mode) {
         case AlignMode::Right:
@@ -116,4 +117,36 @@ void Window::addBorder(Position const& topLeft,
 
     Ncurses::wattroff_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()));
     // Ncurses::wrefresh_s(wp);
+}
+
+void Window::addBlock(Position const& topLeft,                      // 同addBorder
+                      Position const& bottomRight,                  // 同addBorder
+                      std::initializer_list<std::string> textList,  // 一行一个元素
+                      Color const& color,                           // 框与字体同色
+                      Font const& font,                             // 字体形态
+                      char horizontal,                              // 同addBorder
+                      char vertical,                                // 同addBorder
+                      char corner) {                                // 同addBorder
+
+    addBorder(topLeft, bottomRight, color, horizontal, vertical, corner);
+    
+    const int width = bottomRight.getCol()-topLeft.getCol()-1;
+    const int height = bottomRight.getRow()-topLeft.getRow()-1;
+    if (width < 0 || height < 0) {
+        throw InvalidError("addBlock()::overflow");
+    }
+
+    const bool ensureWidth = std::all_of(textList.begin(), textList.end(), [width](std::string const& s){ return s.length() <= width; });
+    const bool ensureHeight = textList.size() <= height;
+
+    if (!ensureWidth || !ensureHeight) {
+        throw InvalidError("addBlock()::overflow");
+    }
+
+    int hp = topLeft.getRow() + (height - textList.size()) / 2;
+    const int wp = topLeft.getCol() + 1;
+    std::for_each(textList.begin(), textList.end(), [&](std::string const& s) {
+        ++hp;
+        addText(s, Position(hp, wp), color, font, AlignMode::Center, width); 
+    });
 }
