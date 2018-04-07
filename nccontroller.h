@@ -15,13 +15,11 @@ public:
     NCController& operator=(NCController&&) = delete;
     ~NCController();
 
-    // main loop
-    void exec();
 signals:
-
 public slots:
     void changeCurrentWindow(Window*);
-
+    // main loop
+    void exec();
 private:
     Window* currentWindow;
 };
