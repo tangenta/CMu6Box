@@ -128,25 +128,25 @@ void Ncurses::wmove_s(NWINDOW* wp, int row, int col) {
         throw OutOfRangeError("wmove()::negative");
     }
     if (wmove(RC(wp), row, col) == ERR) {
-        throw FatalError("wmove()::ERR");
+        throw OutOfRangeError("wmove()::ERR");
     }
 }
 
 void Ncurses::wattrset_s(NWINDOW* wp, unsigned long colorPair) {
     if (wattrset(RC(wp), colorPair) == ERR) {
-        throw InvalidError("wattrset()::ERR");
+        throw FatalError("wattrset()::ERR");
     }
 }
 
 void Ncurses::wattron_s(NWINDOW* wp, unsigned long attr) {
     if (wattron(RC(wp), attr) == ERR) {
-        throw InvalidError("wattron()::ERR");
+        throw FatalError("wattron()::ERR");
     }
 }
 
 void Ncurses::wattroff_s(NWINDOW* wp, unsigned long attr) {
     if (wattroff(RC(wp), attr) == ERR) {
-        throw InvalidError("wattron()::ERR");
+        throw FatalError("wattron()::ERR");
     }
 }
 
@@ -214,7 +214,9 @@ int Ncurses::set_escdelay_s(int delay) {
 }
 
 void Ncurses::beep_s() {
-    beep(); // 说出来你可能不信，这是DEBUG用的
+    if (beep() == ERR) {    // 说出来你可能不信，这是DEBUG用的
+        throw FatalError("beep()::ERR");
+    }
 }
 
 

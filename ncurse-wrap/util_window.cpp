@@ -51,8 +51,6 @@ void Window::addText(std::string const& text, Position const& pos,
         throw OutOfRangeError("Window::addText()");
     }
 
-    Ncurses::wmove_s(wp, textR, textC);
-
     // fill the area with text.getText()
     static std::string const invalidEscapeChars = "\a\n\b\f\r\t\v\e";
     for (auto i: text) {
@@ -73,6 +71,7 @@ void Window::addText(std::string const& text, Position const& pos,
             tstr.insert(blankCharNum/2, text, 0, text.npos); break;
     }
 
+    Ncurses::wmove_s(wp, textR, textC);
     // set attr
     Ncurses::wattron_s(wp, Ncurses::COLOR_PAIR_s(color.getPair()) | font.toBit());
 
@@ -94,7 +93,7 @@ void Window::addBorder(Position const& topLeft,
     int width = bottomRight.getCol()-topLeft.getCol()-1;
     int height = bottomRight.getRow()-topLeft.getRow()-1;
     if (width < 0 || height < 0) {
-        throw InvalidError("addBorder()::overflow");
+        throw OutOfRangeError("addBorder()::overflow");
     }
     std::string line(width+2, horizontal);
     line[0] = line[line.size()-1] = corner;
@@ -133,14 +132,14 @@ void Window::addBlock(Position const& topLeft,                      // 同addBor
     const int width = bottomRight.getCol()-topLeft.getCol()-1;
     const int height = bottomRight.getRow()-topLeft.getRow()-1;
     if (width < 0 || height < 0) {
-        throw InvalidError("addBlock()::overflow");
+        throw OutOfRangeError("addBlock()::overflow");
     }
 
     const bool ensureWidth = std::all_of(textList.begin(), textList.end(), [width](std::string const& s){ return s.length() <= width; });
     const bool ensureHeight = textList.size() <= height;
 
     if (!ensureWidth || !ensureHeight) {
-        throw InvalidError("addBlock()::overflow");
+        throw OutOfRangeError("addBlock()::overflow");
     }
 
     int hp = topLeft.getRow() + (height - textList.size()) / 2;
