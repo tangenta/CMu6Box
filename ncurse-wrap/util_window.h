@@ -41,9 +41,13 @@ public:
                   char vertical = '|',
                   char corner = '+');
 
+    void fillBlank(Position const& topLeft,
+                   Position const& bottomRight);
+
     // update
     virtual Window* handleInput(int ch) = 0;
-private:
+
+protected:
     NWINDOW* wp;
 };
 

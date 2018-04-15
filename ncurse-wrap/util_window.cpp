@@ -60,7 +60,7 @@ void Window::addText(std::string const& text, Position const& pos,
         }
     }
 
-    int blankCharNum = slen - text.length() - 1; // 减1是为了使差1长度可以左对齐
+    int blankCharNum = slen-text.length();
     std::string tstr(blankCharNum, ' ');
     switch (mode) {
         case AlignMode::Right:
@@ -129,11 +129,8 @@ void Window::addBlock(Position const& topLeft,                      // 同addBor
 
     addBorder(topLeft, bottomRight, color, horizontal, vertical, corner);
     
-    const int width = bottomRight.getCol()-topLeft.getCol()-1;
-    const int height = bottomRight.getRow()-topLeft.getRow()-1;
-    if (width < 0 || height < 0) {
-        throw OutOfRangeError("addBlock()::overflow");
-    }
+    const size_t width = bottomRight.getCol()-topLeft.getCol()-1;
+    const size_t height = bottomRight.getRow()-topLeft.getRow()-1;
 
     const bool ensureWidth = std::all_of(textList.begin(), textList.end(), [width](std::string const& s){ return s.length() <= width; });
     const bool ensureHeight = textList.size() <= height;
@@ -148,4 +145,11 @@ void Window::addBlock(Position const& topLeft,                      // 同addBor
         ++hp;
         addText(s, Position(hp, wp), color, font, AlignMode::Center, width); 
     });
+}
+
+void Window::fillBlank(const Position &topLeft, const Position &bottomRight) {
+    const int width = bottomRight.getCol() - topLeft.getCol();
+    for (int i = topLeft.getRow(); i < bottomRight.getRow(); i++) {
+        addText(std::string(width, ' '), Position(i, topLeft.getCol()));
+    }
 }

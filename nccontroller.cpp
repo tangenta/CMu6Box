@@ -33,6 +33,7 @@ NCController::~NCController() {
 
 void NCController::exec() {
     Ncurses::noecho_s();
+    
     int input;
     while ((input = Ncurses::getch_s()) == -1) {
         Ncurses::napms_s(DEFAULT_INTERVAL);

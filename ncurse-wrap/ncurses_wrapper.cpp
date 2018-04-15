@@ -219,6 +219,9 @@ void Ncurses::beep_s() {
     }
 }
 
+void Ncurses::werase_s(NWINDOW* win) {
+    werase(RC(win));
+}
 
 NWINDOW* Ncurses::getStdscr() {
     return reinterpret_cast<NWINDOW*>(stdscr);
