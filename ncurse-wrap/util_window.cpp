@@ -19,12 +19,16 @@ Window::Window(int rows, int cols, int org_y, int org_x) {
     wp = Ncurses::newwin_s(rows, cols, org_y, org_x);
 }
 
-int Window::getRows() {
+int Window::getRows() const {
     return Ncurses::getmaxy_s(wp);
 }
 
-int Window::getCols() {
+int Window::getCols() const {
     return Ncurses::getmaxx_s(wp);
+}
+
+NWINDOW* Window::getNWindow() const {
+    return wp;
 }
 
 
@@ -83,6 +87,8 @@ void Window::addText(std::string const& text, Position const& pos,
     // Ncurses::wmove_s(wp, 0, 0);
     // Ncurses::wrefresh_s(wp);
 }
+
+
 
 void Window::addBorder(Position const& topLeft,
                        Position const& bottomRight,
@@ -147,9 +153,16 @@ void Window::addBlock(Position const& topLeft,                      // 同addBor
     });
 }
 
+
+void Window::clearScreen() {
+    Ncurses::werase_s(this->wp);
+}
+
 void Window::fillBlank(const Position &topLeft, const Position &bottomRight) {
-    const int width = bottomRight.getCol() - topLeft.getCol();
-    for (int i = topLeft.getRow(); i < bottomRight.getRow(); i++) {
+    const int width = bottomRight.getCol() - topLeft.getCol() + 1;
+    for (int i = topLeft.getRow(); i <= bottomRight.getRow(); i++) {
         addText(std::string(width, ' '), Position(i, topLeft.getCol()));
     }
 }
+
+

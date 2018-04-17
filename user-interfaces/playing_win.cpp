@@ -1,54 +1,118 @@
 #include "playing_win.h"
 #include "menu_win.h"
+#include "../ncurse-wrap/util_rollingtext.h"
+#include "../ncurse-wrap/util_statictext.h"
+#include "../ncurse-wrap/util_border.h"
+#include "../ncurse-wrap/ncurses_wrapper.h"
+#include "../ncurse-wrap/util_menu.h"
+#include <algorithm>
+#include <string>
 
-PlayingWin::PlayingWin()
-{
-//    const int width = 40;
-//    const int height = 10;
-//    addBlock(Position(this->getRows() / 2 - height / 2, this->getCols() / 2 - width / 2),
-//             Position(this->getRows() / 2 + height / 2, this->getCols() / 2 + width / 2),
-//             {"Hello Kitty", "Peppa Pig", "Super Man"},
-//             Color(NC::White),
-//             Font({NF::Bold}));
+PlayingWin::PlayingWin() :
+    objSubwin0({Block<Border, StaticText>(Border(Position(5, 5), 15, 10),
+                                          StaticText(std::string("HP"), Position(9, 6), 13, Attr(), AlignMode::Center)),
+                Block<Border, StaticText>(Border(Position(5, 25), 15, 10),
+                                          StaticText(std::string("Apple"), Position(9, 26), 13, Attr(), AlignMode::Center)),
+                Block<Border, StaticText>(Border(Position(5, 45), 15, 10),
+                                          StaticText(std::string("Alienware"), Position(9, 46), 13, Attr(), AlignMode::Center))}),
 
-    updateWin0();
-
-    subwinNo = 0;
-    focus0 = 0;
-    focus1 = 0;
-    focus2 = 0;
+    objSubwin1(Block<Border, Menu>(Border(Position(2, 50), 28, 20, Attr(), '#', '#', '#'),
+                                   Menu({"1. Despacito",
+                                         "2. Shape of You",
+                                         "3. Swish Swish",
+                                         "4. John Wayne",
+                                         "5. 24K Magic",
+                                         "6. Naughty Girl",
+                                         "7. Side to Side",
+                                         "8. Keep On Moving",
+                                         "9. Luis Fonsi & Daddy Yankee - Despacito",
+                                         "10. Ed Sheeran - Shape of You",
+                                         "11. Katy Perry ft. Nicki Minaj - Swish Swish",
+                                         "12. Lady Gaga - John Wayne",
+                                         "13. Bruno Mars - 24K Magic",
+                                         "14. Beyonce - Naughty Girl",
+                                         "15. Ariana Grande ft. Nicki Minaj - Side to Side",
+                                         "16. Michelle Delamor - Keep On Moving"},
+                                        Position(4, 52), 24, 17))) {
+    //  没有拷贝赋值，没法交由其他函数初始化需要画的东西，就让窗口负责初始化
+    subwin = 0;
+    initSubwin0();
+    initSubwin1();
 }
+
 
 Window* PlayingWin::handleInput(int ch) {
-    switch (subwinNo) {
+    switch (subwin) {
     case 0:
-        return win0(ch);
+        return handleInputSubwin0(ch);
+        break;
     case 1:
-        return win1(ch);
-    case 2:
-        return win2(ch);
+        return handleInputSubwin1(ch);
+        break;
     default:
         return this;
+        break;
     }
 }
 
-Window* PlayingWin::win0(int ch) {
-    if (ch == NK::Esc) {
+void PlayingWin::update() {
+    // 如果子窗口不用显示，就不需要动了
+    switch (subwin) {
+    case 0:
+        updateSubwin0();
+        break;
+    case 1:
+        updateSubwin0();
+        updateSubwin1();
+        break;
+    }
+}
+void PlayingWin::draw() {
+    // 如果子窗口不用显示，就不需要渲染了
+    this->clearScreen();
+    switch (subwin) {
+    case 0:
+        drawSubwin0();
+        break;
+    case 1:
+        drawSubwin0();
+        drawSubwin1();
+        break;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 0号子窗口的子函数
+void PlayingWin::initSubwin0() {
+    focusSubwin0 = 0;
+}
+
+Window* PlayingWin::handleInputSubwin0(int ch) {
+    if (ch == NK::Left) {
+        if (--focusSubwin0 < 0) focusSubwin0 += 3;
+        return this;
+
+    } else if (ch == NK::Right) {
+        focusSubwin0 = (focusSubwin0 + 1) % 3;
+        return this;
+
+    } else if (ch == NK::Esc) {
         return new MenuWin;
 
-    } else if(ch == NK::Left) {
-        if (--focus0 < 0) focus0 += 3;
-        updateWin0();
-        return this;
-
-    } else if (ch == NK::Right) {
-        focus0 = (focus0+1) % 3;
-        updateWin0();
-        return this;
-
     } else if (ch == NK::Enter) {
-        subwinNo = 1;
-        updateWin1();
+        subwin = 1;
         return this;
 
     } else {
@@ -56,27 +120,60 @@ Window* PlayingWin::win0(int ch) {
     }
 }
 
-Window* PlayingWin::win1(int ch) {
-    if (ch == NK::Esc) {
-        Ncurses::werase_s(this->wp);
+void PlayingWin::drawSubwin0() {
+    static Attr hl = Attr(Color(NC::Cyan), Font({NF::Bold}));
+    static Attr other = Attr();
 
-        subwinNo = 0;
-        updateWin0();
+    for (int i = 0; i < objSubwin0.size(); ++i) {
+        if (i == focusSubwin0) {
+            objSubwin0.at(i).content.attribute = hl;
+            objSubwin0.at(i).border.attribute = hl;
+            objSubwin0.at(i).draw(this);
+        } else {
+            objSubwin0.at(i).content.attribute = other;
+            objSubwin0.at(i).border.attribute = other;
+            objSubwin0.at(i).draw(this);
+        }
+    }
+}
+
+void PlayingWin::updateSubwin0() {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 1号子窗口的子函数
+void PlayingWin::initSubwin1() {
+    focusSubwin1 = 0;
+}
+
+Window* PlayingWin::handleInputSubwin1(int ch) {
+    if (ch == NK::Down) {
+        if (focusSubwin1 < 15) {
+            focusSubwin1++;
+            objSubwin1.content.down();
+        }
         return this;
 
-    } else if(ch == NK::Left) {
-        if (--focus1 < 0) focus1 += 3;
-        updateWin1();
+    } else if (ch == NK::Up) {
+        if (focusSubwin1 > 0) {
+            focusSubwin1--;
+            objSubwin1.content.up();
+        }
         return this;
 
-    } else if (ch == NK::Right) {
-        focus1 = (focus1+1) % 3;
-        updateWin1();
-        return this;
-
-    } else if (ch == NK::Enter) {
-        subwinNo = 2;
-        updateWin2();
+    } else if (ch == NK::Esc) {
+        subwin = 0;
         return this;
 
     } else {
@@ -84,79 +181,15 @@ Window* PlayingWin::win1(int ch) {
     }
 }
 
-Window* PlayingWin::win2(int ch) {
-    if (ch == NK::Esc) {
-        Ncurses::werase_s(this->wp);
-
-        updateWin0();
-        subwinNo = 1;
-        updateWin1();
-        return this;
-
-    } else if(ch == NK::Up) {
-        if (--focus2 < 0) focus2 += 3;
-        updateWin2();
-        return this;
-
-    } else if (ch == NK::Down) {
-        focus2 = (focus2+1) % 3;
-        updateWin2();
-        return this;
-
-    } else {
-        return this;
-    }
+void PlayingWin::updateSubwin1() {
+    // menu刷新速率和帧率差30倍
+    static int count = 0;
+    count = (count + 1) % 30;
+    if (count == 0)
+        objSubwin1.update();
 }
 
-void PlayingWin::updateWin0() {
-    Color playColor(NC::White);
-    Color songListColor(NC::White);
-    Color settingColor(NC::White);
-    switch (focus0) {
-    case 0: playColor = Color(NC::Cyan); break;
-    case 1: songListColor = Color(NC::Cyan); break;
-    case 2: settingColor = Color(NC::Cyan); break;
-    }
-
-    fillBlank(Position(5, 5), Position(15, 60));
-
-    addBlock(Position(5, 5), Position(15,20), {"HP"}, playColor, Font({NF::Bold}));
-    addBlock(Position(5, 25), Position(15,40), {"Apple"}, songListColor, Font({NF::Bold}));
-    addBlock(Position(5, 45), Position(15,60), {"Alienware"}, settingColor, Font({NF::Bold}));
-}
-
-void PlayingWin::updateWin1() {
-    Color playColor(NC::White);
-    Color songListColor(NC::White);
-    Color settingColor(NC::White);
-    switch (focus1) {
-    case 0: playColor = Color(NC::Cyan); break;
-    case 1: songListColor = Color(NC::Cyan); break;
-    case 2: settingColor = Color(NC::Cyan); break;
-    }
-
-    addBorder(Position(7, 7), Position(19, 64), Color(), '~', '*', '*');
-    fillBlank(Position(8, 8), Position(18, 63));
-
-    addBlock(Position(8, 8), Position(18,23), {"New balance"}, playColor, Font({NF::Bold}));
-    addBlock(Position(8, 28), Position(18,43), {"Nike"}, songListColor, Font({NF::Bold}));
-    addBlock(Position(8, 48), Position(18,63), {"Bilibili"}, settingColor, Font({NF::Bold}));
-}
-
-void PlayingWin::updateWin2() {
-    Color playColor(NC::White);
-    Color songListColor(NC::White);
-    Color settingColor(NC::White);
-    switch (focus2) {
-    case 0: playColor = Color(NC::Cyan); break;
-    case 1: songListColor = Color(NC::Cyan); break;
-    case 2: settingColor = Color(NC::Cyan); break;
-    }
-
-    addBorder(Position(5, 47), Position(15, 76), Color(), '~', '*', '*');
-    fillBlank(Position(6, 48), Position(14, 75));
-
-    addBlock(Position(6, 48), Position(8,75), {"Doggggggg"}, playColor, Font({NF::Bold}));
-    addBlock(Position(9, 48), Position(11,75), {"kangaroooo"}, songListColor, Font({NF::Bold}));
-    addBlock(Position(12, 48), Position(14,75), {"Tangentaaa"}, settingColor, Font({NF::Bold}));
+void PlayingWin::drawSubwin1() {
+    this->fillBlank(Position(3, 50), Position(18, 78));
+    objSubwin1.draw(this);
 }

@@ -6,7 +6,7 @@
 #include "user-interfaces/menu_win.h"
 
 #ifndef DEFAULT_INTERVAL
-#define DEFAULT_INTERVAL 10
+#define DEFAULT_INTERVAL 20
 #endif
 
 NCController::NCController(QObject *parent)
@@ -37,16 +37,17 @@ void NCController::exec() {
     int input;
     while ((input = Ncurses::getch_s()) == -1) {
         Ncurses::napms_s(DEFAULT_INTERVAL);
+        currentWindow->draw();
+        Ncurses::wrefresh_s(currentWindow->wp);
+        currentWindow->update();
     }
 
     Window* nextWindow = currentWindow->handleInput(input);
 
     if (nextWindow == currentWindow) {            // 当前窗口
-        Ncurses::wrefresh_s(currentWindow->wp);
         return exec();
     } else if (nextWindow) {                      // 新窗口
         changeCurrentWindow(nextWindow);
-        Ncurses::wrefresh_s(currentWindow->wp);
         return exec();
     } else {                                      // 退出程序
         return;

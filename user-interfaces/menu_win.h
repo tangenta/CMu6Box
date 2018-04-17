@@ -7,9 +7,10 @@ class MenuWin: public Window {
 public:
     MenuWin();
     Window* handleInput(int ch) override;
+    void update() override;
+    void draw() override;
 private:
     int focus;
-    void updateFocus();
 };
 
 #endif // MENU_WIN_H

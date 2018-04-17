@@ -9,10 +9,10 @@ inline WINDOW* RC(NWINDOW* ptr) {
     return reinterpret_cast<WINDOW*>(ptr);
 }
 
-static int colorPair = 1;
-static std::map<std::pair<short, short>, int> colorPairMap;
-
 Color::Color(short fg, short bg) {
+    static int colorPair = 1;
+    static std::map<std::pair<short, short>, int> colorPairMap;
+
     auto key = std::make_pair(fg, bg);
     if (colorPairMap.find(key) != colorPairMap.end()) {  // previous color pair is found
         clrPair = colorPairMap.at(key);
@@ -32,6 +32,11 @@ Font::Font(std::initializer_list<unsigned long> fl) {
         t |= i;
     }
     ifont = t;
+}
+
+Attr::Attr(const Color &clr, const Font &fnt)
+    : color(clr), font(fnt) {
+    iattr = Ncurses::COLOR_PAIR_s(color.getPair()) | fnt.toBit();
 }
 
 

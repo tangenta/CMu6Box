@@ -62,6 +62,16 @@ private:
     unsigned long ifont;
 };
 
+class Attr {
+public:
+    Attr(const Color &clr = Color(), const Font &fnt = Font({NF::Normal}));
+    unsigned long toBit() const { return iattr; }
+private:
+    unsigned long iattr;
+    Color color;
+    Font font;
+};
+
 struct Ncurses {
     static void initscr_s();
     static bool has_color_s();

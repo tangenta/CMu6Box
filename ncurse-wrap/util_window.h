@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "uitl_position.h"
+#include "util_position.h"
 #include "ncurses_wrapper.h"
 
 class Window {
@@ -16,8 +16,9 @@ public:
     Window& operator=(Window &&) = delete;
 
     // getter
-    int getRows();
-    int getCols();
+    int getRows() const;
+    int getCols() const;
+    NWINDOW* getNWindow() const;
 
     // utilities
     void addText(std::string const&);
@@ -25,6 +26,7 @@ public:
                  Color const& = Color(NC::White),
                  Font const& = Font({NF::Normal}),
                  AlignMode = AlignMode::Left, int = -1);
+
     void addBorder(Position const& topLeft,
                    Position const& bottomRight,
                    Color const& = Color(NC::White),
@@ -41,13 +43,17 @@ public:
                   char vertical = '|',
                   char corner = '+');
 
+    void clearScreen();
+
     void fillBlank(Position const& topLeft,
                    Position const& bottomRight);
 
     // update
     virtual Window* handleInput(int ch) = 0;
+    virtual void update() = 0;
+    virtual void draw() = 0;
 
-protected:
+private:
     NWINDOW* wp;
 };
 
