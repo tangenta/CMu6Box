@@ -15,7 +15,10 @@ public:
     void update() override;
     void draw(Window*) override;
 
+    void enable(bool b) { running = b; }
+
 private:
+    bool running;
     int textPos;
     int lenOutOfRange;
 };

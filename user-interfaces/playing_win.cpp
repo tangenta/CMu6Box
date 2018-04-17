@@ -33,7 +33,7 @@ PlayingWin::PlayingWin() :
                                          "14. Beyonce - Naughty Girl",
                                          "15. Ariana Grande ft. Nicki Minaj - Side to Side",
                                          "16. Michelle Delamor - Keep On Moving"},
-                                        Position(4, 52), 24, 17))) {
+                                        Position(4, 52), 24, 14))) {
     //  没有拷贝赋值，没法交由其他函数初始化需要画的东西，就让窗口负责初始化
     subwin = 0;
     initSubwin0();
@@ -182,14 +182,14 @@ Window* PlayingWin::handleInputSubwin1(int ch) {
 }
 
 void PlayingWin::updateSubwin1() {
-    // menu刷新速率和帧率差30倍
+    // menu刷新速率和帧率差20倍
     static int count = 0;
-    count = (count + 1) % 30;
+    count = (count + 1) % 20;
     if (count == 0)
         objSubwin1.update();
 }
 
 void PlayingWin::drawSubwin1() {
-    this->fillBlank(Position(3, 50), Position(18, 78));
+    this->fillBlank(Position(3, 51), Position(20, 76));
     objSubwin1.draw(this);
 }

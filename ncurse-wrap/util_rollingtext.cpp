@@ -4,7 +4,7 @@ RollingText::RollingText(const std::string &cont,
                          const Position &pos,
                          int width,
                          const Attr &attr)
-    : Text(cont, pos, width, attr) {
+    : Text(cont, pos, width, attr), running(true) {
     textPos = 0;
 
     // 若过短则补空格，让其左对齐
@@ -27,5 +27,10 @@ void RollingText::draw(Window *win) {
 }
 
 void RollingText::update() {
-    textPos = (textPos+1) % (lenOutOfRange+1); // something mathematics
+    if (running) {
+        textPos = (textPos+1) % (lenOutOfRange+1); // something mathematics
+    } else {
+        textPos = 0;
+    }
+
 }

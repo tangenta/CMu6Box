@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <cassert>
 
-
 Menu::Menu(std::initializer_list<std::string> strList,
            const Position &pos,
            int width,
@@ -50,26 +49,30 @@ void Menu::up() {
 }
 
 void Menu::draw(Window *win) {
-    const int n = std::min(height, itemLength);
-    auto it = std::find_if(texts.begin(), texts.end(),
-                           [&](RollingText &i){ return i.position == position; });
-    for (int i = 0; i < n; i++) {
+    const int n = item - focus;
+    const int len = std::min(height, itemLength);
+    for (int i = 0; i < len; i++) {
         if (i == focus) {
-            assert(it+i < texts.end());
-            (*(it+i)).attribute = highlight;
-            (*(it+i)).draw(win);
+            texts.at(n+i).attribute = highlight;
+            texts.at(n+i).draw(win);
         } else {
-            assert(it+i < texts.end());
-            (*(it+i)).attribute = other;
-            (*(it+i)).draw(win);
+            texts.at(n+i).attribute = other;
+            texts.at(n+i).draw(win);
         }
     }
-
 }
 
 void Menu::update() {
-    for (auto & i : texts) {
-        i.update();
+    const int n = item - focus;
+    const int len = std::min(height, itemLength);
+    for (int i = 0; i < len; i++) {
+        if (i == focus) {
+            texts.at(n+i).enable(true);
+            texts.at(n+i).update();
+        } else {
+            texts.at(n+i).enable(false);
+            texts.at(n+i).update();
+        }
     }
 }
 
