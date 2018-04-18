@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     ncurse-wrap/util_rollingtext.cpp \
     ncurse-wrap/util_statictext.cpp \
     ncurse-wrap/util_border.cpp \
-    ncurse-wrap/util_menu.cpp
+    ncurse-wrap/util_menu.cpp \
+    user-interfaces/testing_win.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -47,6 +48,7 @@ HEADERS += \
     ncurse-wrap/util_rollingtext.h \
     ncurse-wrap/util_border.h \
     ncurse-wrap/util_menu.h \
-    ncurse-wrap/block.h
+    ncurse-wrap/block.h \
+    user-interfaces/testing_win.h
 
 LIBS += -lncursesw
