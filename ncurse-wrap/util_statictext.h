@@ -16,6 +16,11 @@ public:
 
     void update() override;
     void draw(Window*) override;
+
+private:
+    std::string record;
+    AlignMode align;
+    void forSoCallMutable();
 };
 
 #endif // UTIL_STATICTEXT_H

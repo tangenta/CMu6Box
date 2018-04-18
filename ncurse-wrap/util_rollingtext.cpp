@@ -11,12 +11,15 @@ RollingText::RollingText(const std::string &cont,
     lenOutOfRange = cont.length() - width;
     if (lenOutOfRange < 0) {
         content = cont + std::string(-lenOutOfRange, ' ');
+        record = content;
         lenOutOfRange = 0;
     }
 }
 
 
 void RollingText::draw(Window *win) {
+    forSoCallMutable();
+
     const std::string str(content.begin()+textPos, content.begin()+textPos+width);
 
     NWINDOW *wp = win->getNWindow();
@@ -27,10 +30,24 @@ void RollingText::draw(Window *win) {
 }
 
 void RollingText::update() {
+    forSoCallMutable();
+
     if (running) {
         textPos = (textPos+1) % (lenOutOfRange+1); // something mathematics
     } else {
         textPos = 0;
     }
+}
 
+void RollingText::forSoCallMutable() {
+    if (content != record) {
+        textPos = 0;
+
+        lenOutOfRange = content.length() - width;
+        if (lenOutOfRange < 0) {
+            record = content + std::string(-lenOutOfRange, ' ');
+            content = record;
+            lenOutOfRange = 0;
+        }
+    }
 }

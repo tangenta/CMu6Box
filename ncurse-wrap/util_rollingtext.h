@@ -18,6 +18,8 @@ public:
     void enable(bool b) { running = b; }
 
 private:
+    std::string record;
+    void forSoCallMutable();
     bool running;
     int textPos;
     int lenOutOfRange;
