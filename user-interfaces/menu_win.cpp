@@ -2,6 +2,7 @@
 #include "../ncurse-wrap/ncurses_wrapper.h"
 #include "playing_win.h"
 
+
 MenuWin::MenuWin() : focus(0) {}
 
 Window* MenuWin::handleInput(int ch) {

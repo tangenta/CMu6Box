@@ -8,6 +8,7 @@
 #include "../ncurse-wrap/util_menu.h"
 #include "../ncurse-wrap/block.h"
 #include <vector>
+#include <memory>
 
 class PlayingWin: public Window {
 public:
@@ -25,14 +26,14 @@ private:
     void updateSubwin0();
     void drawSubwin0();
     int focusSubwin0;
-    std::vector<Block<Border, StaticText>> objSubwin0;
+    std::shared_ptr<std::vector<Block<Border, StaticText>>> objSubwin0;
 
     void initSubwin1();
     Window* handleInputSubwin1(int ch);
     void updateSubwin1();
     void drawSubwin1();
     int focusSubwin1;
-    Block<Border, Menu> objSubwin1;
+    std::shared_ptr<Block<Border, Menu>> objSubwin1;
 };
 
 #endif // PLAYING_WIN_H

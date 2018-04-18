@@ -4,7 +4,6 @@
 #include "util_position.h"
 #include "ncurses_wrapper.h"
 #include "util_window.h"
-#include <tuple>
 
 class Border
 {
@@ -32,6 +31,8 @@ public:
     const int width;
     const int height;
     Attr attribute;
+
+private:
     const char horizontal;
     const char vertical;
     const char corner;
