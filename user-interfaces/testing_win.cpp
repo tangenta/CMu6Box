@@ -55,19 +55,6 @@ void TestingWin::draw() {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // 0号子窗口的子函数
 void TestingWin::initSubwin0() {
     focusSubwin0 = 0;

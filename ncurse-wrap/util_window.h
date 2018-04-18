@@ -3,10 +3,11 @@
 
 #include "util_position.h"
 #include "ncurses_wrapper.h"
+#include <QObject>
 
 class Window {
-    friend class NCController;
 public:
+    friend class NCController;
     Window();
     virtual ~Window();
     Window(int rows, int cols, int org_x, int org_y);

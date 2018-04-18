@@ -9,16 +9,20 @@
 #include "../ncurse-wrap/block.h"
 #include <vector>
 #include <memory>
+#include <QObject>
 
 class PlayingWin: public Window {
 public:
-    PlayingWin();
+    PlayingWin(QObject* parent = 0);
+    ~PlayingWin();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;
-
+//signals:
+//    void play();
+//    void pause();
 private:
-    StaticText text;
+    std::shared_ptr<StaticText> text;
     bool playing;
 };
 
