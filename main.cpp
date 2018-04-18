@@ -3,10 +3,10 @@
 #include <QFile>
 #include "main_controller.h"
 
-//MainController* mainController;
+MainController* mainController;
 
 int main(int argc, char** argv) {
     QCoreApplication a(argc, argv);
-    new MainController;  // weird
+    mainController = new MainController;  // weird
     return a.exec();
 }

@@ -5,7 +5,8 @@
 #include "ncurses_wrapper.h"
 #include <QObject>
 
-class Window {
+class Window: public QObject {
+    Q_OBJECT
 public:
     friend class NCController;
     Window();

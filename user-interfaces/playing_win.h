@@ -12,15 +12,16 @@
 #include <QObject>
 
 class PlayingWin: public Window {
+    Q_OBJECT
 public:
     PlayingWin(QObject* parent = 0);
     ~PlayingWin();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;
-//signals:
-//    void play();
-//    void pause();
+signals:
+    void play();
+    void pause();
 private:
     std::shared_ptr<StaticText> text;
     bool playing;
