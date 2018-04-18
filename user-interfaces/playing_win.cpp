@@ -10,17 +10,24 @@
 
 PlayingWin::PlayingWin()
     : text(StaticText("play", Position(11,1),
-                      80, Attr(), AlignMode::Center)), playing(false) {
-
-}
+                      80, Attr(), AlignMode::Center)), playing(false) {}
 
 
 Window* PlayingWin::handleInput(int ch) {
-
+    if (ch == NK::Enter) {
+        std::string displayStr(playing ? "pause" : "play");
+        playing = !playing;
+        text = StaticText(displayStr, Position(11,1), 80, Attr(), AlignMode::Center);
+        return this;
+    } else if (ch == NK::Esc) {
+        return new MenuWin;
+    } else {
+        return this;
+    }
 }
 
 void PlayingWin::update() {
-
+    text.update();
 }
 
 void PlayingWin::draw() {

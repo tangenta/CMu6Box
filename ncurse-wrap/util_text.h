@@ -30,7 +30,6 @@ public:
     virtual void update() = 0;
     virtual void draw(Window*) = 0;
 
-    // public没什么不好的，相信我
     std::string content;
     Position position;
     Attr attribute;
