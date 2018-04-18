@@ -159,22 +159,25 @@ void PlayingWin::initSubwin1() {
                      "16. Michelle Delamor - Keep On Moving"
     };
 
-    objSubwin1 = std::make_shared<Block<Border, Menu>>(Border(Position(2, 50), 28, 20, Attr(), '#', '#', '#'),
-                                                       Menu(menuList, Position(4, 52), 24, 14));
+    objSubwin1 = std::make_shared<Block<Border, Block<Border, Menu>>>(
+                Border(Position(1, 49), 30, 22),
+                Block<Border, Menu>(Border(Position(2, 50), 28, 20, Attr(), '#', '#', '#'),
+                                    Menu(menuList, Position(4, 52), 24, 14))
+                );
 }
 
 Window* PlayingWin::handleInputSubwin1(int ch) {
     if (ch == NK::Down) {
         if (focusSubwin1 < 15) {
             focusSubwin1++;
-            objSubwin1->content.down();
+            objSubwin1->content.content.down();
         }
         return this;
 
     } else if (ch == NK::Up) {
         if (focusSubwin1 > 0) {
             focusSubwin1--;
-            objSubwin1->content.up();
+            objSubwin1->content.content.up();
         }
         return this;
 

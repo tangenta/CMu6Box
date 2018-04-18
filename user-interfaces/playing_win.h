@@ -33,7 +33,7 @@ private:
     void updateSubwin1();
     void drawSubwin1();
     int focusSubwin1;
-    std::shared_ptr<Block<Border, Menu>> objSubwin1;
+    std::shared_ptr<Block<Border, Block<Border, Menu>>> objSubwin1;
 };
 
 #endif // PLAYING_WIN_H
