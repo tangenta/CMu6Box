@@ -20,7 +20,7 @@ public:
 private:
     std::string record;
     AlignMode align;
-    void forSoCallMutable();
+    void updateContentRecord();
 };
 
 #endif // UTIL_STATICTEXT_H

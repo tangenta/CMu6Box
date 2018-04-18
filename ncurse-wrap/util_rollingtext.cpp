@@ -5,20 +5,12 @@ RollingText::RollingText(const std::string &cont,
                          int width,
                          const Attr &attr)
     : Text(cont, pos, width, attr), running(true) {
-    textPos = 0;
-
-    // 若过短则补空格，让其左对齐
-    lenOutOfRange = cont.length() - width;
-    if (lenOutOfRange < 0) {
-        content = cont + std::string(-lenOutOfRange, ' ');
-        record = content;
-        lenOutOfRange = 0;
-    }
+    updateContentRecord();
 }
 
 
 void RollingText::draw(Window *win) {
-    forSoCallMutable();
+    if (content != record) updateContentRecord();
 
     const std::string str(content.begin()+textPos, content.begin()+textPos+width);
 
@@ -30,8 +22,7 @@ void RollingText::draw(Window *win) {
 }
 
 void RollingText::update() {
-    forSoCallMutable();
-
+    if (content != record) updateContentRecord();
     if (running) {
         textPos = (textPos+1) % (lenOutOfRange+1); // something mathematics
     } else {
@@ -39,15 +30,12 @@ void RollingText::update() {
     }
 }
 
-void RollingText::forSoCallMutable() {
-    if (content != record) {
-        textPos = 0;
-
-        lenOutOfRange = content.length() - width;
-        if (lenOutOfRange < 0) {
-            record = content + std::string(-lenOutOfRange, ' ');
-            content = record;
-            lenOutOfRange = 0;
-        }
+void RollingText::updateContentRecord() {
+    textPos = 0;
+    lenOutOfRange = content.length() - width;
+    if (lenOutOfRange < 0) {
+        record = content + std::string(-lenOutOfRange, ' ');
+        content = record;
+        lenOutOfRange = 0;
     }
 }

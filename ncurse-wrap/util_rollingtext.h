@@ -19,7 +19,7 @@ public:
 
 private:
     std::string record;
-    void forSoCallMutable();
+    void updateContentRecord();
     bool running;
     int textPos;
     int lenOutOfRange;
