@@ -5,20 +5,13 @@
 #include "../ncurse-wrap/util_border.h"
 #include "../ncurse-wrap/ncurses_wrapper.h"
 #include "../ncurse-wrap/util_menu.h"
+#include "../nccontroller.h"
 #include <algorithm>
 #include <string>
-#include "../main_controller.h"
 
-extern MainController* mainController;
-
-PlayingWin::PlayingWin(QObject* parent)
-    : text(std::make_shared<StaticText>("play", Position(11,1),
-                      80, Attr(), AlignMode::Center)), playing(false) {
-    MainController::connect(this, SIGNAL(play()),
-                            mainController->player, SLOT(play()));
-    MainController::connect(this, SIGNAL(pause()),
-                            mainController->player, SLOT(pause()));
-}
+PlayingWin::PlayingWin()
+    :text(std::make_shared<StaticText>("play", Position(11,1),
+                                       80, Attr(), AlignMode::Center)), playing(false) {}
 
 PlayingWin::~PlayingWin() {}
 
@@ -38,6 +31,11 @@ Window* PlayingWin::handleInput(int ch) {
     } else {
         return this;
     }
+}
+
+void PlayingWin::connector(NCController *nc) {
+    connect(this, SIGNAL(play()), nc, SIGNAL(play()));
+    connect(this, SIGNAL(pause()), nc, SIGNAL(pause()));
 }
 
 void PlayingWin::update() {

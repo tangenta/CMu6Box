@@ -10,7 +10,7 @@
 #endif
 
 NCController::NCController(QObject *parent)
-    : QObject(parent) {
+    : QObject(parent), currentWindow(nullptr) {
     Ncurses::initscr_s();
     if (Ncurses::has_color_s()) {
         Ncurses::start_color_s();
@@ -20,7 +20,7 @@ NCController::NCController(QObject *parent)
     Ncurses::set_escdelay_s(25);  // 原Esc键延迟为1000ms, 改为25ms    
     Ncurses::cbreak_s();
     Ncurses::refresh_s();
-    currentWindow = new MenuWin;
+    changeCurrentWindow(new MenuWin);
     Ncurses::wrefresh_s(currentWindow->wp);
 }
 
@@ -55,6 +55,9 @@ void NCController::exec() {
 }
 
 void NCController::changeCurrentWindow(Window * win) {
-    delete currentWindow;
+    if (currentWindow) {
+        delete currentWindow;
+    }
+    win->connector(this);
     currentWindow = win;
 }

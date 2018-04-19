@@ -8,6 +8,9 @@ MainController::MainController(QObject *parent) : QObject(parent) {
     player = new QMediaPlayer;
     player->setMedia(QUrl::fromLocalFile("/home/tangenta/Desktop/Myplayer/music/Taylor Swift - Enchanted.mp3"));
     player->setVolume(50);
+
+    connect(&nccontroller, SIGNAL(play()), player, SLOT(play()));
+    connect(&nccontroller, SIGNAL(pause()), player, SLOT(pause()));
 }
 
 MainController::~MainController() {

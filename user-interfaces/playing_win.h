@@ -14,9 +14,10 @@
 class PlayingWin: public Window {
     Q_OBJECT
 public:
-    PlayingWin(QObject* parent = 0);
+    PlayingWin();
     ~PlayingWin();
     Window* handleInput(int ch) override;
+    void connector(NCController*) override;
     void update() override;
     void draw() override;
 signals:

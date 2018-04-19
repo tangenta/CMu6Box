@@ -16,6 +16,8 @@ public:
     ~NCController();
 
 signals:
+    void play();
+    void pause();
 public slots:
     void changeCurrentWindow(Window*);
     // main loop

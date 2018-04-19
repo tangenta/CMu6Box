@@ -7,6 +7,7 @@ class MenuWin: public Window {
 public:
     MenuWin();
     Window* handleInput(int ch) override;
+    void connector(NCController*) override;
     void update() override;
     void draw() override;
 private:

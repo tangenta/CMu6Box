@@ -34,6 +34,8 @@ Window* MenuWin::handleInput(int ch) {
     
 }
 
+void MenuWin::connector(NCController*) {}
+
 void MenuWin::update() {}
 
 void MenuWin::draw() {

@@ -5,6 +5,8 @@
 #include "ncurses_wrapper.h"
 #include <QObject>
 
+class NCController;
+
 class Window: public QObject {
     Q_OBJECT
 public:
@@ -52,6 +54,7 @@ public:
 
     // update
     virtual Window* handleInput(int ch) = 0;
+    virtual void connector(NCController* nc) = 0;
     virtual void update() = 0;
     virtual void draw() = 0;
 

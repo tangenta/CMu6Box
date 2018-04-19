@@ -11,13 +11,13 @@ class MainController : public QObject {
 public:
     explicit MainController(QObject *parent = 0);
     ~MainController();
-    QMediaPlayer* player;
 signals:
     void startLoop();
 public slots:
 private:
     NCController nccontroller;
     QThread viewThread;
+    QMediaPlayer* player;
 };
 
 #endif // MAIN_CONTROLLER_H
