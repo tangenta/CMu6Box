@@ -6,7 +6,7 @@ MainController::MainController(QObject *parent) : QObject(parent) {
     viewThread.start();
     emit startLoop();
     player = new QMediaPlayer;
-    player->setMedia(QUrl::fromLocalFile("/home/tangenta/Desktop/Myplayer/music/Taylor Swift - Enchanted.mp3"));
+    player->setMedia(QUrl::fromLocalFile("/home/gaufoo/Music/Linkin Park - Roads Untraveled.mp3"));
     player->setVolume(50);
 
     connect(&nccontroller, SIGNAL(play()), player, SLOT(play()));

@@ -34,8 +34,9 @@ void RollingText::updateContentRecord() {
     textPos = 0;
     lenOutOfRange = content.length() - width;
     if (lenOutOfRange < 0) {
-        record = content + std::string(-lenOutOfRange, ' ');
-        content = record;
+        content += std::string(-lenOutOfRange, ' ');
         lenOutOfRange = 0;
     }
+
+    record = content;
 }
