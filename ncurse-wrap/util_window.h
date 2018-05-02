@@ -3,6 +3,7 @@
 
 #include "util_position.h"
 #include "ncurses_wrapper.h"
+#include "util_nmenu.h"
 #include <QObject>
 
 class NCController;
@@ -25,6 +26,7 @@ public:
     NWINDOW* getNWindow() const;
 
     // utilities
+//protected:
     void addText(std::string const&);
     void addText(std::string const&, Position const&,
                  Color const& = Color(NC::White),
@@ -51,6 +53,20 @@ public:
 
     void fillBlank(Position const& topLeft,
                    Position const& bottomRight);
+
+    template <typename Drawable>    // Drawable must have defined toPrinter()
+    void draw(Drawable const& thing, Position at) {
+        Printer printer = thing.toPrinter();
+        Ncurses::wmove_s(wp, at.getRow(), at.getCol());
+        for (auto& i: printer) {
+            Ncurses::wattron_s(wp, i.attr.toBit());
+            Ncurses::waddstr_s(wp, i.content.c_str());
+            Ncurses::wattroff_s(wp, i.attr.toBit());
+            at = Position(at.getRow()+i.bias.getRow(), at.getCol()+i.bias.getCol());
+            Ncurses::wmove_s(wp, at.getRow(), at.getCol());
+        }
+        Ncurses::wmove_s(wp, 0, 0);
+    }
 
     // update
     virtual Window* handleInput(int ch) = 0;

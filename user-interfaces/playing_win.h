@@ -23,9 +23,24 @@ public:
 signals:
     void play();
     void pause();
+    void setVolume(int);
 private:
-    std::shared_ptr<StaticText> text;
+    void drawVolume();
+    void drawPlayingIcon();
+    Border border;
+    Border volumeBorder;
+    int volume;
     bool playing;
+    std::vector<std::string> playIcon = {" #    ",
+                                         " ###  ",
+                                         " #### ",
+                                         " ###  ",
+                                         " #    "};
+    std::vector<std::string> pauseIcon ={" # # ",
+                                         " # # ",
+                                         " # # ",
+                                         " # # ",
+                                         " # # "};
 };
 
 #endif // PLAYING_WIN_H

@@ -18,6 +18,7 @@ public:
 signals:
     void play();
     void pause();
+    void setVolume(int);
 public slots:
     void changeCurrentWindow(Window*);
     // main loop

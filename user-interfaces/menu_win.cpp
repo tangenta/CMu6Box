@@ -2,7 +2,7 @@
 #include "../ncurse-wrap/ncurses_wrapper.h"
 #include "playing_win.h"
 #include "testing_win.h"
-
+#include "test2_win.h"
 
 MenuWin::MenuWin() : focus(0) {}
 
@@ -19,7 +19,7 @@ Window* MenuWin::handleInput(int ch) {
 
     } else if (ch == NK::Enter) {
         if (focus == 0) {
-            return new PlayingWin;
+            return new Test2Win;
         } else {
             return this;
         }

@@ -6,14 +6,14 @@
 class Position
 {
 public:
-    Position(int r = 0, int c = 0): row(r), col(c) {
-//        if (r < 0 || c < 0)
-//            throw OutOfRangeError("Position()");
-        // 原谅我，超出去不显示
-    }
+    Position(int r = 0, int c = 0): row(r), col(c) {}
 
     friend bool operator ==(const Position &l, const Position &r) {
         return (l.col == r.col && l.row == r.row);
+    }
+
+    friend Position operator +(const Position &l, const Position &r) {
+        return Position(l.getRow()+r.getRow(), l.getCol()+r.getCol());
     }
 
     // getter
@@ -23,5 +23,7 @@ public:
 private:
     int row, col;
 };
+using Bias = Position;
+
 
 #endif // POSITION_H

@@ -2,6 +2,10 @@
 #define NCURSES_WRAPPER_H
 
 #include <initializer_list>
+#include <string>
+#include <list>
+#include "exceptions.h"
+#include "util_position.h"
 
 // Ncurses Color value
 struct NC {
@@ -72,6 +76,44 @@ private:
     Font font;
 };
 
+/*
+class Pixels {
+public:
+    Pixels() = delete;
+    Pixels(std::vector<std::string> const& pixels,
+           std::vector<std::pair<int, Attr>> attrs): pixels(pixels), attrs(attrs) {
+
+    }
+    std::vector<std::string> getPixels();
+    std::vector<std::pair<int, Attr>> getAttrs();
+    static checkPixels(const Pixels &pixels, int width, int height) {
+        if (pixels.size() != height)
+            FatalError("::checkPixels()");
+        for (auto& i: pixels) {
+            if (i.length() != width)
+                throw FatalError("::checkPixels()");
+        }
+    }
+private:
+    std::vector<std::string> pixels;
+    std::vector<std::pair<int, Attr>> attrs;
+
+};
+*/
+
+// controls independent
+struct Printee {
+    Printee(std::string const& content, Attr const& attr,
+            Position const& bias = Position(0,0))
+        : content(content), attr(attr), bias(bias) {}
+    std::string content;
+    Attr attr;
+    // used for concatenation
+    Position bias;
+};
+
+using Printer = std::list<Printee>;
+
 struct Ncurses {
     static void initscr_s();
     static bool has_color_s();
@@ -91,6 +133,7 @@ struct Ncurses {
     static void wattron_s(NWINDOW*, unsigned long);
     static void wattroff_s(NWINDOW*, unsigned long);
     static void waddstr_s(NWINDOW*, const char*);
+    static void waddch_s(NWINDOW*, char);
     static void wrefresh_s(NWINDOW*);
     static void echo_s();
     static void noecho_s();
@@ -105,8 +148,6 @@ struct Ncurses {
     // extended functions
     static NWINDOW* getStdscr();
 };
-
-
 
 
 #endif // NCURSES_WRAPPER_H

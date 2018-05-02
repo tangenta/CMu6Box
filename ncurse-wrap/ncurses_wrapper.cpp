@@ -161,6 +161,12 @@ void Ncurses::waddstr_s(NWINDOW* wp, char const* str) {
     }
 }
 
+void Ncurses::waddch_s(NWINDOW* wp, char ch) {
+    if (waddch(RC(wp), ch) == ERR) {
+        throw FatalError("waddch()::ERR");
+    }
+}
+
 void Ncurses::wrefresh_s(NWINDOW* wp) {
     if (wrefresh(RC(wp)) == ERR) {
         throw FatalError("wrefresh()::ERR");

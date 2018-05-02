@@ -31,7 +31,6 @@ NWINDOW* Window::getNWindow() const {
     return wp;
 }
 
-
 void Window::addText(std::string const& text) {
     Ncurses::waddstr_s(wp, text.c_str());
     // Ncurses::wrefresh_s(wp);
@@ -164,5 +163,3 @@ void Window::fillBlank(const Position &topLeft, const Position &bottomRight) {
         addText(std::string(width, ' '), Position(i, topLeft.getCol()));
     }
 }
-
-
