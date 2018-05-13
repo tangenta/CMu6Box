@@ -19,7 +19,7 @@ Window* MenuWin::handleInput(int ch) {
 
     } else if (ch == NK::Enter) {
         if (focus == 0) {
-            return new Test2Win;
+            return new PlayingWin;
         } else {
             return this;
         }
@@ -33,8 +33,6 @@ Window* MenuWin::handleInput(int ch) {
 
     
 }
-
-void MenuWin::connector(NCController*) {}
 
 void MenuWin::update() {}
 

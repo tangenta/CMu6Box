@@ -6,6 +6,7 @@
 #include "util_nmenu.h"
 #include <QObject>
 
+class Resources;
 class NCController;
 
 class Window: public QObject {
@@ -60,9 +61,14 @@ public:
         Ncurses::wmove_s(wp, at.getRow(), at.getCol());
         for (auto& i: printer) {
             Ncurses::wattron_s(wp, i.attr.toBit());
-            Ncurses::waddstr_s(wp, i.content.c_str());
+            try {
+                Ncurses::waddstr_s(wp, i.content.c_str());
+            } catch (FatalError const& e) {
+                // bad design signal: depressing bottom-right ERR
+                if (at.getRow() != 24) throw e;
+            }
             Ncurses::wattroff_s(wp, i.attr.toBit());
-            at = Position(at.getRow()+i.bias.getRow(), at.getCol()+i.bias.getCol());
+            at = at + i.bias;
             Ncurses::wmove_s(wp, at.getRow(), at.getCol());
         }
         Ncurses::wmove_s(wp, 0, 0);
@@ -70,10 +76,12 @@ public:
 
     // update
     virtual Window* handleInput(int ch) = 0;
-    virtual void connector(NCController* nc) = 0;
     virtual void update() = 0;
     virtual void draw() = 0;
 
+    void setResource(Resources* res);
+protected:
+    Resources* resource;
 private:
     NWINDOW* wp;
 };

@@ -17,13 +17,9 @@ public:
     PlayingWin();
     ~PlayingWin();
     Window* handleInput(int ch) override;
-    void connector(NCController*) override;
     void update() override;
     void draw() override;
-signals:
-    void play();
-    void pause();
-    void setVolume(int);
+
 private:
     void drawVolume();
     void drawPlayingIcon();

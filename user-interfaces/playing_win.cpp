@@ -26,9 +26,9 @@ Window* PlayingWin::handleInput(int ch) {
     if (ch == NK::Enter) {
         playing = !playing;
         if (playing) {
-            emit play();
+            resource->player.play();
         } else {
-            emit pause();
+            resource->player.pause();
         }
         return this;
     } else if (ch == NK::Esc) {
@@ -36,21 +36,15 @@ Window* PlayingWin::handleInput(int ch) {
     } else if (ch == NK::Up) {
         if (volume < maxVolume) {
             volume++;
-            emit setVolume(100*volume/maxVolume);
+            resource->player.setVolume(100*volume/maxVolume);
         }
     } else if (ch == NK::Down) {
         if (volume > 0) {
             volume--;
-            emit setVolume(100*volume/maxVolume);
+            resource->player.setVolume(100*volume/maxVolume);
         }
     }
     return this;
-}
-
-void PlayingWin::connector(NCController *nc) {
-    connect(this, SIGNAL(play()), nc, SIGNAL(play()));
-    connect(this, SIGNAL(pause()), nc, SIGNAL(pause()));
-    connect(this, SIGNAL(setVolume(int)), nc, SIGNAL(setVolume(int)));
 }
 
 void PlayingWin::update() {

@@ -70,9 +70,6 @@ Window* Test2Win::subInputHandler(int ch) {
     return this;
 }
 
-void Test2Win::connector(NCController*) {
-
-}
 
 void Test2Win::update() {
     playBlock.setAttr(defaultAttr);

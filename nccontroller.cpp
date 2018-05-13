@@ -11,6 +11,7 @@
 
 NCController::NCController(QObject *parent)
     : QObject(parent), currentWindow(nullptr) {
+    // initialize the view
     Ncurses::initscr_s();
     if (Ncurses::has_color_s()) {
         Ncurses::start_color_s();
@@ -22,6 +23,13 @@ NCController::NCController(QObject *parent)
     Ncurses::refresh_s();
     changeCurrentWindow(new MenuWin);
     Ncurses::wrefresh_s(currentWindow->wp);
+
+    // move resource to other thread
+    this->moveToThread(&playerThread);
+    playerThread.start();
+
+    connect(this, SIGNAL(startLoop()), this, SLOT(exec()));
+    emit startLoop();
 }
 
 NCController::~NCController() {
@@ -29,6 +37,8 @@ NCController::~NCController() {
 //    Ncurses::getch_s();
     delete currentWindow;
     Ncurses::endwin_s();
+    playerThread.quit();
+    playerThread.wait();
 }
 
 void NCController::exec() {
@@ -50,6 +60,7 @@ void NCController::exec() {
         changeCurrentWindow(nextWindow);
         return exec();
     } else {                                      // 退出程序
+        emit quitApp();
         return;
     }
 }
@@ -58,6 +69,6 @@ void NCController::changeCurrentWindow(Window * win) {
     if (currentWindow) {
         delete currentWindow;
     }
-    win->connector(this);
     currentWindow = win;
+    currentWindow->setResource(&resource);
 }

@@ -4,6 +4,8 @@
 #include <QObject>
 #include "ncurse-wrap/util_window.h"
 #include "ncurse-wrap/ncurses_wrapper.h"
+#include "resources.h"
+#include <QThread>
 
 class NCController : public QObject {
     Q_OBJECT
@@ -15,16 +17,17 @@ public:
     NCController& operator=(NCController&&) = delete;
     ~NCController();
 
-signals:
-    void play();
-    void pause();
-    void setVolume(int);
-public slots:
     void changeCurrentWindow(Window*);
+signals:
+    void startLoop();
+    void quitApp();
+public slots:
     // main loop
     void exec();
 private:
     Window* currentWindow;
+    QThread playerThread;
+    Resources resource;
 };
 
 #endif // NCCONTROLLER_H

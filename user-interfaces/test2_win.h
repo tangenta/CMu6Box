@@ -13,7 +13,6 @@ class Test2Win: public Window {
 public:
     Test2Win();
     Window* handleInput(int ch) override;
-    void connector(NCController*) override;
     void update() override;
     void draw() override;
 private:

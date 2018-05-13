@@ -16,7 +16,6 @@ public:
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;
-    void connector(NCController*) override {}
 
 private:
     size_t subwin;

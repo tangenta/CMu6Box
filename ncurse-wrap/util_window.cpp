@@ -163,3 +163,7 @@ void Window::fillBlank(const Position &topLeft, const Position &bottomRight) {
         addText(std::string(width, ' '), Position(i, topLeft.getCol()));
     }
 }
+
+void Window::setResource(Resources *res) {
+    resource = res;
+}
