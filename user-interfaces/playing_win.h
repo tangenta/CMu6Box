@@ -14,12 +14,15 @@
 class PlayingWin: public Window {
     Q_OBJECT
 public:
-    PlayingWin();
+    PlayingWin(Resources* res);
     ~PlayingWin();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;
-
+signals:
+    void play();
+    void pause();
+    void setVolume(int);
 private:
     void drawVolume();
     void drawPlayingIcon();

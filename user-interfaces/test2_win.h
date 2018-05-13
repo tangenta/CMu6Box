@@ -11,7 +11,7 @@ using Test2Block = NBlock<NText, NBorder>;
 
 class Test2Win: public Window {
 public:
-    Test2Win();
+    Test2Win(Resources* res);
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;

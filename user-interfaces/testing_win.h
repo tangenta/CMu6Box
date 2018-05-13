@@ -12,7 +12,7 @@
 
 class TestingWin: public Window {
 public:
-    TestingWin();
+    TestingWin(Resources*);
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;

@@ -20,7 +20,7 @@ static std::initializer_list<std::string> menuList = {
                  "16. Michelle Delamor - Keep On Moving"
 };
 
-Test2Win::Test2Win(): focus(0), subMenu(nullptr) {
+Test2Win::Test2Win(Resources* res): Window(res), focus(0), subMenu(nullptr) {
     NText play("play"), songList("song list"), setting("setting");
     NBorder border(15, 10, '-', '|', '+');
 
@@ -50,7 +50,7 @@ Window* Test2Win::mainInputHandler(int ch) {
     } else if (ch == NK::Right) {
         focus = (focus == 2) ? 0 : focus+1;
     } else if (ch == NK::Esc) {
-        return new MenuWin;
+        return new MenuWin(resource);
     } else if (ch == NK::Enter) {
         subMenu = initRollingMenu();
     }

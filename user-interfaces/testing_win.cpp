@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <string>
 
-TestingWin::TestingWin() {
+TestingWin::TestingWin(Resources* res): Window(res) {
     subwin = 0;
     initSubwin0();
     initSubwin1();
@@ -80,7 +80,7 @@ Window* TestingWin::handleInputSubwin0(int ch) {
         return this;
 
     } else if (ch == NK::Esc) {
-        return new MenuWin;
+        return new MenuWin(resource);
 
     } else if (ch == NK::Enter) {
         subwin = 1;

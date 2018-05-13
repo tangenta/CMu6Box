@@ -13,7 +13,7 @@ class Window: public QObject {
     Q_OBJECT
 public:
     friend class NCController;
-    Window();
+    Window(Resources* res);
     virtual ~Window();
     Window(int rows, int cols, int org_x, int org_y);
     Window(Window const&) = delete;
@@ -78,8 +78,6 @@ public:
     virtual Window* handleInput(int ch) = 0;
     virtual void update() = 0;
     virtual void draw() = 0;
-
-    void setResource(Resources* res);
 protected:
     Resources* resource;
 private:

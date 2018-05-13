@@ -13,11 +13,13 @@ static const int maxVolume = 8;
 static const Position volumePos(4, 6);
 static const Position playingIconPos(6, 36);
 
-PlayingWin::PlayingWin()
-    : border(Position(0,0), 79, 24),
+PlayingWin::PlayingWin(Resources* res)
+    : Window(res), border(Position(0,0), 79, 24),
       volumeBorder(volumePos, 3, maxVolume+2),
       volume(2), playing(false) {
-
+    connect(this, SIGNAL(play()), &resource->player, SLOT(play()));
+    connect(this, SIGNAL(pause()), &resource->player, SLOT(pause()));
+    connect(this, SIGNAL(setVolume(int)), &resource->player, SLOT(setVolume(int)));
 }
 
 PlayingWin::~PlayingWin() {}
@@ -26,22 +28,22 @@ Window* PlayingWin::handleInput(int ch) {
     if (ch == NK::Enter) {
         playing = !playing;
         if (playing) {
-            resource->player.play();
+            emit play();
         } else {
-            resource->player.pause();
+            emit pause();
         }
         return this;
     } else if (ch == NK::Esc) {
-        return new MenuWin;
+        return new MenuWin(resource);
     } else if (ch == NK::Up) {
         if (volume < maxVolume) {
             volume++;
-            resource->player.setVolume(100*volume/maxVolume);
+            emit setVolume(100*volume/maxVolume);
         }
     } else if (ch == NK::Down) {
         if (volume > 0) {
             volume--;
-            resource->player.setVolume(100*volume/maxVolume);
+            emit setVolume(100*volume/maxVolume);
         }
     }
     return this;

@@ -10,6 +10,7 @@ class Resources : public QObject
 public:
     explicit Resources(QObject *parent = 0);
     QMediaPlayer player;
+
 signals:
 
 public slots:

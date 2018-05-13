@@ -4,7 +4,7 @@
 #include "testing_win.h"
 #include "test2_win.h"
 
-MenuWin::MenuWin() : focus(0) {}
+MenuWin::MenuWin(Resources* res) : Window(res), focus(0) {}
 
 Window* MenuWin::handleInput(int ch) {
 
@@ -19,7 +19,7 @@ Window* MenuWin::handleInput(int ch) {
 
     } else if (ch == NK::Enter) {
         if (focus == 0) {
-            return new PlayingWin;
+            return new PlayingWin(resource);
         } else {
             return this;
         }
