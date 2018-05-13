@@ -5,6 +5,8 @@
 #include "nccontroller.h"
 #include <QThread>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
+#include <QDir>
 
 class MainController : public QObject {
     Q_OBJECT
@@ -18,6 +20,8 @@ private:
     NCController nccontroller;
     QThread viewThread;
     QMediaPlayer* player;
+    QMediaPlaylist* playlist;
+    QDir dir;
 };
 
 #endif // MAIN_CONTROLLER_H

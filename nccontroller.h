@@ -18,6 +18,8 @@ public:
 signals:
     void play();
     void pause();
+    void next();
+    void previous();
     void setVolume(int);
 public slots:
     void changeCurrentWindow(Window*);

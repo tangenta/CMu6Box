@@ -43,6 +43,10 @@ Window* PlayingWin::handleInput(int ch) {
             volume--;
             emit setVolume(100*volume/maxVolume);
         }
+    } else if (ch == NK::Left) {
+        emit previous();
+    } else if (ch == NK::Right) {
+        emit next();
     }
     return this;
 }

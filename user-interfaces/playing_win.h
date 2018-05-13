@@ -23,6 +23,8 @@ public:
 signals:
     void play();
     void pause();
+    void next();
+    void previous();
     void setVolume(int);
 private:
     void drawVolume();
@@ -36,6 +38,7 @@ private:
                                          " #### ",
                                          " ###  ",
                                          " #    "};
+
     std::vector<std::string> pauseIcon ={" # # ",
                                          " # # ",
                                          " # # ",
