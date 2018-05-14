@@ -1,7 +1,6 @@
 #ifndef SETTING_WIN_H
 #define SETTING_WIN_H
 #include "../ncurse-wrap/util_window.h"
-#include "../database/dictionary.h"
 class SettingWin: public Window {
 public:
     SettingWin(Resources* res);

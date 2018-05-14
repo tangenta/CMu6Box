@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QMediaPlayer>
-#include "database/dictionary.h"
 #include "database/setting.h"
 
 class Resources : public QObject
@@ -12,7 +11,6 @@ class Resources : public QObject
 public:
     explicit Resources(QObject *parent = 0);
     QMediaPlayer player;
-    Dictionary tf;
     Setting setting;
 signals:
 

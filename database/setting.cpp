@@ -4,35 +4,50 @@
 #include <QJsonObject>
 #include <QTextStream>
 #include "ncurse-wrap/exceptions.h"
-Setting::Setting() {
-    openSetting();
+
+QJsonDocument jsonFile2Doc(QString const& filename) {
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)) {
+        throw JsonOpenError(std::string("unable to open") + filename.toStdString());
+    }
+    QJsonParseError parseErr;
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(file.readAll(), &parseErr);
+    if (parseErr.error != QJsonParseError::NoError) {
+        file.close();
+        throw FatalError(parseErr.errorString().toStdString());
+    }
+    file.close();
+    return jsonDoc;
 }
 
-Setting::~Setting() {
-    saveCurrentSetting();
+QString getValueFromJsonDoc(QJsonDocument const& doc, QString const& key, QString const& defaultStr) {
+    QString retStr(defaultStr);
+    QJsonValue value = doc.object().value(key);
+    if (value.type() == QJsonValue::Undefined) {
+        return retStr;
+    }
+    retStr = value.toString();
+    if (retStr.isNull()) {
+        throw FatalError(key.toStdString() + " is not a string");
+    }
+    return retStr;
 }
+
+Setting::Setting() {}
+
 
 void Setting::openSetting() {
-    QFile file("setting.json");
-    file.open(QIODevice::ReadOnly);
-    if (!file.isOpen()) {
-        throw FatalError("unable to open setting.json");
-    }
-    QJsonParseError error;
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(file.readAll(), &error);
-    if (error.error != QJsonParseError::NoError) {
-        throw FatalError(error.errorString().toStdString());
-    }
-    QString lang = jsonDoc.object().value(QString("language")).toString(QString("english"));
+    QJsonDocument jsonDoc = jsonFile2Doc("setting.json");
+    QString lang = getValueFromJsonDoc(jsonDoc, "language", "english");
     if (lang == "english") {
-        language = Dictionary::EN;
+        language = EN;
     } else if (lang == "chinese") {
-        language = Dictionary::CN;
+        language = CN;
     } else {
         throw FatalError("unknown language");
     }
 
-    QString themeStr = jsonDoc.object().value(QString("theme")).toString(QString("default"));
+    QString themeStr = getValueFromJsonDoc(jsonDoc, "theme", "default");
     if (themeStr == "default") {
         theme = Attr(Color(NC::White, NC::Cyan)/*, Font({NF::Bold})*/);
     } else {
@@ -42,30 +57,53 @@ void Setting::openSetting() {
 
 void Setting::saveCurrentSetting() {
     QFile file("setting.json");
-    file.open(QIODevice::WriteOnly);
-    if (!file.isOpen()) {
-        throw FatalError("unable to open setting.json");
+    if (!file.open(QIODevice::WriteOnly)) {
+        throw JsonOpenError("unable to open setting.json");
     }
-    QJsonObject jsonObj;
     QString langStr;
     switch (language) {
-    case Dictionary::EN:
+    case EN:
         langStr = QString("english");
         break;
-    case Dictionary::CN:
+    case CN:
         langStr = QString("chinese");
         break;
     }
+    QJsonObject jsonObj;
     jsonObj.insert(QString("language"),QJsonValue(langStr));
     jsonObj.insert(QString("theme"), QJsonValue("default"));
     QTextStream out(&file);
     out << QJsonDocument(jsonObj).toJson();
+    file.close();
+}
+
+void Setting::loadLanguage(Language lan) {
+    QString langFile;
+    switch (lan) {
+    case EN:
+        langFile = QString("./locale/en_US.json");
+        break;
+    case CN:
+        langFile = QString("./locale/zh_CN.json");
+        break;
+    }
+    langDoc = jsonFile2Doc(langFile);
 }
 
 Attr Setting::getTheme() {
     return theme;
 }
 
-Dictionary::Language Setting::getLanguage() {
+Setting::Language Setting::getLanguage() {
     return language;
+}
+
+std::string Setting::tr(const std::string & str) {
+    QString key(str.c_str());
+    return getValueFromJsonDoc(langDoc, key, key).toStdString();
+}
+
+std::string Setting::tr(const char* str) {
+    QString key(str);
+    return getValueFromJsonDoc(langDoc, key, key).toStdString();
 }

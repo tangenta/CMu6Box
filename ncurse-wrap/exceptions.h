@@ -19,5 +19,8 @@ struct OutOfRangeError: public Exception {
 struct InvalidError: public Exception {
     InvalidError(std::string const& m): Exception(m) {}
 };
+struct JsonOpenError: public Exception {
+    JsonOpenError(std::string const& m): Exception(m) {}
+};
 
 #endif // EXCEPTIONS_H

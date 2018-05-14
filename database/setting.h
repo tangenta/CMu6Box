@@ -1,19 +1,24 @@
 #ifndef SETTING_H
 #define SETTING_H
 #include "../ncurse-wrap/ncurses_wrapper.h"
-#include "dictionary.h"
+#include <QJsonDocument>
+
 class Setting {
 
 public:
+    enum Language { EN, CN };
     Setting();
-    ~Setting();
     void openSetting();
     void saveCurrentSetting();
-    Dictionary::Language getLanguage();
+    void loadLanguage(Language lan);
+    Language getLanguage();
     Attr getTheme();
+    std::string tr(std::string const&);
+    std::string tr(const char*);
 private:
-    Dictionary::Language language;
+    Language language;
     Attr theme;
+    QJsonDocument langDoc;
 };
 
 #endif // SETTING_H
