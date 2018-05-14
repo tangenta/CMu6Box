@@ -21,7 +21,8 @@ NCController::NCController(QObject *parent)
     Ncurses::set_escdelay_s(25);  // 原Esc键延迟为1000ms, 改为25ms    
     Ncurses::cbreak_s();
     Ncurses::refresh_s();
-    changeCurrentWindow(new MenuWin(&resource));
+    resource = new Resources;
+    changeCurrentWindow(new MenuWin(resource));
     Ncurses::wrefresh_s(currentWindow->wp);
 
 
@@ -31,8 +32,8 @@ NCController::NCController(QObject *parent)
     connect(this, SIGNAL(startLoop()), this, SLOT(exec()));
     emit startLoop();
 
-    resource.moveToThread(&resourceThread);
-    resourceThread.start();
+//    resource->moveToThread(&resourceThread);
+//    resourceThread.start();
 }
 
 NCController::~NCController() {
@@ -42,8 +43,9 @@ NCController::~NCController() {
     Ncurses::endwin_s();
     playerThread.quit();
     playerThread.wait();
-    resourceThread.quit();
-    resourceThread.wait();
+//    resourceThread.quit();
+//    resourceThread.wait();
+    delete resource;
 }
 
 void NCController::exec() {

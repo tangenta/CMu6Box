@@ -164,3 +164,7 @@ void Window::fillBlank(const Position &topLeft, const Position &bottomRight) {
         addText(std::string(width, ' '), Position(i, topLeft.getCol()));
     }
 }
+
+void Window::setBackground(const Attr &attr) {
+    Ncurses::wbkgdset_s(wp, attr.toBit());
+}

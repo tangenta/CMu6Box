@@ -54,6 +54,7 @@ public:
 
     void fillBlank(Position const& topLeft,
                    Position const& bottomRight);
+    void setBackground(Attr const& attr);
 
     template <typename Drawable>    // Drawable must have defined toPrinter()
     void draw(Drawable const& thing, Position at) {

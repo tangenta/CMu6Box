@@ -1,10 +1,15 @@
 #include "menu_win.h"
 #include "../ncurse-wrap/ncurses_wrapper.h"
 #include "playing_win.h"
+#include "setting_win.h"
 #include "testing_win.h"
 #include "test2_win.h"
+#include "../resources.h"
 
-MenuWin::MenuWin(Resources* res) : Window(res), focus(0) {}
+MenuWin::MenuWin(Resources* res) : Window(res), focus(0) {
+    resource->tf.setLanguage(resource->setting.getLanguage());
+    setBackground(resource->setting.getTheme());
+}
 
 Window* MenuWin::handleInput(int ch) {
 
@@ -19,7 +24,9 @@ Window* MenuWin::handleInput(int ch) {
 
     } else if (ch == NK::Enter) {
         if (focus == 0) {
-            return new Test2Win(resource);
+            return new PlayingWin(resource);
+        } else if (focus == 2) {
+            return new SettingWin(resource);
         } else {
             return this;
         }
