@@ -6,7 +6,8 @@ Resources::Resources(QObject *parent) : QObject(parent)
     player.setPlaylist(&playlist);
 
     QDir dir;
-    dir.cd("/home/tangenta/Music");
+    dir.cd("/home/gaufoo/Music/Songs");
+//    dir.cd("/home/tangenta/Music");
     QStringList files = dir.entryList(QDir::Files);
     for (const QString &f : files) {
         contents.push_back(QUrl::fromLocalFile(dir.path()+"/"+f));

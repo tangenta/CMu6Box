@@ -15,7 +15,7 @@ SOURCES += main.cpp \
     ncurse-wrap/ncurses_wrapper.cpp \
     ncurse-wrap/util_window.cpp \
     user-interfaces/menu_win.cpp \
-    user-interfaces/playing_win.cpp \
+    user-interfaces/playing-win/playing_win.cpp \
     ncurse-wrap/util_rollingtext.cpp \
     ncurse-wrap/util_statictext.cpp \
     ncurse-wrap/util_border.cpp \
@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     user-interfaces/setting_win.cpp \
     ncurse-wrap/util_dialog.cpp \
     database/translator.cpp \
-    ncurse-wrap/util_multitext.cpp
+    ncurse-wrap/util_multitext.cpp \
+    user-interfaces/playing-win/songlist_win.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -48,7 +49,7 @@ HEADERS += \
     ncurse-wrap/ncurses_wrapper.h \
     ncurse-wrap/util_window.h \
     user-interfaces/menu_win.h \
-    user-interfaces/playing_win.h \
+    user-interfaces/playing-win/playing_win.h \
     ncurse-wrap/util_text.h \
     ncurse-wrap/util_position.h \
     ncurse-wrap/util_statictext.h \
@@ -66,6 +67,7 @@ HEADERS += \
     user-interfaces/setting_win.h \
     ncurse-wrap/util_dialog.h \
     database/translator.h \
-    ncurse-wrap/util_multitext.h
+    ncurse-wrap/util_multitext.h \
+    user-interfaces/playing-win/songlist_win.h
 
 LIBS += -lncursesw

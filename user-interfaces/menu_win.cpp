@@ -1,6 +1,6 @@
 #include "menu_win.h"
 #include "../ncurse-wrap/ncurses_wrapper.h"
-#include "playing_win.h"
+#include "./playing-win/playing_win.h"
 #include "setting_win.h"
 #include "testing_win.h"
 #include "test2_win.h"

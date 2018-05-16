@@ -1,13 +1,14 @@
 #include "playing_win.h"
-#include "menu_win.h"
-#include "../ncurse-wrap/util_rollingtext.h"
-#include "../ncurse-wrap/util_statictext.h"
-#include "../ncurse-wrap/util_border.h"
-#include "../ncurse-wrap/util_nborder.h"
-#include "../ncurse-wrap/ncurses_wrapper.h"
-#include "../ncurse-wrap/util_menu.h"
-#include "../ncurse-wrap/util_nmenu.h"
-#include "../nccontroller.h"
+#include "../menu_win.h"
+#include "../../ncurse-wrap/util_rollingtext.h"
+#include "../../ncurse-wrap/util_statictext.h"
+#include "../../ncurse-wrap/util_border.h"
+#include "../../ncurse-wrap/util_nborder.h"
+#include "../../ncurse-wrap/ncurses_wrapper.h"
+#include "../../ncurse-wrap/util_menu.h"
+#include "../../ncurse-wrap/util_nmenu.h"
+#include "../../nccontroller.h"
+#include "./songlist_win.h"
 #include <algorithm>
 #include <string>
 #include <QDateTime>
@@ -18,34 +19,22 @@ static const Position volumePos(4, 4);
 static const Position playingIconPos(6, 36);
 static const Position progressBar(18, 13);
 static const Position songName(13, 30);
-static const Position songList(4, 56);
 
 bool PlayingWin::playing = false;
 int PlayingWin::volume = 40;
 
 PlayingWin::PlayingWin(Resources* res)
-    : Window(res), winFocus(0) {
+    : Window(res) {
     connect(this, SIGNAL(play()), &resource->player, SLOT(play()));
     connect(this, SIGNAL(pause()), &resource->player, SLOT(pause()));
     connect(this, SIGNAL(setVolume(int)), &resource->player, SLOT(setVolume(int)));
     connect(this, SIGNAL(next()), &resource->playlist, SLOT(next()));
     connect(this, SIGNAL(previous()), &resource->playlist, SLOT(previous()));
-    draw();
-    initSongList();
 }
 
 PlayingWin::~PlayingWin() {}
 
 Window* PlayingWin::handleInput(int ch) {
-    if (winFocus == 0) {
-        return _handleInput0(ch);
-    } else if (winFocus == 1) {
-        return _handleInput1(ch);
-    }
-    return this;
-}
-
-Window* PlayingWin::_handleInput0(int ch) {
     if (ch == ' ') {
         playing = !playing;
         if (playing) {
@@ -71,52 +60,18 @@ Window* PlayingWin::_handleInput0(int ch) {
     } else if (ch == NK::Right) {
         emit next();
     } else if (ch == NK::Enter) {
-        winFocus = 1;
+        return new SonglistWin(resource);
     }
     return this;
 }
 
-Window* PlayingWin::_handleInput1(int ch) {
-    if (ch == NK::Up) {
-        menu.moveUp();
-    } else if (ch == NK::Down) {
-        menu.moveDown();
-    } else if (ch == NK::Esc) {
-        winFocus = 0;
-    } else if (ch == ' ') {
-        playing = !playing;
-        if (playing) {
-            emit play();
-        } else {
-            emit pause();
-        }
-    } else if (ch == NK::Enter) {
-        resource->playlist.setCurrentIndex(menu.getFocus());
-    }
-    return this;
-}
-
-void PlayingWin::update() {
-    static int counter = 0;
-    if (counter++ == 20) {
-        counter = 0;
-        menu.update();
-    }
-}
+void PlayingWin::update() {}
 
 void PlayingWin::draw() {
-    if (winFocus == 0) {
-        drawProgressBar();
-        drawVolume();
-        drawSongName();
-        drawPlayingIcon();
-    } else if (winFocus == 1) {
-        drawProgressBar();
-        drawVolume();
-        drawSongName();
-        drawPlayingIcon();
-        Window::draw(menu, songList);
-    }
+    drawProgressBar();
+    drawVolume();
+    drawSongName();
+    drawPlayingIcon();
 }
 
 void PlayingWin::drawVolume() {
@@ -154,6 +109,7 @@ void PlayingWin::drawSongName() {
     std::size_t p = n.find_last_of('.');
     n = n.substr(0, p);
 
+    // TODO:
     NMenu m(24, 1);
     m.setHighlight(Attr());
     m.addItem(n);
@@ -184,14 +140,3 @@ void PlayingWin::drawProgressBar() {
                  Position(progressBar.getRow(), progressBar.getCol()+maxProgress+10));
 }
 
-void PlayingWin::initSongList() {
-    menu = NMenu(22, 10);
-    int i = 0;
-    for (const QMediaContent& c : resource->contents) {
-        std::string is = std::to_string(++i);
-        std::string n = c.canonicalUrl().fileName().toStdString();
-        std::size_t p = n.find_last_of('.');
-        n = n.substr(0, p);
-        menu.addItem(NText(is + ". " + n));
-    }
-}
