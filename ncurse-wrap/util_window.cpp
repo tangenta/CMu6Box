@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <climits>
 #include <initializer_list>
+#include "../resources.h"
 
 Window::Window(Resources* res): QObject() {
     wp = Ncurses::newwin_s(0, 0, 0, 0);
@@ -165,6 +166,14 @@ void Window::fillBlank(const Position &topLeft, const Position &bottomRight) {
     }
 }
 
-void Window::setBackground(const Attr &attr) {
-    Ncurses::wbkgdset_s(wp, attr.toBit());
+void Window::setBackground(const Color &color) {
+    Ncurses::wbkgdset_s(wp, color.getPair());
+}
+
+std::string Window::tl(const char *str) {
+    return resource->translator(str);
+}
+
+std::string Window::tl(const std::string &str) {
+    return resource->translator(str);
 }

@@ -8,33 +8,25 @@
 #include "../ncurse-wrap/util_dialog.h"
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
 
 MenuWin::MenuWin(Resources* res) : Window(res), focus(0), msg(nullptr) {
-    try {
-        resource->setting.openSetting();
-    } catch (JsonOpenError const& e) {
-        // setting.json is not found
-        QFile file("setting.json");
-        if (!file.open(QIODevice::WriteOnly)) {
-            throw FatalError("unable to create setting.json");
-        }
-        QTextStream out(&file);
-        out << "{\"theme\":\"default\",\n\"language\":\"english\"}";
-        file.close();
-        Dialog dialog = Dialog("setting.json is not found in current"
-                               " directory, creating one...", 20, 5);
-        NBorder bord('-', '|', '+');
-        bord.fit(dialog);
-        msg = new NBlock<Dialog, NBorder>(dialog, bord);
-    }
+//    try {
+//        resource->setting.openSetting();
+//    } catch (JsonOpenError const&) {
+//        // setting.json is not found
+//        if (!QDir().exists("setting.json")) {
+//            resource->setting.createSettingFile();
+//            resource->setting.openSetting();
+//            Dialog dialog = Dialog("setting.json is not found in current"
+//                                   " directory, creating one...", 20, 5);
+//            NBorder bord('-', '|', '+');
+//            bord.fit(dialog);
+//            msg = new NBlock<Dialog, NBorder>(dialog, bord);
+//        }
+//    }
 
-    try {
-        resource->setting.loadLanguage(resource->setting.getLanguage());
-    } catch (JsonOpenError const& e) {
-        // depress complaint with missing "./locale/xxx.json"
-    }
-
-    setBackground(resource->setting.getTheme());
+//    setBackground(resource->setting.getTheme());
 }
 
 MenuWin::~MenuWin() {
@@ -77,7 +69,7 @@ Window* MenuWin::handleInput(int ch) {
 void MenuWin::update() {}
 
 void MenuWin::draw() {
-    std::vector<NText> vec = {NText("Play"), NText("Song List"), NText("Setting")};
+    std::vector<NText> vec = {NText(tl("Play")), NText(tl("Song List")), NText(tl("Setting"))};
     std::vector<Position> pos = {Position(5, 5), Position(5, 30), Position(5, 55)};
     NBorder border(20, 10, '-', '|', '+');
     for (int i = 0; i != static_cast<int>(vec.size()); ++i) {

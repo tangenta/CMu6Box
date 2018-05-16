@@ -4,6 +4,7 @@
 #include "util_position.h"
 #include "ncurses_wrapper.h"
 #include "util_nmenu.h"
+#include "../database/translator.h"
 #include <QObject>
 
 class Resources;
@@ -54,7 +55,7 @@ public:
 
     void fillBlank(Position const& topLeft,
                    Position const& bottomRight);
-    void setBackground(Attr const& attr);
+    void setBackground(const Color& color);
 
     template <typename Drawable>    // Drawable must have defined toPrinter()
     void draw(Drawable const& thing, Position at) {
@@ -81,6 +82,9 @@ public:
     virtual void draw() = 0;
 protected:
     Resources* resource;
+    std::string tl(std::string const& str);
+    std::string tl(const char* str);
+
 private:
     NWINDOW* wp;
 };

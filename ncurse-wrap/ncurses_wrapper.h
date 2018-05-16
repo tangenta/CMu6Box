@@ -76,30 +76,6 @@ private:
     Font font;
 };
 
-/*
-class Pixels {
-public:
-    Pixels() = delete;
-    Pixels(std::vector<std::string> const& pixels,
-           std::vector<std::pair<int, Attr>> attrs): pixels(pixels), attrs(attrs) {
-
-    }
-    std::vector<std::string> getPixels();
-    std::vector<std::pair<int, Attr>> getAttrs();
-    static checkPixels(const Pixels &pixels, int width, int height) {
-        if (pixels.size() != height)
-            FatalError("::checkPixels()");
-        for (auto& i: pixels) {
-            if (i.length() != width)
-                throw FatalError("::checkPixels()");
-        }
-    }
-private:
-    std::vector<std::string> pixels;
-    std::vector<std::pair<int, Attr>> attrs;
-
-};
-*/
 
 // controls independent
 struct Printee {
