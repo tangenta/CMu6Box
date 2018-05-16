@@ -28,17 +28,14 @@ NCController::NCController(QObject *parent)
 
     // move resource to other thread
     this->moveToThread(&playerThread);
-    resource.moveToThread(&playerThread);
+    resource->moveToThread(&playerThread);
     playerThread.start();
 
     connect(this, SIGNAL(startLoop()), this, SLOT(exec()));
     emit startLoop();
-<<<<<<< HEAD
-=======
 
 //    resource->moveToThread(&resourceThread);
 //    resourceThread.start();
->>>>>>> b24434edc2156e94af81f68446c529b37843af10
 }
 
 NCController::~NCController() {
@@ -48,12 +45,9 @@ NCController::~NCController() {
     Ncurses::endwin_s();
     playerThread.quit();
     playerThread.wait();
-<<<<<<< HEAD
-=======
 //    resourceThread.quit();
 //    resourceThread.wait();
     delete resource;
->>>>>>> b24434edc2156e94af81f68446c529b37843af10
 }
 
 void NCController::exec() {
