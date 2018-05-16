@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
-#include "database/setting.h"
 #include "database/translator.h"
 
 class Resources : public QObject
@@ -15,7 +14,6 @@ public:
     QMediaPlayer player;
     QMediaPlaylist playlist;
     QList<QMediaContent> contents;
-//    Setting setting;
     Translator translator;
 signals:
 

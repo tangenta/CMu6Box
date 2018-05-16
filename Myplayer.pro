@@ -27,7 +27,6 @@ SOURCES += main.cpp \
     user-interfaces/test2_win.cpp \
     resources.cpp \
     user-interfaces/setting_win.cpp \
-    database/setting.cpp \
     ncurse-wrap/util_dialog.cpp \
     database/translator.cpp \
     ncurse-wrap/util_multitext.cpp
@@ -65,7 +64,6 @@ HEADERS += \
     ncurse-wrap/util_nblock.h \
     resources.h \
     user-interfaces/setting_win.h \
-    database/setting.h \
     ncurse-wrap/util_dialog.h \
     database/translator.h \
     ncurse-wrap/util_multitext.h

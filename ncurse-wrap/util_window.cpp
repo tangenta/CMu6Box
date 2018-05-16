@@ -8,8 +8,6 @@
 
 Window::Window(Resources* res): QObject() {
     wp = Ncurses::newwin_s(0, 0, 0, 0);
-//    Ncurses::init_pair_s(1, NC::White, NC::Black);
-//    Ncurses::wbkgdset_s(wp, Ncurses::COLOR_PAIR_s(1));
     resource = res;
 }
 
