@@ -105,7 +105,6 @@ void PlayingWin::update() {
 }
 
 void PlayingWin::draw() {
-    clearScreen();
     if (winFocus == 0) {
         drawProgressBar();
         drawVolume();

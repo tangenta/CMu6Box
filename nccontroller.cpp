@@ -56,6 +56,7 @@ void NCController::exec() {
     int input;
     while ((input = Ncurses::getch_s()) == -1) {
         Ncurses::napms_s(DEFAULT_INTERVAL);
+        currentWindow->clearScreen();
         currentWindow->draw();
         Ncurses::wrefresh_s(currentWindow->wp);
         currentWindow->update();
