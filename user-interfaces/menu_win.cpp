@@ -10,24 +10,7 @@
 #include <QTextStream>
 #include <QDir>
 
-MenuWin::MenuWin(Resources* res) : Window(res), focus(0), msg(nullptr) {
-//    try {
-//        resource->setting.openSetting();
-//    } catch (JsonOpenError const&) {
-//        // setting.json is not found
-//        if (!QDir().exists("setting.json")) {
-//            resource->setting.createSettingFile();
-//            resource->setting.openSetting();
-//            Dialog dialog = Dialog("setting.json is not found in current"
-//                                   " directory, creating one...", 20, 5);
-//            NBorder bord('-', '|', '+');
-//            bord.fit(dialog);
-//            msg = new NBlock<Dialog, NBorder>(dialog, bord);
-//        }
-//    }
-
-//    setBackground(resource->setting.getTheme());
-}
+MenuWin::MenuWin(Resources* res) : Window(res), focus(0), msg(nullptr) {}
 
 MenuWin::~MenuWin() {
     if (msg) {

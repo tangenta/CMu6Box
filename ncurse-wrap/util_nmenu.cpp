@@ -95,6 +95,6 @@ Printer NMenu::toPrinter() const {
         if (--counter == 0) break;
         printer.back().bias = printer.back().bias + Bias(1,0);
     }
-    printer.back().bias = printer.back().bias + Bias(1-height, 0);
+//    printer.back().bias = printer.back().bias + Bias(1-height, 0);
     return printer;
 }
