@@ -26,7 +26,11 @@ SOURCES += main.cpp \
     ncurse-wrap/util_nmenu.cpp \
     user-interfaces/test2_win.cpp \
     resources.cpp \
-    user-interfaces/setting_win.cpp
+    user-interfaces/setting_win.cpp \
+    database/setting.cpp \
+    ncurse-wrap/util_dialog.cpp \
+    database/translator.cpp \
+    ncurse-wrap/util_multitext.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -60,6 +64,10 @@ HEADERS += \
     user-interfaces/test2_win.h \
     ncurse-wrap/util_nblock.h \
     resources.h \
-    user-interfaces/setting_win.h
+    user-interfaces/setting_win.h \
+    database/setting.h \
+    ncurse-wrap/util_dialog.h \
+    database/translator.h \
+    ncurse-wrap/util_multitext.h
 
 LIBS += -lncursesw

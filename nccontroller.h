@@ -27,7 +27,12 @@ public slots:
 private:
     Window* currentWindow;
     QThread playerThread;
+<<<<<<< HEAD
     Resources resource;
+=======
+//    QThread resourceThread;
+    Resources* resource;
+>>>>>>> b24434edc2156e94af81f68446c529b37843af10
 };
 
 #endif // NCCONTROLLER_H

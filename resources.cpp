@@ -13,5 +13,8 @@ Resources::Resources(QObject *parent) : QObject(parent)
     }
     playlist.addMedia(contents);
     playlist.setPlaybackMode(QMediaPlaylist::Random);
+
+    // player.setPlaylist(new QMediaPlaylist);
+    // player.playlist()->addMedia(QUrl::fromLocalFile("/home/tangenta/Desktop/Myplayer/music/Sia - Chandelier.mp3"));
     player.setVolume(40);
 }
