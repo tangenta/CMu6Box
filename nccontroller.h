@@ -27,7 +27,6 @@ public slots:
 private:
     Window* currentWindow;
     QThread playerThread;
-    QThread resourceThread;
     Resources resource;
 };
 

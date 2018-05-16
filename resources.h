@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 class Resources : public QObject
 {
@@ -10,7 +11,8 @@ class Resources : public QObject
 public:
     explicit Resources(QObject *parent = 0);
     QMediaPlayer player;
-
+    QMediaPlaylist playlist;
+    QList<QMediaContent> contents;
 signals:
 
 public slots:

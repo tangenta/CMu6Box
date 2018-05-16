@@ -30,7 +30,7 @@ Test2Win::Test2Win(Resources* res): Window(res), focus(0), subMenu(nullptr) {
 }
 
 NMenu* Test2Win::initRollingMenu() {
-    NMenu* menu = new NMenu(30, 15);
+    NMenu* menu = new NMenu(30, 10);
     menu->setHighlight(Attr(Color(NC::Cyan), Font({NF::Bold})));
     for (auto& i: menuList) {
         menu->addItem(NText(i));

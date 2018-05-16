@@ -59,7 +59,6 @@ void NMenu::moveUp() {
     items[focus].setAttr(normal);
     if (focus == frame && focus != 0) {
         frame--;
-        focus--;
     }
     focus = (focus == 0) ? focus : focus-1;
     items[focus].setAttr(highlight);
@@ -71,7 +70,6 @@ void NMenu::moveDown() {
     items[focus].setAttr(normal);
     if (focus == frame+height-1 && focus != static_cast<int>(items.size()-1)) {
         frame++;
-        focus++;
     }
     focus = (focus == static_cast<int>(items.size()-1)) ?
                 static_cast<int>(items.size()-1) : focus+1;
