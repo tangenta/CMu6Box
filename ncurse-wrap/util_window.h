@@ -27,34 +27,8 @@ public:
     int getCols() const;
     NWINDOW* getNWindow() const;
 
-    // utilities
-//protected:
-    void addText(std::string const&);
-    void addText(std::string const&, Position const&,
-                 Color const& = Color(NC::White),
-                 Font const& = Font({NF::Normal}),
-                 AlignMode = AlignMode::Left, int = -1);
-
-    void addBorder(Position const& topLeft,
-                   Position const& bottomRight,
-                   Color const& = Color(NC::White),
-                   char horizontal = '-',
-                   char vertical = '|',
-                   char corner = '+');
-    
-    void addBlock(Position const& topLeft,
-                  Position const& bottomRight,
-                  std::initializer_list<std::string> textList,
-                  Color const& = Color(NC::White),
-                  Font const& = Font({NF::Normal}),
-                  char horizontal = '-',
-                  char vertical = '|',
-                  char corner = '+');
-
     void clearScreen();
 
-    void fillBlank(Position const& topLeft,
-                   Position const& bottomRight);
     void setBackground(const Color& color);
 
     template <typename Drawable>    // Drawable must have defined toPrinter()

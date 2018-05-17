@@ -1,11 +1,7 @@
 #include "playing_win.h"
 #include "../menu_win.h"
-#include "../../ncurse-wrap/util_rollingtext.h"
-#include "../../ncurse-wrap/util_statictext.h"
-#include "../../ncurse-wrap/util_border.h"
 #include "../../ncurse-wrap/util_nborder.h"
 #include "../../ncurse-wrap/ncurses_wrapper.h"
-#include "../../ncurse-wrap/util_menu.h"
 #include "../../ncurse-wrap/util_nmenu.h"
 #include "../../nccontroller.h"
 #include "./songlist_win.h"
@@ -97,9 +93,9 @@ void PlayingWin::drawPlayingIcon() {
     int col = playingIconPos.getCol();
     for (size_t i = 0; i != playIcon.size(); ++i) {
         if (playing) {
-            addText(pauseIcon[i], Position(row+i, col));
+            Window::draw(NText(pauseIcon[i]), Position(row+i, col));
         } else {
-            addText(playIcon[i], Position(row+i, col));
+            Window::draw(NText(playIcon[i]), Position(row+i, col));
         }
     }
 }

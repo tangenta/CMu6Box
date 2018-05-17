@@ -2,7 +2,6 @@
 #include "../ncurse-wrap/ncurses_wrapper.h"
 #include "./playing-win/playing_win.h"
 #include "setting_win.h"
-#include "testing_win.h"
 #include "test2_win.h"
 #include "../resources.h"
 #include "../ncurse-wrap/util_dialog.h"

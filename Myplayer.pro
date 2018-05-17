@@ -16,11 +16,6 @@ SOURCES += main.cpp \
     ncurse-wrap/util_window.cpp \
     user-interfaces/menu_win.cpp \
     user-interfaces/playing-win/playing_win.cpp \
-    ncurse-wrap/util_rollingtext.cpp \
-    ncurse-wrap/util_statictext.cpp \
-    ncurse-wrap/util_border.cpp \
-    ncurse-wrap/util_menu.cpp \
-    user-interfaces/testing_win.cpp \
     ncurse-wrap/util_ntext.cpp \
     ncurse-wrap/util_nborder.cpp \
     ncurse-wrap/util_nmenu.cpp \
@@ -50,14 +45,7 @@ HEADERS += \
     ncurse-wrap/util_window.h \
     user-interfaces/menu_win.h \
     user-interfaces/playing-win/playing_win.h \
-    ncurse-wrap/util_text.h \
     ncurse-wrap/util_position.h \
-    ncurse-wrap/util_statictext.h \
-    ncurse-wrap/util_rollingtext.h \
-    ncurse-wrap/util_border.h \
-    ncurse-wrap/util_menu.h \
-    ncurse-wrap/block.h \
-    user-interfaces/testing_win.h \
     ncurse-wrap/util_ntext.h \
     ncurse-wrap/util_nborder.h \
     ncurse-wrap/util_nmenu.h \
