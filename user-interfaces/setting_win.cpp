@@ -20,7 +20,8 @@ SettingWin::SettingWin(Resources* res): Window(res) {
 
 SettingWin::~SettingWin() {
     if (!langBox.text().empty()) {
-        resource->translator = Translator(std::string() + "./locale/" + langBox.text() + ".json");
+        resource->translator =
+                Translator(std::string() + "./locale/" + langBox.text() + ".json");
     }
 }
 

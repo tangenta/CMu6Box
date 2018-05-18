@@ -19,7 +19,6 @@ SOURCES += main.cpp \
     ncurse-wrap/util_ntext.cpp \
     ncurse-wrap/util_nborder.cpp \
     ncurse-wrap/util_nmenu.cpp \
-    user-interfaces/test2_win.cpp \
     resources.cpp \
     user-interfaces/setting_win.cpp \
     ncurse-wrap/util_dialog.cpp \
@@ -49,7 +48,6 @@ HEADERS += \
     ncurse-wrap/util_ntext.h \
     ncurse-wrap/util_nborder.h \
     ncurse-wrap/util_nmenu.h \
-    user-interfaces/test2_win.h \
     ncurse-wrap/util_nblock.h \
     resources.h \
     user-interfaces/setting_win.h \
