@@ -16,7 +16,6 @@ public:
 private:
     int focus;
     Window* msgHandleInput(int ch);
-    NBlock<Dialog, NBorder>* msg;
 };
 
 #endif // MENU_WIN_H

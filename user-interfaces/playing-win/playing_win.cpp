@@ -73,19 +73,19 @@ void PlayingWin::draw() {
 void PlayingWin::drawVolume() {
     int row = volumePos.getRow();
     int col = volumePos.getCol();
-    Window::draw(NText(std::string("VOL")), Position(row-1, col));
-    Window::draw(NBorder(3, maxVolume+2, '-', '|', '+'), volumePos);
+    Window::draw(NText(std::string("VOL"), normal), Position(row-1, col));
+    Window::draw(NBorder(3, maxVolume+2, '-', '|', '+', normal), volumePos);
     row++;
     col++;
 
     for (int i = 0; i != maxVolume; ++i) {
         std::string volStr = (maxVolume-i <= volume/100.0*maxVolume) ? "#" : " ";
-        Window::draw(NText(volStr), Position(row+i, col));
+        Window::draw(NText(volStr, normal), Position(row+i, col));
     }
 
     std::string n = std::to_string(volume);
     n.insert(n.begin(), 3-n.size(), ' ');
-    Window::draw(NText(n), Position(row+maxVolume+1, col-1));
+    Window::draw(NText(n, normal), Position(row+maxVolume+1, col-1));
 }
 
 void PlayingWin::drawPlayingIcon() {
@@ -93,9 +93,9 @@ void PlayingWin::drawPlayingIcon() {
     int col = playingIconPos.getCol();
     for (size_t i = 0; i != playIcon.size(); ++i) {
         if (playing) {
-            Window::draw(NText(pauseIcon[i]), Position(row+i, col));
+            Window::draw(NText(pauseIcon[i], normal), Position(row+i, col));
         } else {
-            Window::draw(NText(playIcon[i]), Position(row+i, col));
+            Window::draw(NText(playIcon[i], normal), Position(row+i, col));
         }
     }
 }
@@ -107,8 +107,9 @@ void PlayingWin::drawSongName() {
 
     // TODO:
     NMenu m(24, 1);
-    m.setHighlight(Attr());
     m.addItem(n);
+    m.setAttr(normal);
+    m.setHighlight(normal);
     Window::draw(m, songName);
 }
 
@@ -121,18 +122,18 @@ void PlayingWin::drawProgressBar() {
     int progress = (double)pos / dura * maxProgress;
 
     // two border
-    Window::draw(NText(std::string("|")), progressBar);
-    Window::draw(NText(std::string("|")),
+    Window::draw(NText(std::string("|"), normal), progressBar);
+    Window::draw(NText(std::string("|"), normal),
                  Position(progressBar.getRow(), progressBar.getCol()+maxProgress));
 
     // progress
-    Window::draw(NText(std::string(progress, '>')),
+    Window::draw(NText(std::string(progress, '>'), normal),
                  Position(progressBar.getRow(), progressBar.getCol()+1));
 
     // time
-    Window::draw(NText(posS + " / "),
+    Window::draw(NText(posS + " / ", normal),
                  Position(progressBar.getRow(), progressBar.getCol()+maxProgress+2));
-    Window::draw(NText(durS),
+    Window::draw(NText(durS, normal),
                  Position(progressBar.getRow(), progressBar.getCol()+maxProgress+10));
 }
 

@@ -32,11 +32,13 @@ SettingWin::SettingWin(Resources* res): Window(res) {
     auto pos = std::find(colors.begin(), colors.end(), currentThemeColor);
     if (pos != colors.end()) themeIndex = pos-colors.begin();
 
+    QString themeColor = resource->themeColor;
+    Attr unifiedAttr(resource->parseColor(themeColor));
     // initialize members
     focus = 0;
-    langBox = MultiText(files);
+    langBox = MultiText(files, unifiedAttr);
     langBox.setIndex(langFileIndex);
-    theme = MultiText(colors);
+    theme = MultiText(colors, unifiedAttr);
     theme.setIndex(themeIndex);
 }
 
@@ -64,12 +66,16 @@ void SettingWin::update() {
 }
 
 void SettingWin::draw() {
-    labels = {NText(tl("language")),NText(tl("theme")),NText(tl("about"))};
+    QString themeColor = resource->themeColor;
+    Attr unifiedAttr(resource->parseColor(themeColor));
+    labels = {NText(tl("language"), unifiedAttr),
+              NText(tl("theme"), unifiedAttr),
+              NText(tl("about"), unifiedAttr)};
     int labelsNum = labels.size();
     for (int i = 0; i != labelsNum; ++i) {
         Window::draw(labels[i], Position(4+2*i, 15));
-        NText cursor = i == focus ? NText("->", Attr(Color(), Font({NF::Bold}))) :
-                                    NText("  ");
+        NText cursor = i == focus ? NText("->", unifiedAttr) :
+                                    NText("  ", unifiedAttr);
         Window::draw(cursor, Position(4+2*i, 12));
     }
     Window::draw(langBox, Position(4, 45));

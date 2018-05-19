@@ -56,6 +56,8 @@ public:
     virtual void draw() = 0;
 protected:
     Resources* resource;
+    Attr highlight;
+    Attr normal;
     std::string tl(std::string const& str);
     std::string tl(const char* str);
 

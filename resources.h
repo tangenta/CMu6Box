@@ -15,6 +15,7 @@ public:
     void readSetting(QString filename);
     void writeSetting(QString filename);
     Color parseColor(QString const& colorStr);
+    Color parseHighlight(QString const& colorStr);
     QMediaPlayer player;
     QMediaPlaylist playlist;
     QList<QMediaContent> contents;

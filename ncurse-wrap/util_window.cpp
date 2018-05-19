@@ -11,6 +11,8 @@ Window::Window(Resources* res): QObject() {
     wp = Ncurses::newwin_s(0, 0, 0, 0);
     resource = res;
     setBackground(res->themeColor);
+    highlight = Attr(resource->parseHighlight(resource->themeColor));
+    normal = Attr(resource->parseColor(resource->themeColor));
 }
 
 Window::~Window() {

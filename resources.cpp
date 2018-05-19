@@ -72,9 +72,33 @@ Color Resources::parseColor(QString const& colorStr) {
      Color(NC::White, NC::Blue),
      Color(NC::White, NC::Magenta),
      Color(NC::White, NC::Cyan),
-     Color(NC::Black, NC::White)});
+     Color(NC::White, NC::White)});
     auto& keys = scmap.first;
     auto& values = scmap.second;
+    if (keys.size() != values.size()) {
+        throw FatalError("Resources::parseColor()");
+    }
+    auto iter = std::find(keys.begin(), keys.end(), colorStr);
+    if (iter == keys.end()) {
+        throw FatalError("Resources::parseColor()");
+    }
+    auto diff = iter-keys.begin();
+    return *(values.begin()+diff);
+}
+
+Color Resources::parseHighlight(const QString &colorStr) {
+    static SCMap highlightmap = std::make_pair<std::vector<QString>, std::vector<Color>>(
+    {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"},
+    {Color(NC::Cyan, NC::Black),
+     Color(NC::Green, NC::Red),
+     Color(NC::Red, NC::Green),
+     Color(NC::Blue, NC::Yellow),
+     Color(NC::Yellow, NC::Blue),
+     Color(NC::Green, NC::Magenta),
+     Color(NC::Red, NC::Cyan),
+     Color(NC::Black, NC::White)});
+    auto& keys = highlightmap.first;
+    auto& values = highlightmap.second;
     if (keys.size() != values.size()) {
         throw FatalError("Resources::parseColor()");
     }
