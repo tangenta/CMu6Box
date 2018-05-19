@@ -45,7 +45,6 @@ Window* SettingWin::handleInput(int ch) {
         return new MenuWin(resource);
     } else if (ch == NK::Enter) {
         validateSetting();
-        return new SettingWin(resource);
     } else if (ch == NK::Down) {
         if (focus < 2) focus++;
     } else if (ch == NK::Up) {

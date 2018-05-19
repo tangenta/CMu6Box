@@ -14,6 +14,7 @@ public:
     explicit Resources(QObject *parent = 0);
     void readSetting(QString filename);
     void writeSetting(QString filename);
+    Color parseColor(QString const& colorStr);
     QMediaPlayer player;
     QMediaPlaylist playlist;
     QList<QMediaContent> contents;

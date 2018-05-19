@@ -42,27 +42,28 @@ NCController::~NCController() {
 }
 
 void NCController::exec() {
-    Ncurses::noecho_s();
-    
-    int input;
-    while ((input = Ncurses::getch_s()) == -1) {
-        Ncurses::napms_s(DEFAULT_INTERVAL);
-        currentWindow->clearScreen();
-        currentWindow->draw();
-        Ncurses::wrefresh_s(currentWindow->wp);
-        currentWindow->update();
-    }
+    while (1) {
+        Ncurses::noecho_s();
+        int input;
+        while ((input = Ncurses::getch_s()) == -1) {
+            Ncurses::napms_s(DEFAULT_INTERVAL);
+            currentWindow->clearScreen();
+            currentWindow->draw();
+            Ncurses::wrefresh_s(currentWindow->wp);
+            currentWindow->update();
+        }
 
-    Window* nextWindow = currentWindow->handleInput(input);
+        Window* nextWindow = currentWindow->handleInput(input);
 
-    if (nextWindow == currentWindow) {            // 当前窗口
-        return exec();
-    } else if (nextWindow) {                      // 新窗口
-        changeCurrentWindow(nextWindow);
-        return exec();
-    } else {                                      // 退出程序
-        emit quitApp();
-        return;
+        if (nextWindow == currentWindow) {            // 当前窗口
+            continue;
+        } else if (nextWindow) {                      // 新窗口
+            changeCurrentWindow(nextWindow);
+            continue;
+        } else {                                      // 退出程序
+            emit quitApp();
+            break;
+        }
     }
 }
 

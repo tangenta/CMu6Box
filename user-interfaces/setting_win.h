@@ -15,8 +15,6 @@ private:
     int focus;
     MultiText langBox;
     MultiText theme;
-//    NText languageCombobox;
-//    NText themeCombobox;
 };
 
 #endif // SETTING_WIN_H

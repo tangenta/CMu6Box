@@ -50,7 +50,11 @@ Window* MenuWin::handleInput(int ch) {
 void MenuWin::update() {}
 
 void MenuWin::draw() {
-    std::vector<NText> vec = {NText(tl("Play")), NText(tl("Song List")), NText(tl("Setting"))};
+//    auto themeStr = resource->themeColor;
+//    Attr unifiedAttr(resource->parseColor(themeStr));
+    std::vector<NText> vec = {NText(tl("Play")),
+                              NText(tl("Song List")),
+                              NText(tl("Setting"))};
     std::vector<Position> pos = {Position(5, 5), Position(5, 30), Position(5, 55)};
     NBorder border(20, 10, '-', '|', '+');
     for (int i = 0; i != static_cast<int>(vec.size()); ++i) {

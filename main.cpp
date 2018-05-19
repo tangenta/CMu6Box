@@ -1,6 +1,4 @@
 #include <QCoreApplication>
-#include <QMediaPlayer>
-#include <QFile>
 #include "nccontroller.h"
 
 int main(int argc, char** argv) {

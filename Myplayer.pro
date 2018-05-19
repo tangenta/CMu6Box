@@ -1,4 +1,4 @@
-QT += core \
+%{CurrentProject:Path} QT += core \
       multimedia
 QT -= gui
 
