@@ -68,7 +68,7 @@ private:
 
 class Attr {
 public:
-    Attr(const Color &clr = Color(), const Font &fnt = Font({NF::Normal}));
+    Attr(const Color &clr = Color(), const Font &fnt = Font({NF::Bold}));
     unsigned long toBit() const { return iattr; }
 private:
     unsigned long iattr;

@@ -20,7 +20,8 @@ void NMenu::addItem(NText const& newItem) {
 }
 
 void NMenu::removeItemAt(int index) {
-    if (index < 0 || index >= static_cast<int>(items.size())) {
+    int itemSize = items.size();
+    if (index < 0 || index >= itemSize) {
         throw FatalError("NMenu::removeItemAt()");
     }
     focus = frame = 0;
@@ -68,18 +69,19 @@ void NMenu::moveDown() {
     if (items.empty()) return;
     items[focus].setBeginPoint(0);
     items[focus].setAttr(normal);
-    if (focus == frame+height-1 && focus != static_cast<int>(items.size()-1)) {
+    int maxFocus = items.size()-1;
+    if (focus == frame+height-1 && focus != maxFocus) {
         frame++;
     }
-    focus = (focus == static_cast<int>(items.size()-1)) ?
-                static_cast<int>(items.size()-1) : focus+1;
+    focus = (focus == maxFocus) ? maxFocus : focus+1;
     items[focus].setAttr(highlight);
 }
 
 void NMenu::update() {
     if (items.empty()) return;
     NText* objText = &items[focus];
-    if (static_cast<int>(objText->getContent().size())-objText->getBeginPoint() <= width) {
+    int contentLength = objText->getContent().size();
+    if (contentLength-objText->getBeginPoint() <= width) {
         objText->setBeginPoint(0);
     } else {
         objText->setBeginPoint(objText->getBeginPoint()+1);
@@ -95,6 +97,5 @@ Printer NMenu::toPrinter() const {
         if (--counter == 0) break;
         printer.back().bias = printer.back().bias + Bias(1,0);
     }
-//    printer.back().bias = printer.back().bias + Bias(1-height, 0);
     return printer;
 }

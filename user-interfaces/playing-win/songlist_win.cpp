@@ -53,4 +53,6 @@ void SonglistWin::initSongList() {
         n = n.substr(0, p);
         menu.addItem(NText(is + ". " + n));
     }
+    menu.setAttr(normal);
+    menu.setHighlight(highlight);
 }

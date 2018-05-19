@@ -5,10 +5,14 @@
 #include <climits>
 #include <initializer_list>
 #include "../resources.h"
+#include <utility>
 
 Window::Window(Resources* res): QObject() {
     wp = Ncurses::newwin_s(0, 0, 0, 0);
     resource = res;
+    setBackground(res->themeColor);
+    highlight = Attr(resource->parseHighlight(resource->themeColor));
+    normal = Attr(resource->parseColor(resource->themeColor));
 }
 
 Window::~Window() {
@@ -35,7 +39,8 @@ void Window::clearScreen() {
     Ncurses::werase_s(this->wp);
 }
 
-void Window::setBackground(const Color &color) {
+void Window::setBackground(QString const& colorStr) {
+    Color color = resource->parseColor(colorStr);
     Ncurses::wbkgdset_s(wp, color.getPair());
 }
 
