@@ -1,11 +1,9 @@
 #include "playing_win.h"
 #include "../menu_win.h"
-#include "../../ncurse-wrap/util_nborder.h"
 #include "../../ncurse-wrap/ncurses_wrapper.h"
 #include "../../ncurse-wrap/util_nmenu.h"
 #include "../../nccontroller.h"
 #include "./songlist_win.h"
-#include <algorithm>
 #include <string>
 #include <QDateTime>
 

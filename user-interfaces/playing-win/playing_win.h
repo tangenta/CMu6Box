@@ -1,9 +1,7 @@
 #ifndef PLAYING_WIN_H
 #define PLAYING_WIN_H
 #include "../../ncurse-wrap/util_window.h"
-#include "../../ncurse-wrap/util_nmenu.h"
 #include <vector>
-#include <memory>
 #include <QObject>
 
 class PlayingWin: public Window {
