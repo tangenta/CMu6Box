@@ -19,10 +19,21 @@ void MultiText::next() {
     int size = contents.size();
     if (size == 0) return;
     if (index != size-1) index++;
+    else index = 0;
 }
 
 void MultiText::prev() {
     if (index != 0) index--;
+    else index = contents.size()-1;
+}
+
+void MultiText::setIndex(int i) {
+    int size = contents.size();
+    if (i == 0) { index = 0; return; }
+    if (i < 0 || i >= size) {
+        throw FatalError("MultiText::setIndex()");
+    }
+    index = i;
 }
 
 int MultiText::getHeigth() const {

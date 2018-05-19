@@ -11,11 +11,11 @@ class NCController : public QObject {
     Q_OBJECT
 public:
     explicit NCController(QObject *parent = 0);
+    ~NCController();
     NCController(NCController const&) = delete;
     NCController(NCController&&) = delete;
     NCController& operator=(NCController const&) = delete;
     NCController& operator=(NCController&&) = delete;
-    ~NCController();
 
     void changeCurrentWindow(Window*);
 signals:
@@ -24,6 +24,7 @@ signals:
 public slots:
     // main loop
     void exec();
+    void cleanUp();
 private:
     Window* currentWindow;
     QThread playerThread;

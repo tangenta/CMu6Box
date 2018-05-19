@@ -125,7 +125,7 @@ int Ncurses::COLOR_PAIR_s(int pair) {
 }
 
 void Ncurses::wbkgdset_s(NWINDOW* wp, int colorPair) {
-    wbkgdset(RC(wp), colorPair);
+    wbkgdset(RC(wp), COLOR_PAIR_s(colorPair));
 }
 
 void Ncurses::wmove_s(NWINDOW* wp, int row, int col) {

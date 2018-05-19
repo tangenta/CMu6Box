@@ -29,7 +29,7 @@ public:
 
     void clearScreen();
 
-    void setBackground(const Color& color);
+    void setBackground(QString const& colorStr);
 
     template <typename Drawable>    // Drawable must have defined toPrinter()
     void draw(Drawable const& thing, Position at) {

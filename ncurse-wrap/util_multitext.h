@@ -17,6 +17,7 @@ public:
     Printer toPrinter() const;
     void next();
     void prev();
+    void setIndex(int i);
     int getHeigth() const;
     int getWidth() const;
     std::string text() const;   // return current text

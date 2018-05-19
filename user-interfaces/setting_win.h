@@ -6,15 +6,15 @@
 class SettingWin: public Window {
 public:
     SettingWin(Resources* res);
-    ~SettingWin();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;
 private:
+    void validateSetting();
     std::vector<NText> labels;
     int focus;
     MultiText langBox;
-    NText theme;
+    MultiText theme;
 //    NText languageCombobox;
 //    NText themeCombobox;
 };

@@ -6,7 +6,7 @@
 
 Translator::Translator() {}
 
-Translator::Translator(std::string const& fileName) {
+Translator::Translator(std::string const& fileName): filename(fileName) {
     QFile file(QString(fileName.c_str()));
     if (!file.open(QIODevice::ReadOnly)) {
         throw FatalError("Translator::Translator");
@@ -38,4 +38,8 @@ std::string Translator::operator() (std::string const& key) {
 
 std::string Translator::operator ()(const char* key) {
     return (*this)(std::string(key));
+}
+
+std::string Translator::getFilename() {
+    return filename;
 }
