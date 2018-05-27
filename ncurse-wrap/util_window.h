@@ -40,7 +40,7 @@ public:
             try {
                 Ncurses::waddstr_s(wp, i.content.c_str());
             } catch (FatalError const& e) {
-                // bad design signal: depressing bottom-right ERR
+                // Fixme: bad design, suppressing bottom-right ERR
                 if (at.getRow() != 24) throw e;
             }
             Ncurses::wattroff_s(wp, i.attr.toBit());

@@ -5,29 +5,9 @@
 
 SettingWin::SettingWin(Resources* res): Window(res) {
     // prepare data
-    // search available files in ./locale/ for options
-    QStringList qfiles = QDir("./locale").entryList(QStringList() << "*.json");
-    std::vector<std::string> files;
-    for (auto &str: qfiles) {
-        QString tmp(str);
-        files.push_back(tmp.remove(".json").toStdString());
-    }
+    std::vector<std::string> languages = {"Chinese", "English"};
     std::vector<std::string> colors =
             {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"};
-
-    // get current languageFile and match files in ./locale/
-    std::string currentLangFile = resource->translator.getFilename();
-    int langFileIndex = 0;
-    auto split = currentLangFile.find_last_of('/');
-    if (split != currentLangFile.npos) {
-        currentLangFile = currentLangFile.substr(split+1);
-    }
-    if (!currentLangFile.empty()) {
-        langFileIndex = qfiles.indexOf(QRegExp(currentLangFile.c_str()));
-        if (langFileIndex == -1) {
-            throw FatalError("SettingWin::SettingWin()");
-        }
-    }
 
     // get current themeColor and match color in options
     std::string currentThemeColor = resource->themeColor.toStdString();
@@ -40,8 +20,8 @@ SettingWin::SettingWin(Resources* res): Window(res) {
 
     // initialize members for displaying current setting
     focus = 0;
-    langBox = MultiText(files, unifiedAttr);
-    langBox.setIndex(langFileIndex);
+    langBox = MultiText(languages, unifiedAttr);
+    langBox.setIndex(resource->translator.isEnglish() ? 1 : 0);
     theme = MultiText(colors, unifiedAttr);
     theme.setIndex(themeIndex);
 }
@@ -87,10 +67,7 @@ void SettingWin::draw() {
 }
 
 void SettingWin::validateSetting() {
-    if (QDir("./locale").exists(std::string(langBox.text() + ".json").c_str())) {
-        resource->translator =
-                Translator(std::string() + "./locale/" + langBox.text() + ".json");
-    }
+    resource->translator = Translator(langBox.text());
     resource->themeColor = QString(theme.text().c_str());
     setBackground(resource->themeColor);
 }
