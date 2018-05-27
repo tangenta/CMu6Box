@@ -24,7 +24,6 @@ signals:
 public slots:
     // main loop
     void exec();
-    void cleanUp();
 private:
     Window* currentWindow;
     QThread playerThread;

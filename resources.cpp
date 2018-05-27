@@ -40,9 +40,7 @@ void Resources::readSetting(QString filename) {
     if (parseErr.error != QJsonParseError::NoError) {
         throw JsonOpenError("Resources::readSetting()");
     }
-    QString langFileLocation = settingObj.value("language-file").toString();
     QString colorStr = settingObj.value("theme").toString();
-    translator = Translator(langFileLocation.toStdString());
     themeColor = colorStr;
 
 }
@@ -54,8 +52,6 @@ void Resources::writeSetting(QString filename) {
     }
     QTextStream out(&file);
     QJsonObject obj;
-    obj.insert("language-file",
-               QJsonValue(QString(translator.getFilename().c_str())));
     obj.insert("theme", QJsonValue(themeColor));
     QJsonDocument doc(obj);
     out << doc.toJson();

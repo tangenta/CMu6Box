@@ -36,9 +36,11 @@ NCController::NCController(QObject *parent)
 }
 
 NCController::~NCController() {
-    // never called
     playerThread.quit();
     playerThread.wait();
+    delete currentWindow;
+    Ncurses::endwin_s();
+    resource->writeSetting("setting.json");
 }
 
 void NCController::exec() {
@@ -67,11 +69,6 @@ void NCController::exec() {
     }
 }
 
-void NCController::cleanUp() {
-    delete currentWindow;
-    Ncurses::endwin_s();
-    resource->writeSetting("setting.json");
-}
 
 void NCController::changeCurrentWindow(Window * win) {
     if (currentWindow) {

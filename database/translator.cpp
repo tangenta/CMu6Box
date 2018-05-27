@@ -4,42 +4,42 @@
 #include <QJsonParseError>
 #include "../ncurse-wrap/exceptions.h"
 
+static const std::map<std::string, std::string> cn = {
+    {"Play", "播放"},
+    {"Song List", "歌单"},
+    {"Setting", "设置"},
+    {"default", "默认"},
+    {"language", "语言"},
+    {"about", "关于"},
+    {"theme", "主题"},
+};
+
 Translator::Translator() {}
 
-Translator::Translator(std::string const& fileName): filename(fileName) {
-    QFile file(QString(fileName.c_str()));
-    if (!file.open(QIODevice::ReadOnly)) {
-        throw FatalError("Translator::Translator");
+Translator::Translator(std::string const& languageName) {
+    if (languageName == "Chinese") {
+        dictionary = &cn;       // Chinese
+    } else {
+        dictionary = nullptr;   // Chinglish or unknown language
     }
-    QByteArray bytes(file.readAll());
-    QJsonParseError parseErr;
-    doc = QJsonDocument::fromJson(bytes, &parseErr).object();
-    if (parseErr.error != QJsonParseError::NoError) {
-        file.close();
-        throw FatalError("Translator::Translator");
-    }
-    file.close();
 }
 
 std::string Translator::operator() (std::string const& key) {
-    if (doc.isEmpty()) return key;
-    QJsonValue value = doc.value(QString(key.c_str()));
-    if (value.isUndefined()) {
-        // key does not exist
-        return key;
+    if (!dictionary) return key;
+    std::string ret;
+    try {
+        ret = dictionary->at(key);
+        return ret;
+    } catch (std::out_of_range const&) {
+        // no such element exist
     }
-    QString ret = value.toString();
-    if (ret.isNull()) {
-        // key is not string
-        throw FatalError("Translator::operator()");
-    }
-    return ret.toStdString();
+    return key;
 }
 
 std::string Translator::operator ()(const char* key) {
     return (*this)(std::string(key));
 }
 
-std::string Translator::getFilename() {
-    return filename;
+bool Translator::isEnglish() {
+    return !dictionary;
 }
