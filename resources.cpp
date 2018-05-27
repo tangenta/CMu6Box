@@ -1,6 +1,7 @@
 #include "resources.h"
 #include <QDir>
 #include <QJsonDocument>
+#include <QJsonArray>
 using SCMap = std::pair<std::vector<QString>, std::vector<Color>>;
 
 Resources::Resources(QObject *parent) : QObject(parent) {
@@ -11,9 +12,9 @@ Resources::Resources(QObject *parent) : QObject(parent) {
 //    dir.cd("/home/tangenta/Music");
     QStringList files = dir.entryList((QStringList() << "*.mp3" << "*.flac"), QDir::Files);
     for (const QString &f : files) {
-        contents.push_back(QUrl::fromLocalFile(dir.path()+"/"+f));
+        playingList.push_back(QUrl::fromLocalFile(dir.path()+"/"+f));
     }
-    playlist.addMedia(contents);
+    playlist.addMedia(playingList);
     playlist.setPlaybackMode(QMediaPlaylist::Random);
     player.setVolume(40);
 
@@ -24,6 +25,55 @@ Resources::Resources(QObject *parent) : QObject(parent) {
         translator = Translator();
         themeColor = QString("Black");
     }
+
+    try {
+        readSonglist("songlist.json");
+    } catch (Exception const&) {
+        songlistNames.push_back("..");
+        songlists.push_back({});
+    }
+}
+
+void Resources::readSonglist(QString filename) {
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)) {
+        throw FatalError("Resources::readSonglist()");
+    }
+
+    QJsonParseError parseErr;
+    QJsonObject songlistObj = QJsonDocument::fromJson(file.readAll(), &parseErr).object();
+    file.close();
+
+    if (parseErr.error != QJsonParseError::NoError) {
+        throw JsonOpenError("Resources::readSonglist()");
+    }
+    QStringList names = songlistObj.keys();
+    for (const QString &n : names) {
+        songlistNames.push_back(n);
+    }
+
+    for (const QString &n : songlistNames) {
+        QJsonArray ary = songlistObj[n].toArray();
+        songlists.push_back({});
+        for (const QJsonValue& v : ary) {
+            songlists.back().push_back(v.toString());
+        }
+    }
+}
+
+void Resources::writeSonglist(QString filename) {
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly)) {
+        throw FatalError("Resource::writeSonglist()");
+    }
+    QTextStream out(&file);
+    QJsonObject obj;
+    for (int i = 0; i < songlistNames.size(); i++) {
+        obj.insert(songlistNames.at(i), QJsonArray::fromStringList(songlists.at(i)));
+    }
+    QJsonDocument doc(obj);
+    out << doc.toJson();
+    file.close();
 }
 
 

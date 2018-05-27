@@ -3,11 +3,10 @@
 
 #include "./playing_win.h"
 
-class SonglistWin : public PlayingWin
-{
+class PlaylistWin : public PlayingWin {
 public:
-    SonglistWin(Resources* res);
-    ~SonglistWin();
+    PlaylistWin(Resources* res);
+    ~PlaylistWin();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;

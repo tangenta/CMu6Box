@@ -1,16 +1,16 @@
-#include "songlist_win.h"
+#include "playlist_win.h"
 #include "../../nccontroller.h"
 #include "./playing_win.h"
 
 static const Position songList(4, 56);
 
-SonglistWin::SonglistWin(Resources *res) : PlayingWin(res) {
+PlaylistWin::PlaylistWin(Resources *res) : PlayingWin(res) {
     initSongList();
 }
 
-SonglistWin::~SonglistWin() {}
+PlaylistWin::~PlaylistWin() {}
 
-Window* SonglistWin::handleInput(int ch) {
+Window* PlaylistWin::handleInput(int ch) {
     if (ch == NK::Up) {
         menu.moveUp();
     } else if (ch == NK::Down) {
@@ -30,7 +30,7 @@ Window* SonglistWin::handleInput(int ch) {
     return this;
 }
 
-void SonglistWin::update() {
+void PlaylistWin::update() {
     static int counter = 0;
     if (counter++ == 20) {
         counter = 0;
@@ -38,15 +38,15 @@ void SonglistWin::update() {
     }
 }
 
-void SonglistWin::draw() {
+void PlaylistWin::draw() {
     this->PlayingWin::draw();
     Window::draw(menu, songList);
 }
 
-void SonglistWin::initSongList() {
+void PlaylistWin::initSongList() {
     menu = NMenu(22, 10);
     int i = 0;
-    for (const QMediaContent& c : resource->contents) {
+    for (const QMediaContent& c : resource->playingList) {
         std::string is = std::to_string(++i);
         std::string n = c.canonicalUrl().fileName().toStdString();
         std::size_t p = n.find_last_of('.');

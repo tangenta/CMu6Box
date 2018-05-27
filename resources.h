@@ -12,15 +12,27 @@ class Resources : public QObject
     Q_OBJECT
 public:
     explicit Resources(QObject *parent = 0);
+
+    // play
+    QMediaPlayer player;
+    QMediaPlaylist playlist;
+    QList<QMediaContent> playingList;
+
+
+    // songlist
+    void readSonglist(QString filename);
+    void writeSonglist(QString filename);
+
+    QList<QString> songlistNames;
+    QList<QStringList> songlists;
+
+
+    // setting
     void readSetting(QString filename);
     void writeSetting(QString filename);
     Color parseColor(QString const& colorStr);
     Color parseHighlight(QString const& colorStr);
-    QMediaPlayer player;
-    QMediaPlaylist playlist;
-    QList<QMediaContent> contents;
 
-    // setting
     Translator translator;
     QString themeColor;
 signals:

@@ -41,6 +41,8 @@ NCController::~NCController() {
     delete currentWindow;
     Ncurses::endwin_s();
     resource->writeSetting("setting.json");
+    resource->writeSonglist("songlist.json");
+//    resource->playlist.save(QUrl("playlist"));
 }
 
 void NCController::exec() {

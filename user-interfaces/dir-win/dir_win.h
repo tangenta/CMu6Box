@@ -1,11 +1,10 @@
 #ifndef DIR_WIN_H
 #define DIR_WIN_H
 #include <QDir>
-
 #include "../../ncurse-wrap/util_window.h"
+#include "songlist_win.h"
 
-class Dir_win: public Window {
-    Q_OBJECT
+class Dir_win: public Songlist_win {
 public:
     Dir_win(Resources* res);
     ~Dir_win();

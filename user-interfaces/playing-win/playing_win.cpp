@@ -3,7 +3,7 @@
 #include "../../ncurse-wrap/ncurses_wrapper.h"
 #include "../../ncurse-wrap/util_nmenu.h"
 #include "../../nccontroller.h"
-#include "./songlist_win.h"
+#include "./playlist_win.h"
 #include <string>
 #include <QDateTime>
 
@@ -53,12 +53,13 @@ Window* PlayingWin::handleInput(int ch) {
     } else if (ch == NK::Right) {
         emit next();
     } else if (ch == NK::Enter) {
-        return new SonglistWin(resource);
+        return new PlaylistWin(resource);
     }
     return this;
 }
 
-void PlayingWin::update() {}
+void PlayingWin::update() {
+}
 
 void PlayingWin::draw() {
     drawProgressBar();
