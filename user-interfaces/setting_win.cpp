@@ -5,6 +5,7 @@
 
 SettingWin::SettingWin(Resources* res): Window(res) {
     // prepare data
+    // search available files in ./locale/ for options
     QStringList qfiles = QDir("./locale").entryList(QStringList() << "*.json");
     std::vector<std::string> files;
     for (auto &str: qfiles) {
@@ -14,6 +15,7 @@ SettingWin::SettingWin(Resources* res): Window(res) {
     std::vector<std::string> colors =
             {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"};
 
+    // get current languageFile and match files in ./locale/
     std::string currentLangFile = resource->translator.getFilename();
     int langFileIndex = 0;
     auto split = currentLangFile.find_last_of('/');
@@ -27,6 +29,7 @@ SettingWin::SettingWin(Resources* res): Window(res) {
         }
     }
 
+    // get current themeColor and match color in options
     std::string currentThemeColor = resource->themeColor.toStdString();
     int themeIndex = 0;
     auto pos = std::find(colors.begin(), colors.end(), currentThemeColor);
@@ -34,7 +37,8 @@ SettingWin::SettingWin(Resources* res): Window(res) {
 
     QString themeColor = resource->themeColor;
     Attr unifiedAttr(resource->parseColor(themeColor));
-    // initialize members
+
+    // initialize members for displaying current setting
     focus = 0;
     langBox = MultiText(files, unifiedAttr);
     langBox.setIndex(langFileIndex);
