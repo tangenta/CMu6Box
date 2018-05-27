@@ -2,13 +2,11 @@
 
 NMenu::NMenu(): width(0), height(0), focus(0), frame(0),
     highlight(Attr(Color(), Font({NF::Bold, NF::Reverse}))) {
-
 }
 
 NMenu::NMenu(int width, int height)
     : width(width), height(height), focus(0), frame(0),
     highlight(Attr(Color(), Font({NF::Bold, NF::Reverse}))) {
-
 }
 
 void NMenu::addItem(NText const& newItem) {
@@ -28,6 +26,11 @@ void NMenu::removeItemAt(int index) {
     items.erase(items.begin()+index);
 }
 
+void NMenu::removeAll() {
+    items.clear();
+    focus = frame = 0;
+}
+
 int NMenu::getHeight() const {
     return height;
 }
@@ -40,18 +43,24 @@ int NMenu::getFocus() const {
     return focus;
 }
 
+std::string NMenu::getFocusCont() const {
+    if (items.empty()) return "";
+
+    return items.at(focus).getContent();
+}
+
 void NMenu::setAttr(Attr const& attr) {
     normal = attr;
     for (auto& i: items) {
         i.setAttr(attr);
     }
-    if (!items.empty()) {
-        items[focus].setAttr(highlight);
-    }
 }
 
 void NMenu::setHighlight(const Attr& attr) {
     highlight = attr;
+    if (!items.empty()) {
+        items[focus].setAttr(highlight);
+    }
 }
 
 void NMenu::moveUp() {

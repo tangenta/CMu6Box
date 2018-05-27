@@ -36,7 +36,6 @@ Window* PlayingWin::handleInput(int ch) {
         } else {
             emit pause();
         }
-        return this;
     } else if (ch == NK::Esc) {
         return new MenuWin(resource);
     } else if (ch == NK::Up) {

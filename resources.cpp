@@ -7,9 +7,9 @@ Resources::Resources(QObject *parent) : QObject(parent) {
     player.setPlaylist(&playlist);
 
     QDir dir;
-//    dir.cd("/home/gaufoo/Music/Songs");
-    dir.cd("/home/tangenta/Music");
-    QStringList files = dir.entryList((QStringList() << "*.mp3" << "*.flat"), QDir::Files);
+    dir.cd("/home/gaufoo/Music/Songs");
+//    dir.cd("/home/tangenta/Music");
+    QStringList files = dir.entryList((QStringList() << "*.mp3" << "*.flac"), QDir::Files);
     for (const QString &f : files) {
         contents.push_back(QUrl::fromLocalFile(dir.path()+"/"+f));
     }
@@ -72,7 +72,7 @@ Color Resources::parseColor(QString const& colorStr) {
      Color(NC::White, NC::Blue),
      Color(NC::White, NC::Magenta),
      Color(NC::White, NC::Cyan),
-     Color(NC::White, NC::White)});
+     Color(NC::Black, NC::White)});
     auto& keys = scmap.first;
     auto& values = scmap.second;
     if (keys.size() != values.size()) {
@@ -96,7 +96,7 @@ Color Resources::parseHighlight(const QString &colorStr) {
      Color(NC::Yellow, NC::Blue),
      Color(NC::Green, NC::Magenta),
      Color(NC::Red, NC::Cyan),
-     Color(NC::Black, NC::White)});
+     Color(NC::White, NC::White)});
     auto& keys = highlightmap.first;
     auto& values = highlightmap.second;
     if (keys.size() != values.size()) {

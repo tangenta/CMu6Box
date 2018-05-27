@@ -46,7 +46,7 @@ Window* SettingWin::handleInput(int ch) {
     if (ch == NK::Esc) {
         return new MenuWin(resource);
     } else if (ch == NK::Enter) {
-        validateSetting();
+//        validateSetting();
     } else if (ch == NK::Down) {
         if (focus < 2) focus++;
     } else if (ch == NK::Up) {
@@ -54,9 +54,11 @@ Window* SettingWin::handleInput(int ch) {
     } else if (ch == NK::Left) {
         if (focus == 0) langBox.prev();
         else if (focus == 1) theme.prev();
+        validateSetting();
     } else if (ch == NK::Right) {
         if (focus == 0) langBox.next();
         else if (focus == 1) theme.next();
+        validateSetting();
     }
     return this;
 }

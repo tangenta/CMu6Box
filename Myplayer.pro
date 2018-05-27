@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     ncurse-wrap/util_dialog.cpp \
     database/translator.cpp \
     ncurse-wrap/util_multitext.cpp \
-    user-interfaces/playing-win/songlist_win.cpp
+    user-interfaces/playing-win/songlist_win.cpp \
+    user-interfaces/dir-win/Dir_win.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -54,6 +55,7 @@ HEADERS += \
     ncurse-wrap/util_dialog.h \
     database/translator.h \
     ncurse-wrap/util_multitext.h \
-    user-interfaces/playing-win/songlist_win.h
+    user-interfaces/playing-win/songlist_win.h \
+    user-interfaces/dir-win/Dir_win.h
 
 LIBS += -lncursesw

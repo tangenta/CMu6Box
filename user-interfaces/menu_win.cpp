@@ -1,6 +1,7 @@
 #include "menu_win.h"
 #include "../ncurse-wrap/ncurses_wrapper.h"
 #include "./playing-win/playing_win.h"
+#include "./dir-win/Dir_win.h"
 #include "setting_win.h"
 #include "../resources.h"
 #include "../ncurse-wrap/util_dialog.h"
@@ -23,7 +24,9 @@ Window* MenuWin::handleInput(int ch) {
     } else if (ch == NK::Enter) {
         if (focus == 0) {
             return new PlayingWin(resource);
-        } else if (focus == 2) {
+        } else if (focus == 1) {
+            return new Dir_win(resource);
+        }else if (focus == 2) {
             return new SettingWin(resource);
         } else {
             return this;
