@@ -107,7 +107,7 @@ void PlayingWin::drawSongName() {
 
     // TODO:
     NMenu m(24, 1);
-    m.addItem(n);
+    m.addItem(NText(n, normal));
     m.setAttr(normal);
     m.setHighlight(normal);
     Window::draw(m, songName);

@@ -39,6 +39,18 @@ void Window::clearScreen() {
     Ncurses::werase_s(this->wp);
 }
 
+std::string Window::getInput(int row, int col, int length) {
+    char* str = new char[length+1];
+    Ncurses::echo_s();
+    Ncurses::wmove_s(this->wp, row, col);
+    Ncurses::wgetnstr_s(this->wp, str, length);
+    std::string res{str};
+    delete[] str;
+
+    Ncurses::noecho_s();
+    return res;
+}
+
 void Window::setBackground(QString const& colorStr) {
     Color color = resource->parseColor(colorStr);
     Ncurses::wbkgdset_s(wp, color.getPair());

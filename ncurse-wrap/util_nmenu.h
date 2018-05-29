@@ -10,7 +10,6 @@ public:
     NMenu(int width, int height);
 
     void addItem(NText const& newItem);
-    void addItems(std::initializer_list<const char* const> const& newItems);
     void removeItemAt(int index);
 
     bool isEmpty() const;

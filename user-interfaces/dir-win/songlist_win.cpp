@@ -8,6 +8,7 @@
 
 static const Position LIST_NAME(4, 4);
 static const Position SONG_LIST(4, 20);
+static const std::string DEFAULT{"*add list*"};
 
 Songlist_win::Songlist_win(Resources* res) : Window(res) {
     _initMenus();
@@ -28,10 +29,23 @@ Window* Songlist_win::handleInput(int ch) {
     } else if (ch == NK::Esc) {
         return new MenuWin(resource);
     } else if (ch == NK::Enter) {
-        if (_listnames.getFocusCont() == "..") {
-            // add new songlist
-            std::string n{"*untitled*"};
-            n.insert(9, std::to_string(resource->songlistNames.length()));
+        if (_listnames.getFocusCont() == DEFAULT) {
+
+            // input name
+            std::string n = getInput(LIST_NAME.getRow()-1, LIST_NAME.getCol(), 20);
+
+            // if the name is reduplicated or empty, then help generate a new name
+            auto i_b = resource->songlistNames.begin();
+            auto i_e = resource->songlistNames.end();
+            if (n.empty() || std::find(i_b, i_e, n.c_str()) != i_e) {
+                int num = resource->songlistNames.length();
+                for (;;) {
+                    n = std::string("*untitled") + std::to_string(num++) + std::string("*");
+                    auto it = std::find(i_b, i_e, n.c_str());
+                    if (it == i_e) break;
+                }
+            }
+
             resource->songlistNames.push_front(n.c_str());
             resource->songlists.push_front({});
 
@@ -40,7 +54,7 @@ Window* Songlist_win::handleInput(int ch) {
             return new Listmenu_win(resource, _listnames, _songlist);
         }
     } else if (ch == NK::Right) {
-        if (_listnames.getFocusCont() != "..") {
+        if (_listnames.getFocusCont() != DEFAULT) {
             return new Songs_win(resource, _listnames, _songlist);
         }
     }

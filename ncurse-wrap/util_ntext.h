@@ -7,7 +7,7 @@ class NText
 {
 public:
     NText();
-    NText(std::string const& content, Attr const& attribute = Attr());
+    explicit NText(std::string const& content, Attr const& attribute = Attr());
     std::string getContent() const;
     int getBeginPoint() const;
     int getWidth() const;

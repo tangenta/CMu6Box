@@ -23,7 +23,7 @@ Resources::Resources(QObject *parent) : QObject(parent) {
     } catch (Exception const&) {
 
     }
-    songlistNames.push_back("..");
+    songlistNames.push_back("*add list*");
     songlists.push_back({});
 
     try {
@@ -113,7 +113,7 @@ void Resources::writeSonglist(QString filename) {
     }
     QTextStream out(&file);
     QJsonObject obj;
-    // -1 : remove ".."
+    // -1 : remove "*add list*"
     for (int i = 0; i < songlistNames.size()-1; i++) {
         obj.insert(songlistNames.at(i), QJsonArray::fromStringList(songlists.at(i)));
     }
@@ -182,12 +182,12 @@ Color Resources::parseHighlight(const QString &colorStr) {
     static SCMap highlightmap = std::make_pair<std::vector<QString>, std::vector<Color>>(
     {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"},
     {Color(NC::Cyan, NC::Black),
-     Color(NC::Green, NC::Red),
-     Color(NC::Red, NC::Green),
-     Color(NC::Blue, NC::Yellow),
+     Color(NC::Black, NC::Red),
+     Color(NC::Yellow, NC::Green),
+     Color(NC::Cyan, NC::Yellow),
      Color(NC::Yellow, NC::Blue),
-     Color(NC::Green, NC::Magenta),
-     Color(NC::Red, NC::Cyan),
+     Color(NC::Yellow, NC::Magenta),
+     Color(NC::Yellow, NC::Cyan),
      Color(NC::White, NC::White)});
     auto& keys = highlightmap.first;
     auto& values = highlightmap.second;

@@ -230,6 +230,10 @@ void Ncurses::beep_s() {
     }
 }
 
+void Ncurses::wgetnstr_s(NWINDOW* wp, char* str, int length) {
+    wgetnstr(RC(wp), str, length);
+}
+
 void Ncurses::werase_s(NWINDOW* win) {
     werase(RC(win));
 }

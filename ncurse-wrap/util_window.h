@@ -28,6 +28,7 @@ public:
     NWINDOW* getNWindow() const;
 
     void clearScreen();
+    std::string getInput(int row, int col, int length);
 
     void setBackground(QString const& colorStr);
 

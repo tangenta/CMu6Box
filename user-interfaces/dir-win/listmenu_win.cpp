@@ -7,10 +7,11 @@
 static const Position LIST_NAME(4, 4);
 
 static const std::string OP0 = "add to playinglist";
-static const std::string OP0_0 = "replace playinglist";
-static const std::string OP1 = "add directory";
-static const std::string OP2 = "replace directory";
-static const std::string OP3 = "remove songlist";
+static const std::string OP1 = "replace playinglist";
+static const std::string OP2 = "add directory";
+static const std::string OP3 = "replace directory";
+static const std::string OP4 = "rename list";
+static const std::string OP5 = "remove songlist";
 
 Listmenu_win::Listmenu_win(Resources* res, NMenu const& listnames, NMenu const& songlist)
     : Songlist_win(res, listnames, songlist) {
@@ -34,7 +35,7 @@ Window* Listmenu_win::handleInput(int ch) {
             resource->refreshPlayinglist();
             return new Songlist_win(resource, _listnames, _songlist);
 
-        } else if (_menu.getFocusCont() == OP0_0) {
+        } else if (_menu.getFocusCont() == OP1) {
             resource->playingList.clear();
             resource->playingList.append(resource->songlists[_listnames.getFocus()]);
             // remove duplicates
@@ -44,13 +45,26 @@ Window* Listmenu_win::handleInput(int ch) {
             resource->refreshPlayinglist();
             return new Songlist_win(resource, _listnames, _songlist);
 
-        } else if (_menu.getFocusCont() == OP1) {
+        } else if (_menu.getFocusCont() == OP2) {
             return new Dir_win(resource, _listnames, _songlist, Op::ADD_SONGLIST);
 
-        } else if (_menu.getFocusCont() == OP2) {
+        } else if (_menu.getFocusCont() == OP3) {
             return new Dir_win(resource, _listnames, _songlist, Op::REPLACE_SONGLIST);
 
-        } else if (_menu.getFocusCont() == OP3) {
+        } else if (_menu.getFocusCont() == OP4) {
+            // input name
+            std::string n = getInput(LIST_NAME.getRow()-1, LIST_NAME.getCol(), 20);
+
+            // if the name is not reduplicated or empty, then rename
+            auto i_b = resource->songlistNames.begin();
+            auto i_e = resource->songlistNames.end();
+            if (!n.empty() && std::find(i_b, i_e, n.c_str()) == i_e) {
+                resource->songlistNames.replace(_listnames.getFocus(), n.c_str());
+            }
+            Songlist_win::_refreshMenus();
+            return new Songlist_win(resource, _listnames, _songlist);
+
+        } else if (_menu.getFocusCont() == OP5) {
             resource->songlistNames.removeAt(_listnames.getFocus());
             resource->songlists.removeAt(_listnames.getFocus());
             Songlist_win::_refreshMenus();
@@ -87,9 +101,10 @@ void Listmenu_win::_initMenu() {
     _menu.setAttr(normal);
     _menu.setHighlight(highlight);
 
-    _menu.addItem(OP0);
-    _menu.addItem(OP0_0);
-    _menu.addItem(OP1);
-    _menu.addItem(OP2);
-    _menu.addItem(OP3);
+    _menu.addItem(NText(OP1, normal));
+    _menu.addItem(NText(OP0, normal));
+    _menu.addItem(NText(OP2, normal));
+    _menu.addItem(NText(OP3, normal));
+    _menu.addItem(NText(OP4, normal));
+    _menu.addItem(NText(OP5, normal));
 }

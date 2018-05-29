@@ -120,6 +120,7 @@ struct Ncurses {
     static void nocbreak_s();
     static int set_escdelay_s(int);
     static void beep_s();
+    static void wgetnstr_s(NWINDOW*, char*, int);
     static void werase_s(NWINDOW*);
     // extended functions
     static NWINDOW* getStdscr();
