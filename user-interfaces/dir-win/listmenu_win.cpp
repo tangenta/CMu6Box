@@ -51,7 +51,7 @@ void Listmenu_win::draw() {
     Songlist_win::draw();
 
     // 12 = !10! + 2, 6 = !4! + 2
-    NBorder border(12, 6, '-', '|', '+');
+    NBorder border(20, 6, '-', '|', '+');
     NBlock<NMenu, NBorder> bl(_menu, border);
     Window::draw(bl,
                  LIST_NAME + Position(_listnames.getFocus()-2, 12));
@@ -59,7 +59,7 @@ void Listmenu_win::draw() {
 
 void Listmenu_win::_initMenu() {
     // TODO: prettify
-    _menu = NMenu(10, 4);
+    _menu = NMenu(18, 4);
     _menu.setAttr(normal);
     _menu.setHighlight(highlight);
     _menu.addItem(OP1);

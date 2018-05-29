@@ -22,6 +22,7 @@ protected:
 private:
     void _fill_list(int offPos);
     void _initMenus();
+    void _initMenusAttr();
 };
 
 #endif // SONGLIST_WIN_H

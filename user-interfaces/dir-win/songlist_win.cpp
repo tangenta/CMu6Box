@@ -2,6 +2,9 @@
 #include "resources.h"
 #include "../menu_win.h"
 #include "dir_win.h"
+#include "songs_win.h"
+#include "../../ncurse-wrap/util_nblock.h"
+#include "../../ncurse-wrap/util_nborder.h"
 
 static const Position LIST_NAME(4, 4);
 static const Position SONG_LIST(4, 20);
@@ -11,7 +14,9 @@ Songlist_win::Songlist_win(Resources* res) : Window(res) {
 }
 
 Songlist_win::Songlist_win(Resources* res, NMenu const& listnames, NMenu const& songlist)
-    : Window(res), _listnames(listnames), _songlist(songlist) {}
+    : Window(res), _listnames(listnames), _songlist(songlist) {
+    _initMenusAttr();
+}
 
 Songlist_win::~Songlist_win() {}
 
@@ -34,16 +39,34 @@ Window* Songlist_win::handleInput(int ch) {
         } else {
             return new Listmenu_win(resource, _listnames, _songlist);
         }
+    } else if (ch == NK::Right) {
+        if (_listnames.getFocusCont() != "..") {
+            return new Songs_win(resource, _listnames, _songlist);
+        }
     }
+
     _fill_list(_listnames.getFocus());
     return this;
 }
 
-void Songlist_win::update() {}
+void Songlist_win::update() {
+    static int counter = 0;
+    if (counter++ == 20) {
+        counter = 0;
+        _listnames.update();
+    }
+}
 
 void Songlist_win::draw() {
     Window::draw(_listnames, LIST_NAME);
-    Window::draw(_songlist, SONG_LIST);
+
+    NBorder border(42, 20, ' ', '|', ' ');
+    NBlock<NMenu, NBorder> bl(_songlist, border);
+    Window::draw(bl, SONG_LIST + Position(-1, 0));
+
+    // title
+    Window::draw(NText("> SONGLIST"), LIST_NAME + Position(-2, 1));
+    Window::draw(NText("  CONTENT"), SONG_LIST + Position(-2, 12));
 }
 
 void Songlist_win::addSonglist(const QString &name, const QStringList &sl) {
@@ -77,11 +100,8 @@ void Songlist_win::replaceSonglist(const QString &name, const QStringList &sl) {
 void Songlist_win::_initMenus() {
     // TODO: prettify
     _listnames = NMenu(14, 18);
-    _songlist = NMenu(20, 18);
-    _listnames.setAttr(normal);
-    _listnames.setHighlight(highlight);
-    _songlist.setAttr(normal);
-    _songlist.setHighlight(normal);
+    _songlist = NMenu(40, 18);
+    _initMenusAttr();
 
     // add songlist names
     for (QString const& s : resource->songlistNames) {
@@ -92,8 +112,16 @@ void Songlist_win::_initMenus() {
     _fill_list(_listnames.getFocus());
 }
 
+void Songlist_win::_initMenusAttr() {
+    _listnames.setAttr(normal);
+    _listnames.setHighlight(highlight);
+    _songlist.setAttr(normal);
+    _songlist.setHighlight(normal);
+}
+
 void Songlist_win::_refreshMenus() {
     _listnames.removeAll();
+    _initMenusAttr();
 
     // add songlist names
     for (QString const& s : resource->songlistNames) {

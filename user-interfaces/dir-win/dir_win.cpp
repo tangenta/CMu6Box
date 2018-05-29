@@ -100,7 +100,6 @@ void Dir_win::draw() {
     Window::draw(_pre, _preP);
     Window::draw(_next, _nextP);
 
-    // 26 = !24! + 2, 18 = !16! + 2
     NBorder border(36, 20, ' ', '|', ' ');
     NBlock<NMenu, NBorder> bl(_cur, border, true, true);
     Window::draw(bl, _curP);
