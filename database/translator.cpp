@@ -12,6 +12,12 @@ static const std::map<std::string, std::string> cn = {
     {"language", "语言"},
     {"about", "关于"},
     {"theme", "主题"},
+    {"Mode", "模式"},
+    {"Current Item Once", "单曲播放"},
+    {"Current Item In Loop", "单曲循环"},
+    {"Sequential", "顺序播放"},
+    {"Loop", "列表循环"},
+    {"Random", "随机播放"},
 };
 
 Translator::Translator() {}

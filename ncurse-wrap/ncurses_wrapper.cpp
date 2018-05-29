@@ -265,4 +265,6 @@ int const NK::Down = KEY_DOWN;
 int const NK::Right = KEY_RIGHT;
 int const NK::Left = KEY_LEFT;
 int const NK::Esc = 27;
-int const NK::Enter = 10;   // KEY_ENTER doesn't work?
+int const NK::Enter = '\n';
+int const NK::Tab = '\t';
+int const NK::Space = ' ';

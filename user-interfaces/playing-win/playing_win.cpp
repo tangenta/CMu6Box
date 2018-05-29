@@ -15,6 +15,9 @@ static const Position volumePos(4, 4);
 static const Position playingIconPos(6, 36);
 static const Position progressBar(18, 13);
 static const Position songName(13, 30);
+static const Position playBackModePos(15, 30);
+static const std::vector<std::string> playBackMode =
+{"Current Item Once", "Current Item In Loop", "Sequential", "Loop", "Random"};
 
 bool PlayingWin::playing = false;
 int PlayingWin::volume = 40;
@@ -54,6 +57,10 @@ Window* PlayingWin::handleInput(int ch) {
         emit previous();
     } else if (ch == NK::Right) {
         emit next();
+    } else if (ch == NK::Tab) {
+        int mode = resource->playlist.playbackMode();
+        mode = mode == 4 ? 0 : mode+1;
+        resource->playlist.setPlaybackMode(static_cast<QMediaPlaylist::PlaybackMode>(mode));
     } else if (ch == NK::Enter) {
         return new PlaylistWin(resource);
     }
@@ -68,6 +75,7 @@ void PlayingWin::draw() {
     drawVolume();
     drawSongName();
     drawPlayingIcon();
+    drawPlayMode();
 }
 
 void PlayingWin::drawVolume() {
@@ -111,6 +119,11 @@ void PlayingWin::drawSongName() {
     m.setAttr(normal);
     m.setHighlight(normal);
     Window::draw(m, songName);
+}
+
+void PlayingWin::drawPlayMode() {
+    NText mode(tl("Mode")+": "+tl(playBackMode[resource->playlist.playbackMode()]), normal);
+    Window::draw(mode, playBackModePos);
 }
 
 void PlayingWin::drawProgressBar() {
