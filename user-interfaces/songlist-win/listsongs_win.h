@@ -1,11 +1,11 @@
 #ifndef SONGS_WIN_H
 #define SONGS_WIN_H
-#include "songlist_win.h"
+#include "listname_win.h"
 
-class Songs_win : public Songlist_win {
+class Listsongs_win : public Listname_win {
 public:
-    Songs_win(Resources* res, NMenu const& listnames, NMenu const& songlist);
-    ~Songs_win();
+    Listsongs_win(Resources* res, NMenu const& listnames, NMenu const& songlist);
+    ~Listsongs_win();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;

@@ -2,11 +2,11 @@
 #define SONGLIST_WIN_H
 #include "../../ncurse-wrap/util_window.h"
 
-class Songlist_win : public Window {
+class Listname_win : public Window {
 public:
-    Songlist_win(Resources* res);
-    Songlist_win(Resources* res, NMenu const& listnames, NMenu const& songlist);
-    ~Songlist_win();
+    Listname_win(Resources* res);
+    Listname_win(Resources* res, NMenu const& listnames, NMenu const& songlist);
+    ~Listname_win();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;

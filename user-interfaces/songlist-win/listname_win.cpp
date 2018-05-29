@@ -1,8 +1,8 @@
-#include "songlist_win.h"
+#include "listname_win.h"
 #include "resources.h"
 #include "../menu_win.h"
 #include "dir_win.h"
-#include "songs_win.h"
+#include "listsongs_win.h"
 #include "../../ncurse-wrap/util_nblock.h"
 #include "../../ncurse-wrap/util_nborder.h"
 
@@ -10,18 +10,18 @@ static const Position LIST_NAME(4, 4);
 static const Position SONG_LIST(4, 20);
 static const std::string DEFAULT{"*add list*"};
 
-Songlist_win::Songlist_win(Resources* res) : Window(res) {
+Listname_win::Listname_win(Resources* res) : Window(res) {
     _initMenus();
 }
 
-Songlist_win::Songlist_win(Resources* res, NMenu const& listnames, NMenu const& songlist)
+Listname_win::Listname_win(Resources* res, NMenu const& listnames, NMenu const& songlist)
     : Window(res), _listnames(listnames), _songlist(songlist) {
     _initMenusAttr();
 }
 
-Songlist_win::~Songlist_win() {}
+Listname_win::~Listname_win() {}
 
-Window* Songlist_win::handleInput(int ch) {
+Window* Listname_win::handleInput(int ch) {
     if (ch == NK::Down) {
         _listnames.moveDown();
     } else if (ch == NK::Up) {
@@ -48,11 +48,11 @@ Window* Songlist_win::handleInput(int ch) {
 
             _initMenus();
         } else {
-            return new Listmenu_win(resource, _listnames, _songlist);
+            return new Listedit_win(resource, _listnames, _songlist);
         }
     } else if (ch == NK::Right) {
         if (_listnames.getFocusCont() != DEFAULT) {
-            return new Songs_win(resource, _listnames, _songlist);
+            return new Listsongs_win(resource, _listnames, _songlist);
         }
     }
 
@@ -60,7 +60,7 @@ Window* Songlist_win::handleInput(int ch) {
     return this;
 }
 
-void Songlist_win::update() {
+void Listname_win::update() {
     static int counter = 0;
     if (counter++ == 20) {
         counter = 0;
@@ -68,7 +68,7 @@ void Songlist_win::update() {
     }
 }
 
-void Songlist_win::draw() {
+void Listname_win::draw() {
     Window::draw(_listnames, LIST_NAME);
 
     NBorder border(42, 20, ' ', '|', ' ', normal);
@@ -80,7 +80,7 @@ void Songlist_win::draw() {
     Window::draw(NText("  CONTENT", normal), SONG_LIST + Position(-2, 12));
 }
 
-void Songlist_win::addSonglist(const QString &name, const QStringList &sl) {
+void Listname_win::addSonglist(const QString &name, const QStringList &sl) {
     int idx = resource->songlistNames.indexOf(name);
 
     if (idx == -1) { // not exists
@@ -94,7 +94,7 @@ void Songlist_win::addSonglist(const QString &name, const QStringList &sl) {
     resource->songlists[idx].removeDuplicates();
 }
 
-void Songlist_win::replaceSonglist(const QString &name, const QStringList &sl) {
+void Listname_win::replaceSonglist(const QString &name, const QStringList &sl) {
     int idx = resource->songlistNames.indexOf(name);
 
     if (idx == -1) { // not exists
@@ -108,7 +108,7 @@ void Songlist_win::replaceSonglist(const QString &name, const QStringList &sl) {
     resource->songlists[idx].removeDuplicates();
 }
 
-void Songlist_win::_initMenus() {
+void Listname_win::_initMenus() {
     // TODO: prettify
     _listnames = NMenu(14, 18);
     _songlist = NMenu(40, 18);
@@ -123,14 +123,14 @@ void Songlist_win::_initMenus() {
     _fill_list(_listnames.getFocus());
 }
 
-void Songlist_win::_initMenusAttr() {
+void Listname_win::_initMenusAttr() {
     _listnames.setAttr(normal);
     _listnames.setHighlight(highlight);
     _songlist.setAttr(normal);
     _songlist.setHighlight(normal);
 }
 
-void Songlist_win::_refreshMenus() {
+void Listname_win::_refreshMenus() {
     _listnames.removeAll();
 
     // add songlist names
@@ -143,7 +143,7 @@ void Songlist_win::_refreshMenus() {
     _fill_list(_listnames.getFocus());
 }
 
-void Songlist_win::_fill_list(int offPos) {
+void Listname_win::_fill_list(int offPos) {
     _songlist.removeAll();
     int i = 0;
     for (QString const& s : resource->songlists.at(offPos)) {

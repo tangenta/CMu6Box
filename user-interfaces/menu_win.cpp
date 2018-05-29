@@ -1,7 +1,7 @@
 #include "menu_win.h"
 #include "../ncurse-wrap/ncurses_wrapper.h"
 #include "./playing-win/playing_win.h"
-#include "./dir-win/songlist_win.h"
+#include "./songlist-win/listname_win.h"
 #include "setting_win.h"
 #include "../resources.h"
 #include "../ncurse-wrap/util_dialog.h"
@@ -27,7 +27,7 @@ Window* MenuWin::handleInput(int ch) {
         if (focus == 0) {
             return new PlayingWin(resource);
         } else if (focus == 1) {
-            return new Songlist_win(resource);
+            return new Listname_win(resource);
         }else if (focus == 2) {
             return new SettingWin(resource);
         } else {

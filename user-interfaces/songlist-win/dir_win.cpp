@@ -8,7 +8,7 @@ static const Position _curP(2, 20);
 static const Position _nextP(5, 60);
 
 Dir_win::Dir_win(Resources* res, NMenu const& listnames, NMenu const& songlist, Op const& op)
-    : Listmenu_win(res, listnames, songlist), _op(op) {
+    : Listedit_win(res, listnames, songlist), _op(op) {
     _initDir();
     _initMenus();
 }
@@ -53,7 +53,7 @@ Window* Dir_win::handleInput(int ch) {
             _fill_pre();
         }
     } else if (ch == NK::Esc) {
-        return new Songlist_win(resource, _listnames, _songlist);
+        return new Listname_win(resource, _listnames, _songlist);
     } else if (ch == NK::Enter) {
 
         if (_dir.cd(_cur.getFocusCont().c_str())) {
@@ -68,17 +68,17 @@ Window* Dir_win::handleInput(int ch) {
             // match operation, add or replace
             switch (_op) {
             case Op::ADD_SONGLIST:
-                Songlist_win::addSonglist(_listnames.getFocusCont().c_str(), sl);
+                Listname_win::addSonglist(_listnames.getFocusCont().c_str(), sl);
                 break;
             case Op::REPLACE_SONGLIST:
-                Songlist_win::replaceSonglist(_listnames.getFocusCont().c_str(), sl);
+                Listname_win::replaceSonglist(_listnames.getFocusCont().c_str(), sl);
                 break;
             }
 
-            Songlist_win::_refreshMenus();
+            Listname_win::_refreshMenus();
         }
 
-        return new Songlist_win(resource, _listnames, _songlist);
+        return new Listname_win(resource, _listnames, _songlist);
     }
     _fill_next();
     return this;

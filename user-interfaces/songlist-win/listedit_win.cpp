@@ -1,4 +1,4 @@
-#include "listmenu_win.h"
+#include "listedit_win.h"
 #include "resources.h"
 #include "dir_win.h"
 #include "../../ncurse-wrap/util_nblock.h"
@@ -13,14 +13,14 @@ static const std::string OP3 = "replace directory";
 static const std::string OP4 = "rename list";
 static const std::string OP5 = "remove songlist";
 
-Listmenu_win::Listmenu_win(Resources* res, NMenu const& listnames, NMenu const& songlist)
-    : Songlist_win(res, listnames, songlist) {
+Listedit_win::Listedit_win(Resources* res, NMenu const& listnames, NMenu const& songlist)
+    : Listname_win(res, listnames, songlist) {
     _initMenu();
 }
 
-Listmenu_win::~Listmenu_win() {}
+Listedit_win::~Listedit_win() {}
 
-Window* Listmenu_win::handleInput(int ch) {
+Window* Listedit_win::handleInput(int ch) {
     if (ch == NK::Down) {
         _menu.moveDown();
     } else if (ch == NK::Up) {
@@ -33,7 +33,7 @@ Window* Listmenu_win::handleInput(int ch) {
 
             // refresh playinglist
             resource->refreshPlayinglist();
-            return new Songlist_win(resource, _listnames, _songlist);
+            return new Listname_win(resource, _listnames, _songlist);
 
         } else if (_menu.getFocusCont() == OP1) {
             resource->playingList.clear();
@@ -43,7 +43,7 @@ Window* Listmenu_win::handleInput(int ch) {
 
             // refresh playinglist
             resource->refreshPlayinglist();
-            return new Songlist_win(resource, _listnames, _songlist);
+            return new Listname_win(resource, _listnames, _songlist);
 
         } else if (_menu.getFocusCont() == OP2) {
             return new Dir_win(resource, _listnames, _songlist, Op::ADD_SONGLIST);
@@ -58,25 +58,24 @@ Window* Listmenu_win::handleInput(int ch) {
             // if the name is not reduplicated or empty, then rename
             if (!n.empty() && !resource->songlistNames.contains(n.c_str())) {
                 resource->songlistNames.replace(_listnames.getFocus(), n.c_str());
-                Songlist_win::_refreshMenus();
+                Listname_win::_refreshMenus();
             }
-
-            return new Songlist_win(resource, _listnames, _songlist);
+            return new Listname_win(resource, _listnames, _songlist);
 
         } else if (_menu.getFocusCont() == OP5) {
             resource->songlistNames.removeAt(_listnames.getFocus());
             resource->songlists.removeAt(_listnames.getFocus());
-            Songlist_win::_refreshMenus();
-            return new Songlist_win(resource, _listnames, _songlist);
+            Listname_win::_refreshMenus();
+            return new Listname_win(resource, _listnames, _songlist);
 
         }
     } else if (ch == NK::Esc) {
-        return new Songlist_win(resource, _listnames, _songlist);
+        return new Listname_win(resource, _listnames, _songlist);
     }
     return this;
 }
 
-void Listmenu_win::update() {
+void Listedit_win::update() {
     static int counter = 0;
     if (counter++ == 20) {
         counter = 0;
@@ -84,8 +83,8 @@ void Listmenu_win::update() {
     }
 }
 
-void Listmenu_win::draw() {
-    Songlist_win::draw();
+void Listedit_win::draw() {
+    Listname_win::draw();
 
     // 12 = !10! + 2, 6 = !4! + 2
     NBorder border(20, 6, '-', '|', '+', normal);
@@ -94,14 +93,14 @@ void Listmenu_win::draw() {
                  LIST_NAME + Position(_listnames.getFocus()-2, 12));
 }
 
-void Listmenu_win::_initMenu() {
+void Listedit_win::_initMenu() {
     // TODO: prettify
     _menu = NMenu(18, 4);
     _menu.setAttr(normal);
     _menu.setHighlight(highlight);
 
-    _menu.addItem(NText(OP1, normal));
     _menu.addItem(NText(OP0, normal));
+    _menu.addItem(NText(OP1, normal));
     _menu.addItem(NText(OP2, normal));
     _menu.addItem(NText(OP3, normal));
     _menu.addItem(NText(OP4, normal));

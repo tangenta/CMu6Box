@@ -2,10 +2,10 @@
 #define DIR_WIN_H
 #include <QDir>
 #include "../../ncurse-wrap/util_window.h"
-#include "songlist_win.h"
-#include "listmenu_win.h"
+#include "listname_win.h"
+#include "listedit_win.h"
 
-class Dir_win: public Listmenu_win {
+class Dir_win: public Listedit_win {
 public:
     Dir_win(Resources* res, NMenu const& listnames, NMenu const& songlist, Op const& op);
     ~Dir_win();

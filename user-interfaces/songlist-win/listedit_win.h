@@ -1,12 +1,12 @@
 #ifndef LISTMENU_WIN_H
 #define LISTMENU_WIN_H
 
-#include "songlist_win.h"
+#include "listname_win.h"
 
-class Listmenu_win : public Songlist_win {
+class Listedit_win : public Listname_win {
 public:
-    Listmenu_win(Resources* res, NMenu const& listnames, NMenu const& songlist);
-    ~Listmenu_win();
+    Listedit_win(Resources* res, NMenu const& listnames, NMenu const& songlist);
+    ~Listedit_win();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;
