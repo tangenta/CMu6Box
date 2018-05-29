@@ -50,8 +50,14 @@ void NText::setBeginPoint(int index) {
 }
 
 Printer NText::toPrinter() const {
+    int size = content.size();
+
+    if (width > size) {  // fill with blank
+        return Printer(1, Printee(content+std::string(width-size, ' '), attribute));
+    }
+
     std::string::const_iterator endIter;
-    if (beginPoint + width > static_cast<int>(content.size())) {
+    if (beginPoint + width > size) {
         endIter = content.end();
     } else {
         endIter = content.begin() + beginPoint + width;

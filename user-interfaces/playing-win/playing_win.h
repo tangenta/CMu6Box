@@ -27,6 +27,7 @@ private:
     void drawVolume();
     void drawPlayingIcon();
     void drawSongName();
+    void drawPlayMode();
     static int volume;
     std::vector<std::string> playIcon = {" *    ",
                                          " ***  ",

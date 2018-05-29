@@ -39,6 +39,8 @@ struct NK {
     static int const Right;
     static int const Esc;
     static int const Enter;
+    static int const Tab;
+    static int const Space;
 };
 
 class NWINDOW {};

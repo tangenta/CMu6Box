@@ -3,6 +3,7 @@
 #include "./playing_win.h"
 #include "../../ncurse-wrap/util_nblock.h"
 #include "../../ncurse-wrap/util_nborder.h"
+#include "playlistedit_win.h"
 
 static const Position PLAYING_LIST(4, 55);
 
@@ -19,12 +20,16 @@ Window* PlaylistWin::handleInput(int ch) {
         menu.moveDown();
     } else if (ch == NK::Esc) {
         return new PlayingWin(resource);
-    } else if (ch == ' ') {
+    } else if (ch == NK::Space) {
         playing = !playing;
         if (playing) {
             emit play();
         } else {
             emit pause();
+        }
+    } else if (ch == NK::Right || ch == NK::Left) {
+        if (!menu.isEmpty()) {
+            return new PlaylistEditWin(resource, menu.getFocus());
         }
     } else if (ch == NK::Enter) {
         if (!menu.isEmpty()) {

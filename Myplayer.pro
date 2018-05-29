@@ -29,6 +29,8 @@ SOURCES += main.cpp \
     user-interfaces/songlist-win/listedit_win.cpp \
     user-interfaces/songlist-win/listname_win.cpp \
     user-interfaces/songlist-win/listsongs_win.cpp
+    user-interfaces/playing-win/playlistedit_win.cpp \
+    user-interfaces/songinfo_win.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -63,5 +65,7 @@ HEADERS += \
     user-interfaces/songlist-win/listedit_win.h \
     user-interfaces/songlist-win/listname_win.h \
     user-interfaces/songlist-win/listsongs_win.h
+    user-interfaces/playing-win/playlistedit_win.h \
+    user-interfaces/songinfo_win.h
 
 LIBS += -lncursesw
