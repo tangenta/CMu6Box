@@ -73,5 +73,8 @@ void SettingWin::draw() {
 void SettingWin::validateSetting() {
     resource->translator = Translator(langBox.text());
     resource->themeColor = QString(theme.text().c_str());
+    Attr attr(resource->parseColor(resource->themeColor));
+    langBox.setAttr(attr);
+    theme.setAttr(attr);
     setBackground(resource->themeColor);
 }

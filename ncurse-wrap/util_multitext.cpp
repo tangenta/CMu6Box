@@ -36,6 +36,10 @@ void MultiText::setIndex(int i) {
     index = i;
 }
 
+void MultiText::setAttr(const Attr &aAttr) {
+    attr = aAttr;
+}
+
 int MultiText::getHeigth() const {
     return 1;
 }
