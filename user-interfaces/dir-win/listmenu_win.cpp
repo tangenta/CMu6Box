@@ -56,12 +56,11 @@ Window* Listmenu_win::handleInput(int ch) {
             std::string n = getInput(LIST_NAME.getRow()-1, LIST_NAME.getCol(), 20);
 
             // if the name is not reduplicated or empty, then rename
-            auto i_b = resource->songlistNames.begin();
-            auto i_e = resource->songlistNames.end();
-            if (!n.empty() && std::find(i_b, i_e, n.c_str()) == i_e) {
+            if (!n.empty() && !resource->songlistNames.contains(n.c_str())) {
                 resource->songlistNames.replace(_listnames.getFocus(), n.c_str());
+                Songlist_win::_refreshMenus();
             }
-            Songlist_win::_refreshMenus();
+
             return new Songlist_win(resource, _listnames, _songlist);
 
         } else if (_menu.getFocusCont() == OP5) {

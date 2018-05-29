@@ -117,6 +117,7 @@ void Resources::writeSonglist(QString filename) {
     for (int i = 0; i < songlistNames.size()-1; i++) {
         obj.insert(songlistNames.at(i), QJsonArray::fromStringList(songlists.at(i)));
     }
+
     QJsonDocument doc(obj);
     out << doc.toJson();
     file.close();

@@ -35,14 +35,11 @@ Window* Songlist_win::handleInput(int ch) {
             std::string n = getInput(LIST_NAME.getRow()-1, LIST_NAME.getCol(), 20);
 
             // if the name is reduplicated or empty, then help generate a new name
-            auto i_b = resource->songlistNames.begin();
-            auto i_e = resource->songlistNames.end();
-            if (n.empty() || std::find(i_b, i_e, n.c_str()) != i_e) {
+            if (n.empty() || resource->songlistNames.contains(n.c_str())) {
                 int num = resource->songlistNames.length();
                 for (;;) {
                     n = std::string("*untitled") + std::to_string(num++) + std::string("*");
-                    auto it = std::find(i_b, i_e, n.c_str());
-                    if (it == i_e) break;
+                    if (!resource->songlistNames.contains(n.c_str())) break;
                 }
             }
 
