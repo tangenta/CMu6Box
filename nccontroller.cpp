@@ -42,7 +42,7 @@ NCController::~NCController() {
     Ncurses::endwin_s();
     resource->writeSetting("setting.json");
     resource->writeSonglist("songlist.json");
-//    resource->playlist.save(QUrl("playlist"));
+    resource->writePlayinglist("playinglist.json");
 }
 
 void NCController::exec() {

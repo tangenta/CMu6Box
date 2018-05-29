@@ -60,13 +60,13 @@ void Songlist_win::update() {
 void Songlist_win::draw() {
     Window::draw(_listnames, LIST_NAME);
 
-    NBorder border(42, 20, ' ', '|', ' ');
+    NBorder border(42, 20, ' ', '|', ' ', normal);
     NBlock<NMenu, NBorder> bl(_songlist, border);
     Window::draw(bl, SONG_LIST + Position(-1, 0));
 
     // title
-    Window::draw(NText("> SONGLIST"), LIST_NAME + Position(-2, 1));
-    Window::draw(NText("  CONTENT"), SONG_LIST + Position(-2, 12));
+    Window::draw(NText("> SONGLIST", highlight), LIST_NAME + Position(-2, 1));
+    Window::draw(NText("  CONTENT", normal), SONG_LIST + Position(-2, 12));
 }
 
 void Songlist_win::addSonglist(const QString &name, const QStringList &sl) {
@@ -105,7 +105,7 @@ void Songlist_win::_initMenus() {
 
     // add songlist names
     for (QString const& s : resource->songlistNames) {
-        _listnames.addItem(NText(s.toStdString()));
+        _listnames.addItem(NText(s.toStdString(), normal));
     }
 
     // songs of the songlins
@@ -121,12 +121,12 @@ void Songlist_win::_initMenusAttr() {
 
 void Songlist_win::_refreshMenus() {
     _listnames.removeAll();
-    _initMenusAttr();
 
     // add songlist names
     for (QString const& s : resource->songlistNames) {
-        _listnames.addItem(NText(s.toStdString()));
+        _listnames.addItem(NText(s.toStdString(), normal));
     }
+    _initMenusAttr();
 
     // songs of the songlins
     _fill_list(_listnames.getFocus());
@@ -142,6 +142,6 @@ void Songlist_win::_fill_list(int offPos) {
         std::string n = u.fileName().toStdString();
         std::size_t p = n.find_last_of(".");
         n = n.substr(0, p);
-        _songlist.addItem(NText(std::to_string(++i) + ". " + n));
+        _songlist.addItem(NText(std::to_string(++i) + ". " + n, normal));
     }
 }

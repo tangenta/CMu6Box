@@ -34,8 +34,8 @@ void Songs_win::draw() {
     // title
     static const Position LIST_NAME(4, 4);
     static const Position SONG_LIST(4, 20);
-    Window::draw(NText("  SONGLIST"), LIST_NAME + Position(-2, 1));
-    Window::draw(NText("> CONTENT"), SONG_LIST + Position(-2, 12));
+    Window::draw(NText("  SONGLIST", normal), LIST_NAME + Position(-2, 1));
+    Window::draw(NText("> CONTENT", highlight), SONG_LIST + Position(-2, 12));
 }
 
 void Songs_win::_initMenusAttr() {

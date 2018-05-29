@@ -16,7 +16,11 @@ public:
     // play
     QMediaPlayer player;
     QMediaPlaylist playlist;
-    QList<QMediaContent> playingList;
+    QStringList playingList;
+
+    void refreshPlayinglist();
+    void writePlayinglist(QString filename);
+    void readPlayinglist(QString filename);
 
 
     // songlist
@@ -25,7 +29,6 @@ public:
 
     QList<QString> songlistNames;
     QList<QStringList> songlists;
-
 
     // setting
     void readSetting(QString filename);

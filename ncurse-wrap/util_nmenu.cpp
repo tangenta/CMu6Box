@@ -37,6 +37,10 @@ void NMenu::removeAll() {
     focus = frame = 0;
 }
 
+bool NMenu::isEmpty() const {
+    return items.empty();
+}
+
 int NMenu::getHeight() const {
     return height;
 }

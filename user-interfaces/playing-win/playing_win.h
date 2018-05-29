@@ -33,6 +33,7 @@ private:
                                          " **** ",
                                          " ***  ",
                                          " *    "};
+
     std::vector<std::string> pauseIcon ={" # # ",
                                          " # # ",
                                          " # # ",

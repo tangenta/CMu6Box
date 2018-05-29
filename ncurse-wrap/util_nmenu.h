@@ -13,6 +13,7 @@ public:
     void addItems(std::initializer_list<const char* const> const& newItems);
     void removeItemAt(int index);
 
+    bool isEmpty() const;
     int getHeight() const;
     int getWidth() const;
     int getFocus() const;

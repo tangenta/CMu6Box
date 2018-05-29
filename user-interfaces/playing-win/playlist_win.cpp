@@ -1,8 +1,10 @@
 #include "playlist_win.h"
 #include "../../nccontroller.h"
 #include "./playing_win.h"
+#include "../../ncurse-wrap/util_nblock.h"
+#include "../../ncurse-wrap/util_nborder.h"
 
-static const Position songList(4, 56);
+static const Position PLAYING_LIST(4, 55);
 
 PlaylistWin::PlaylistWin(Resources *res) : PlayingWin(res) {
     initSongList();
@@ -25,7 +27,9 @@ Window* PlaylistWin::handleInput(int ch) {
             emit pause();
         }
     } else if (ch == NK::Enter) {
-        resource->playlist.setCurrentIndex(menu.getFocus());
+        if (!menu.isEmpty()) {
+            resource->playlist.setCurrentIndex(menu.getFocus());
+        }
     }
     return this;
 }
@@ -40,15 +44,17 @@ void PlaylistWin::update() {
 
 void PlaylistWin::draw() {
     this->PlayingWin::draw();
-    Window::draw(menu, songList);
+
+    Window::draw(NText("PLAYING LIST", normal), PLAYING_LIST + Position(-2, 4));
+    Window::draw(menu, PLAYING_LIST);
 }
 
 void PlaylistWin::initSongList() {
     menu = NMenu(22, 10);
     int i = 0;
-    for (const QMediaContent& c : resource->playingList) {
+    for (const QString& c : resource->playingList) {
         std::string is = std::to_string(++i);
-        std::string n = c.canonicalUrl().fileName().toStdString();
+        std::string n = QUrl(c).fileName().toStdString();
         std::size_t p = n.find_last_of('.');
         n = n.substr(0, p);
         menu.addItem(NText(is + ". " + n));

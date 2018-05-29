@@ -93,14 +93,14 @@ void Dir_win::update() {
 }
 
 void Dir_win::draw() {
-    Window::draw(NText("PREVIOUS"), _preP + Position(-2, 2));
-    Window::draw(NText("CURRENT"), _curP + Position(-1, 14));
-    Window::draw(NText("NEXT"), _nextP + Position(-2, 4));
+    Window::draw(NText("PREVIOUS", normal), _preP + Position(-2, 2));
+    Window::draw(NText("CURRENT", normal), _curP + Position(-1, 14));
+    Window::draw(NText("NEXT", normal), _nextP + Position(-2, 4));
     _initMenuAttr();
     Window::draw(_pre, _preP);
     Window::draw(_next, _nextP);
 
-    NBorder border(36, 20, ' ', '|', ' ');
+    NBorder border(36, 20, ' ', '|', ' ', normal);
     NBlock<NMenu, NBorder> bl(_cur, border, true, true);
     Window::draw(bl, _curP);
 }
@@ -110,7 +110,7 @@ void Dir_win::_fill_cur() {
     QStringList ds = _dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
     ds.append(_dir.entryList((QStringList() << "*.mp3" << "*.flac"), QDir::Files));
     for (const QString &f : ds) {
-        _cur.addItem(NText(f.toStdString()));
+        _cur.addItem(NText(f.toStdString(), normal));
     }
 }
 
@@ -121,7 +121,7 @@ void Dir_win::_fill_pre() {
         QStringList ds = _dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
         ds.append(_dir.entryList((QStringList() << "*.mp3" << "*.flac"), QDir::Files));
         for (const QString &f : ds) {
-            _pre.addItem(NText(f.toStdString()));
+            _pre.addItem(NText(f.toStdString(), normal));
         }
     }
     _dir.cd(can);
@@ -134,7 +134,7 @@ void Dir_win::_fill_next() {
         QStringList ds = _dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
         ds.append(_dir.entryList((QStringList() << "*.mp3" << "*.flac"), QDir::Files));
         for (const QString &f : ds) {
-            _next.addItem(NText(f.toStdString()));
+            _next.addItem(NText(f.toStdString(), normal));
         }
     }
     _dir.cd(can);

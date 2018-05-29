@@ -7,14 +7,6 @@ using SCMap = std::pair<std::vector<QString>, std::vector<Color>>;
 Resources::Resources(QObject *parent) : QObject(parent) {
     player.setPlaylist(&playlist);
 
-    QDir dir;
-    dir.cd("/home/gaufoo/Music/Songs");
-//    dir.cd("/home/tangenta/Music");
-    QStringList files = dir.entryList((QStringList() << "*.mp3" << "*.flac"), QDir::Files);
-    for (const QString &f : files) {
-        playingList.push_back(QUrl::fromLocalFile(dir.path()+"/"+f));
-    }
-    playlist.addMedia(playingList);
     playlist.setPlaybackMode(QMediaPlaylist::Random);
     player.setVolume(40);
 
@@ -29,9 +21,62 @@ Resources::Resources(QObject *parent) : QObject(parent) {
     try {
         readSonglist("songlist.json");
     } catch (Exception const&) {
+
     }
     songlistNames.push_back("..");
     songlists.push_back({});
+
+    try {
+        readPlayinglist("playinglist.json");
+    } catch (Exception const&) {
+
+    }
+    refreshPlayinglist();
+}
+
+void Resources::refreshPlayinglist() {
+    QList<QMediaContent> pl;
+    for (const QString &f : playingList) {
+        pl.push_back(QUrl::fromLocalFile(f));
+    }
+    playlist.clear();
+    playlist.addMedia(pl);
+}
+
+void Resources::readPlayinglist(QString filename) {
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)) {
+        throw FatalError("Resources::readSonglist()");
+    }
+
+    QJsonParseError parseErr;
+    QJsonObject playinglistObj = QJsonDocument::fromJson(file.readAll(), &parseErr).object();
+    file.close();
+
+    if (parseErr.error != QJsonParseError::NoError) {
+        throw JsonOpenError("Resources::readSonglist()");
+    }
+
+    QJsonArray playinglistAry = playinglistObj.value("playinglist").toArray();
+
+    for (const QJsonValue& v : playinglistAry) {
+        playingList.push_back(v.toString());
+    }
+}
+
+void Resources::writePlayinglist(QString filename) {
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly)) {
+        throw FatalError("Resource::writeSonglist()");
+    }
+    QTextStream out(&file);
+    QJsonObject obj;
+
+    obj.insert("playinglist", QJsonArray::fromStringList(playingList));
+
+    QJsonDocument doc(obj);
+    out << doc.toJson();
+    file.close();
 }
 
 void Resources::readSonglist(QString filename) {
