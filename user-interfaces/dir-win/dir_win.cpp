@@ -1,24 +1,32 @@
 #include "dir_win.h"
 #include "../menu_win.h"
+#include "../../ncurse-wrap/util_nblock.h"
+#include "../../ncurse-wrap/util_nborder.h"
 
-static int _col = 4;
-static int _row = 4;
-static int _width = 20;
-static int _height = 18;
+static const Position _preP(5, 4);
+static const Position _curP(2, 20);
+static const Position _nextP(5, 60);
 
-static const Position _preP(_row, _col);
-static const Position _curP(_row, _col + _width + 4);
-static const Position _nextP(_row, _col + _width * 2 + 8);
+Dir_win::Dir_win(Resources* res, NMenu const& listnames, NMenu const& songlist, Op const& op)
+    : Listmenu_win(res, listnames, songlist), _op(op) {
+    _initDir();
+    _initMenus();
+}
 
-Dir_win::Dir_win(Resources* res) : Songlist_win(res) {
+void Dir_win::_initDir() {
     _dir = QDir::home();
     _dir.setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
-    _pre = NMenu(_width, _height);
-    _cur = NMenu(_width, _height);
-    _next = NMenu(_width, _height);
+}
+
+void Dir_win::_initMenus() {
+    // pre and next are smaller and thinner
+    _pre = NMenu(10, 12);
+    _cur = NMenu(24, 18);
+    _next = NMenu(10, 12);
     _fill_pre();
     _fill_cur();
     _fill_next();
+    _initMenuAttr();
 }
 
 Dir_win::~Dir_win() {}
@@ -33,7 +41,7 @@ Window* Dir_win::handleInput(int ch) {
         if (_cur.getFocusCont() == "") {
             _dir.cd(can);
         } else if (_dir.cd(_cur.getFocusCont().c_str())) {
-            _pre = _cur;
+            _fill_pre();
             _fill_cur();
         }
         else {
@@ -41,23 +49,36 @@ Window* Dir_win::handleInput(int ch) {
         }
     } else if (ch == NK::Left) {
         if (_dir.cdUp()) {
-            _cur = _pre;
+            _fill_cur();
             _fill_pre();
         }
     } else if (ch == NK::Esc) {
-        return new Songlist_win(resource);
-
+        return new Songlist_win(resource, _listnames, _songlist);
     } else if (ch == NK::Enter) {
+
         if (_dir.cd(_cur.getFocusCont().c_str())) {
+
+            // get all audio files
             QFileInfoList ls = _dir.entryInfoList((QStringList() << "*.mp3" << "*.flac"), QDir::Files);
             QStringList sl;
             for (const QFileInfo &fi : ls) {
                 sl.push_back(fi.canonicalFilePath());
             }
-            this->Songlist_win::addSonglist("list1", sl);
+
+            // match operation, add or replace
+            switch (_op) {
+            case Op::ADD_SONGLIST:
+                Songlist_win::addSonglist(_listnames.getFocusCont().c_str(), sl);
+                break;
+            case Op::REPLACE_SONGLIST:
+                Songlist_win::replaceSonglist(_listnames.getFocusCont().c_str(), sl);
+                break;
+            }
+
+            Songlist_win::_refreshMenus();
         }
 
-        return new Songlist_win(resource);
+        return new Songlist_win(resource, _listnames, _songlist);
     }
     _fill_next();
     return this;
@@ -72,13 +93,17 @@ void Dir_win::update() {
 }
 
 void Dir_win::draw() {
-    Window::draw(NText("PREVIOUS"), _preP + Position(-2, (_width - 8) / 2));
-    Window::draw(NText("CURRENT"), _curP + Position(-2, (_width - 7) / 2));
-    Window::draw(NText("NEXT"), _nextP + Position(-2, (_width - 4) / 2));
+    Window::draw(NText("PREVIOUS"), _preP + Position(-2, 2));
+    Window::draw(NText("CURRENT"), _curP + Position(-1, 14));
+    Window::draw(NText("NEXT"), _nextP + Position(-2, 4));
     _initMenuAttr();
     Window::draw(_pre, _preP);
-    Window::draw(_cur, _curP);
     Window::draw(_next, _nextP);
+
+    // 26 = !24! + 2, 18 = !16! + 2
+    NBorder border(36, 20, ' ', '|', ' ');
+    NBlock<NMenu, NBorder> bl(_cur, border, true, true);
+    Window::draw(bl, _curP);
 }
 
 void Dir_win::_fill_cur() {

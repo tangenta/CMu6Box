@@ -17,6 +17,12 @@ void NMenu::addItem(NText const& newItem) {
     items[0].setAttr(highlight);
 }
 
+void NMenu::addItems(std::initializer_list<const char* const> const& newItems) {
+    for (auto n : newItems) {
+       this->addItem(NText(n));
+    }
+}
+
 void NMenu::removeItemAt(int index) {
     int itemSize = items.size();
     if (index < 0 || index >= itemSize) {

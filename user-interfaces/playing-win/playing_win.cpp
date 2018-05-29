@@ -3,6 +3,8 @@
 #include "../../ncurse-wrap/ncurses_wrapper.h"
 #include "../../ncurse-wrap/util_nmenu.h"
 #include "../../nccontroller.h"
+#include "../../ncurse-wrap/util_nblock.h"
+#include "../../ncurse-wrap/util_nborder.h"
 #include "./playlist_win.h"
 #include <string>
 #include <QDateTime>

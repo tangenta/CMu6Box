@@ -1,6 +1,8 @@
 #include "setting_win.h"
 #include "menu_win.h"
 #include "../resources.h"
+#include "../ncurse-wrap/util_nblock.h"
+#include "../ncurse-wrap/util_nborder.h"
 #include <QDir>
 
 SettingWin::SettingWin(Resources* res): Window(res) {

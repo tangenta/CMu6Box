@@ -29,9 +29,9 @@ Resources::Resources(QObject *parent) : QObject(parent) {
     try {
         readSonglist("songlist.json");
     } catch (Exception const&) {
-        songlistNames.push_back("..");
-        songlists.push_back({});
     }
+    songlistNames.push_back("..");
+    songlists.push_back({});
 }
 
 void Resources::readSonglist(QString filename) {
@@ -68,7 +68,8 @@ void Resources::writeSonglist(QString filename) {
     }
     QTextStream out(&file);
     QJsonObject obj;
-    for (int i = 0; i < songlistNames.size(); i++) {
+    // -1 : remove ".."
+    for (int i = 0; i < songlistNames.size()-1; i++) {
         obj.insert(songlistNames.at(i), QJsonArray::fromStringList(songlists.at(i)));
     }
     QJsonDocument doc(obj);

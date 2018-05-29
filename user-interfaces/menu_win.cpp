@@ -5,6 +5,8 @@
 #include "setting_win.h"
 #include "../resources.h"
 #include "../ncurse-wrap/util_dialog.h"
+#include "../ncurse-wrap/util_nblock.h"
+#include "../ncurse-wrap/util_nborder.h"
 #include <QFile>
 #include <QTextStream>
 #include <QDir>

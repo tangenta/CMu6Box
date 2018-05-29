@@ -2,8 +2,6 @@
 #define MENU_WIN_H
 
 #include "../ncurse-wrap/util_window.h"
-#include "../ncurse-wrap/util_nblock.h"
-#include "../ncurse-wrap/util_nborder.h"
 
 class Dialog;
 class MenuWin: public Window {
