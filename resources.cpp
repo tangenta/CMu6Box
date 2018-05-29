@@ -139,7 +139,8 @@ void Resources::readSetting(QString filename) {
     }
     QString colorStr = settingObj.value("theme").toString();
     themeColor = colorStr;
-
+    QString langStr = settingObj.value("language").toString();
+    translator = Translator(langStr.toStdString());
 }
 
 void Resources::writeSetting(QString filename) {
@@ -150,6 +151,8 @@ void Resources::writeSetting(QString filename) {
     QTextStream out(&file);
     QJsonObject obj;
     obj.insert("theme", QJsonValue(themeColor));
+    QString langStr = translator.isEnglish() ? "English" : "Chinese";
+    obj.insert("language", QJsonValue(langStr));
     QJsonDocument doc(obj);
     out << doc.toJson();
     file.close();

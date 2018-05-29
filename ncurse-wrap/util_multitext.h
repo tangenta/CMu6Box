@@ -18,6 +18,7 @@ public:
     void next();
     void prev();
     void setIndex(int i);
+    void setAttr(Attr const& aAttr);
     int getHeigth() const;
     int getWidth() const;
     std::string text() const;   // return current text
