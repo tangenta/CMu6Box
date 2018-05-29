@@ -19,7 +19,6 @@ static const Position playBackModePos(15, 30);
 static const std::vector<std::string> playBackMode =
 {"Current Item Once", "Current Item In Loop", "Sequential", "Loop", "Random"};
 
-bool PlayingWin::playing = false;
 int PlayingWin::volume = 40;
 
 PlayingWin::PlayingWin(Resources* res)
@@ -34,12 +33,11 @@ PlayingWin::PlayingWin(Resources* res)
 PlayingWin::~PlayingWin() {}
 
 Window* PlayingWin::handleInput(int ch) {
-    if (ch == ' ') {
-        playing = !playing;
-        if (playing) {
-            emit play();
-        } else {
+    if (ch == NK::Space) {
+        if (resource->player.state() == QMediaPlayer::PlayingState) {
             emit pause();
+        } else {
+            emit play();
         }
     } else if (ch == NK::Esc) {
         return new MenuWin(resource);
@@ -100,7 +98,7 @@ void PlayingWin::drawPlayingIcon() {
     int row = playingIconPos.getRow();
     int col = playingIconPos.getCol();
     for (size_t i = 0; i != playIcon.size(); ++i) {
-        if (playing) {
+        if (resource->player.state() == QMediaPlayer::PlayingState) {
             Window::draw(NText(pauseIcon[i], normal), Position(row+i, col));
         } else {
             Window::draw(NText(playIcon[i], normal), Position(row+i, col));

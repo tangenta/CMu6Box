@@ -21,11 +21,10 @@ Window* PlaylistWin::handleInput(int ch) {
     } else if (ch == NK::Esc) {
         return new PlayingWin(resource);
     } else if (ch == NK::Space) {
-        playing = !playing;
-        if (playing) {
-            emit play();
-        } else {
+        if (resource->player.state() == QMediaPlayer::PlayingState) {
             emit pause();
+        } else {
+            emit play();
         }
     } else if (ch == NK::Right || ch == NK::Left) {
         if (!menu.isEmpty()) {

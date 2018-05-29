@@ -21,7 +21,6 @@ signals:
 public slots:
 
 protected:
-    static bool playing;
 private:
     void drawProgressBar();
     void drawVolume();

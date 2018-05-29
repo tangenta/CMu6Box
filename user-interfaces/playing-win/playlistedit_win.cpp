@@ -11,7 +11,7 @@ PlaylistEditWin::PlaylistEditWin(Resources* res, int focus)
     : PlaylistWin(res), focusItem(focus) {
     editOptions = NMenu(22, 4);
     for (auto& i: options) {
-        editOptions.addItem(NText(">>  " + i));
+        editOptions.addItem(NText(">>  " + i, normal));
     }
     editOptions.setAttr(normal);
     editOptions.setHighlight(highlight);
@@ -43,15 +43,17 @@ void PlaylistEditWin::update() {}
 
 void PlaylistEditWin::draw() {
     PlaylistWin::draw();
-    NBorder bord('=', '*', '#');
+    NBorder bord('=', '*', '#', normal);
     bord.fit(editOptions);
     Window::draw(NBlock<NMenu, NBorder>(editOptions, bord), editWinPos);
 }
 
 void PlaylistEditWin::setPlayNext() {
     int curIndex = resource->playlist.currentIndex();
-    resource->playingList.swap(focusItem, curIndex+1);
-    resource->playlist.moveMedia(focusItem, curIndex+1);
+    if (curIndex != focusItem) {
+        resource->playingList.swap(focusItem, curIndex+1);
+        resource->playlist.moveMedia(focusItem, curIndex+1);
+    }
 }
 
 void PlaylistEditWin::removeFromList() {
