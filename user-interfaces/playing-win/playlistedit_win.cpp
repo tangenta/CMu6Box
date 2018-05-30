@@ -2,6 +2,7 @@
 #include "../../ncurse-wrap/util_nblock.h"
 #include "../../ncurse-wrap/util_nborder.h"
 #include "../../resources.h"
+#include "../songinfo_win.h"
 
 static const Position editWinPos(6, 54);
 static const std::vector<std::string> options =
@@ -31,8 +32,9 @@ Window* PlaylistEditWin::handleInput(int ch) {
         switch (localFocus) {
         case 0: setPlayNext(); break; /* play next */
         case 1: removeFromList(); break; /* remove from list */
-        case 2: break; /* song info */
-        case 3: break; /* source song list */
+        case 2: /* song info */
+            return new SongInfoWin(resource, resource->playlist.media(focusItem));
+        case 3: break; //// TODO: /* source song list */
         }
         return new PlaylistWin(resource);
     }

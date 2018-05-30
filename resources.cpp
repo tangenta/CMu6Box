@@ -7,17 +7,7 @@ using SCMap = std::pair<std::vector<QString>, std::vector<Color>>;
 Resources::Resources(QObject *parent) : QObject(parent) {
     player.setPlaylist(&playlist);
 
-    playlist.setPlaybackMode(QMediaPlaylist::Random);
-    player.setVolume(40);
-
-
-    try {
-        readSetting("setting.json");
-    } catch (Exception const&) {  // fallback to default
-        translator = Translator();
-        themeColor = QString("Black");
-    }
-
+    // the order matters: readPlayinglist() first, readSetting() next
     try {
         readSonglist("songlist.json");
     } catch (Exception const&) {
@@ -32,6 +22,13 @@ Resources::Resources(QObject *parent) : QObject(parent) {
 
     }
     refreshPlayinglist();
+
+    try {
+        readSetting("setting.json");
+    } catch (Exception const&) {  // fallback to default
+        translator = Translator();
+        themeColor = QString("Black");
+    }
 }
 
 void Resources::refreshPlayinglist() {
@@ -141,6 +138,19 @@ void Resources::readSetting(QString filename) {
     themeColor = colorStr;
     QString langStr = settingObj.value("language").toString();
     translator = Translator(langStr.toStdString());
+    int volume = settingObj.value("volume").toInt(0);
+    player.setVolume(volume);
+    QMediaPlaylist::PlaybackMode mode =
+            static_cast<QMediaPlaylist::PlaybackMode>(
+                settingObj.value("play back mode").toInt(0));
+    playlist.setPlaybackMode(mode);
+    QString playingSongLoc = settingObj.value("current song location").toString();
+    auto iter = std::find(playingList.cbegin(), playingList.cend(), playingSongLoc);
+    int diff = iter - playingList.cbegin();
+    if (iter != playingList.cend()) {
+        // not good for list
+        playlist.setCurrentIndex(std::distance(playingList.cbegin(), iter));
+    }
 }
 
 void Resources::writeSetting(QString filename) {
@@ -153,13 +163,17 @@ void Resources::writeSetting(QString filename) {
     obj.insert("theme", QJsonValue(themeColor));
     QString langStr = translator.isEnglish() ? "English" : "Chinese";
     obj.insert("language", QJsonValue(langStr));
+    obj.insert("volume", QJsonValue(player.volume()));
+    obj.insert("play back mode", QJsonValue(static_cast<int>(playlist.playbackMode())));
+    obj.insert("current song location", QJsonValue(
+                   playlist.currentMedia().canonicalUrl().toLocalFile()));
     QJsonDocument doc(obj);
     out << doc.toJson();
     file.close();
 }
 
 Color Resources::parseColor(QString const& colorStr) {
-    static SCMap scmap = std::make_pair<std::vector<QString>, std::vector<Color>>(
+    static const SCMap scmap = std::make_pair<std::vector<QString>, std::vector<Color>>(
     {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"},
     {Color(NC::White, NC::Black),
      Color(NC::White, NC::Red),
@@ -171,19 +185,16 @@ Color Resources::parseColor(QString const& colorStr) {
      Color(NC::Black, NC::White)});
     auto& keys = scmap.first;
     auto& values = scmap.second;
-    if (keys.size() != values.size()) {
-        throw FatalError("Resources::parseColor()");
-    }
+
     auto iter = std::find(keys.begin(), keys.end(), colorStr);
     if (iter == keys.end()) {
         throw FatalError("Resources::parseColor()");
     }
-    auto diff = iter-keys.begin();
-    return *(values.begin()+diff);
+    return values.at(std::distance(keys.begin(), iter));
 }
 
 Color Resources::parseHighlight(const QString &colorStr) {
-    static SCMap highlightmap = std::make_pair<std::vector<QString>, std::vector<Color>>(
+    static const SCMap highlightmap = std::make_pair<std::vector<QString>, std::vector<Color>>(
     {"Black", "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"},
     {Color(NC::Cyan, NC::Black),
      Color(NC::Black, NC::Red),
@@ -195,13 +206,10 @@ Color Resources::parseHighlight(const QString &colorStr) {
      Color(NC::White, NC::White)});
     auto& keys = highlightmap.first;
     auto& values = highlightmap.second;
-    if (keys.size() != values.size()) {
-        throw FatalError("Resources::parseColor()");
-    }
+
     auto iter = std::find(keys.begin(), keys.end(), colorStr);
     if (iter == keys.end()) {
         throw FatalError("Resources::parseColor()");
     }
-    auto diff = iter-keys.begin();
-    return *(values.begin()+diff);
+    return values.at(std::distance(keys.begin(), iter));
 }
