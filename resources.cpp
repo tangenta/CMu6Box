@@ -146,7 +146,6 @@ void Resources::readSetting(QString filename) {
     playlist.setPlaybackMode(mode);
     QString playingSongLoc = settingObj.value("current song location").toString();
     auto iter = std::find(playingList.cbegin(), playingList.cend(), playingSongLoc);
-    int diff = iter - playingList.cbegin();
     if (iter != playingList.cend()) {
         // not good for list
         playlist.setCurrentIndex(std::distance(playingList.cbegin(), iter));

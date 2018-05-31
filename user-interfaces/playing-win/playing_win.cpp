@@ -19,10 +19,9 @@ static const Position playBackModePos(15, 30);
 static const std::vector<std::string> playBackMode =
 {"Current Item Once", "Current Item In Loop", "Sequential", "Loop", "Random"};
 
-int PlayingWin::volume = 40;
 
 PlayingWin::PlayingWin(Resources* res)
-    : Window(res) {
+    : Window(res), volume(resource->player.volume()) {
     connect(this, SIGNAL(play()), &resource->player, SLOT(play()));
     connect(this, SIGNAL(pause()), &resource->player, SLOT(pause()));
     connect(this, SIGNAL(setVolume(int)), &resource->player, SLOT(setVolume(int)));
