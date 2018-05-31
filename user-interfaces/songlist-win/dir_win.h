@@ -2,6 +2,7 @@
 #define DIR_WIN_H
 #include <QDir>
 #include "../../ncurse-wrap/util_window.h"
+#include "../../ncurse-wrap/util_dialog.h"
 #include "listname_win.h"
 #include "listedit_win.h"
 
@@ -17,6 +18,7 @@ private:
     QDir _dir;
     void _initDir();
 
+//    Dialog _dialog;
     NMenu _pre;
     NMenu _cur;
     NMenu _next;

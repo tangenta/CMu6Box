@@ -6,10 +6,10 @@
 
 static const Position editWinPos(6, 54);
 static const std::vector<std::string> options =
-{"play next", "remove from list", "song info", "source song list"};
+{"play", "play next", "remove from list", "song info", "source song list"};
 
-PlaylistEditWin::PlaylistEditWin(Resources* res, int focus)
-    : PlaylistWin(res), focusItem(focus) {
+PlaylistEditWin::PlaylistEditWin(Resources *res, const NMenu &list)
+    : PlaylistWin(res, list), focusItem(list.getFocus()) {
     editOptions = NMenu(22, 4);
     for (auto& i: options) {
         editOptions.addItem(NText(">>  " + i, normal));
@@ -22,7 +22,7 @@ PlaylistEditWin::~PlaylistEditWin() {}
 
 Window* PlaylistEditWin::handleInput(int ch) {
     if (ch == NK::Esc) {
-        return new PlaylistWin(resource);
+        return new PlaylistWin(resource, list);
     } else if (ch == NK::Up) {
         editOptions.moveUp();
     } else if (ch == NK::Down) {
@@ -30,13 +30,14 @@ Window* PlaylistEditWin::handleInput(int ch) {
     } else if (ch == NK::Enter){
         int localFocus = editOptions.getFocus();
         switch (localFocus) {
-        case 0: setPlayNext(); break; /* play next */
-        case 1: removeFromList(); break; /* remove from list */
-        case 2: /* song info */
+        case 0: resource->playlist.setCurrentIndex(focusItem);
+        case 1: setPlayNext(); break; /* play next */
+        case 2: removeFromList(); break; /* remove from list */
+        case 3: /* song info */
             return new SongInfoWin(resource, resource->playlist.media(focusItem));
-        case 3: break; //// TODO: /* source song list */
+        case 4: break; //// TODO: /* source song list */
         }
-        return new PlaylistWin(resource);
+        return new PlaylistWin(resource, list);
     }
     return this;
 }

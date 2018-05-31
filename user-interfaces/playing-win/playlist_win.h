@@ -6,14 +6,17 @@
 class PlaylistWin : public PlayingWin {
 public:
     PlaylistWin(Resources* res);
+    PlaylistWin(Resources* res, NMenu const& list);
     ~PlaylistWin();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;
 
+protected:
+    NMenu list;
+
 private:
     void initSongList();
-    NMenu menu;
 };
 
 #endif // SONGLIST_WIN_H

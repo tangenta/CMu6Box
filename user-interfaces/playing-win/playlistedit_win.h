@@ -4,7 +4,7 @@
 
 class PlaylistEditWin: public PlaylistWin {
 public:
-    PlaylistEditWin(Resources* res, int focus);
+    PlaylistEditWin(Resources* res, NMenu const& list);
     ~PlaylistEditWin();
     Window* handleInput(int ch);
     void update();
@@ -13,6 +13,7 @@ private:
     void setPlayNext();
     void removeFromList();
     NMenu editOptions;
+
     int focusItem;
 };
 

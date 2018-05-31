@@ -11,6 +11,7 @@ Dir_win::Dir_win(Resources* res, NMenu const& listnames, NMenu const& songlist, 
     : Listedit_win(res, listnames, songlist), _op(op) {
     _initDir();
     _initMenus();
+//    _dialog = Dialog("Sure?", 10, 10, normal);
 }
 
 void Dir_win::_initDir() {
@@ -103,6 +104,8 @@ void Dir_win::draw() {
     NBorder border(36, 20, ' ', '|', ' ', normal);
     NBlock<NMenu, NBorder> bl(_cur, border, true, true);
     Window::draw(bl, _curP);
+
+//    Window::draw(_dialog, Position(10, 10));
 }
 
 void Dir_win::_fill_cur() {

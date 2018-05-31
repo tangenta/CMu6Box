@@ -11,13 +11,16 @@ PlaylistWin::PlaylistWin(Resources *res) : PlayingWin(res) {
     initSongList();
 }
 
+PlaylistWin::PlaylistWin(Resources *res, NMenu const& menu)
+    : PlayingWin(res), list(menu) {}
+
 PlaylistWin::~PlaylistWin() {}
 
 Window* PlaylistWin::handleInput(int ch) {
     if (ch == NK::Up) {
-        menu.moveUp();
+        list.moveUp();
     } else if (ch == NK::Down) {
-        menu.moveDown();
+        list.moveDown();
     } else if (ch == NK::Esc) {
         return new PlayingWin(resource);
     } else if (ch == NK::Space) {
@@ -26,13 +29,9 @@ Window* PlaylistWin::handleInput(int ch) {
         } else {
             emit play();
         }
-    } else if (ch == NK::Right || ch == NK::Left) {
-        if (!menu.isEmpty()) {
-            return new PlaylistEditWin(resource, menu.getFocus());
-        }
     } else if (ch == NK::Enter) {
-        if (!menu.isEmpty()) {
-            resource->playlist.setCurrentIndex(menu.getFocus());
+        if (!list.isEmpty()) {
+            return new PlaylistEditWin(resource, list);
         }
     }
     return this;
@@ -42,7 +41,7 @@ void PlaylistWin::update() {
     static int counter = 0;
     if (counter++ == 20) {
         counter = 0;
-        menu.update();
+        list.update();
     }
 }
 
@@ -50,19 +49,19 @@ void PlaylistWin::draw() {
     this->PlayingWin::draw();
 
     Window::draw(NText("PLAYING LIST", normal), PLAYING_LIST + Position(-2, 4));
-    Window::draw(menu, PLAYING_LIST);
+    Window::draw(list, PLAYING_LIST);
 }
 
 void PlaylistWin::initSongList() {
-    menu = NMenu(22, 10);
+    list = NMenu(22, 10);
     int i = 0;
     for (const QString& c : resource->playingList) {
         std::string is = std::to_string(++i);
         std::string n = QUrl(c).fileName().toStdString();
         std::size_t p = n.find_last_of('.');
         n = n.substr(0, p);
-        menu.addItem(NText(is + ". " + n));
+        list.addItem(NText(is + ". " + n));
     }
-    menu.setAttr(normal);
-    menu.setHighlight(highlight);
+    list.setAttr(normal);
+    list.setHighlight(highlight);
 }
