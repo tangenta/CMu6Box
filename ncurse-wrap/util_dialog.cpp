@@ -7,6 +7,7 @@ Dialog::Dialog(): width(0), height(0), frame(0) {
 
 Dialog::Dialog(std::string const& str, int width, int height, Attr const& attr) :
     content(str), width(width), height(height), normal(attr), highlight(attr), frame(0) {
+    isOK = true;
     cancelAttr = attr;
     okAttr = highlight;
     initializePrinter();
@@ -42,11 +43,21 @@ void Dialog::setHighlight(Attr const& attr) {
 void Dialog::focusCancel() {
     cancelAttr = highlight;
     okAttr = normal;
+    isOK = false;
 }
 
 void Dialog::focusOk() {
     cancelAttr = normal;
     okAttr = highlight;
+    isOK = true;
+}
+
+void Dialog::shiftFocus() {
+    if (isOK == true) {
+        focusCancel();
+    } else {
+        focusOk();
+    }
 }
 
 void Dialog::moveUp() {
@@ -71,4 +82,26 @@ void Dialog::initializePrinter() {
         }
         printer.push_back(Printee(obj, normal, Bias(1,0)));
     }
+}
+
+Dialog::Attitude Dialog::handleInput(int ch) {
+    if (ch == NK::Down) {
+        moveDown();
+        return Attitude::HESITATE;
+    } else if (ch == NK::Up) {
+        moveUp();
+        return Attitude::HESITATE;
+    } else if (ch == NK::Left || ch == NK::Right) {
+        shiftFocus();
+        return Attitude::HESITATE;
+    } else if (ch == NK::Enter) {
+        if (isOK) {
+            return Attitude::OK;
+        } else {
+            return Attitude::REFUSE;
+        }
+    } else if (ch == NK::Esc) {
+        return Attitude::REFUSE;
+    }
+    return Attitude::HESITATE;
 }

@@ -14,8 +14,18 @@ public:
     void setHighlight(const Attr& attr);
     void focusCancel();
     void focusOk();
+    void shiftFocus();
     void moveUp();
     void moveDown();
+
+    enum class Attitude {
+        OK,
+        REFUSE,
+        HESITATE
+    };
+
+    Attitude handleInput(int ch);
+
 private:
     void initializePrinter();
     Printer printer;
@@ -27,6 +37,7 @@ private:
     int frame;
     Attr cancelAttr;
     Attr okAttr;
+    bool isOK;
 };
 
 #endif // UTIL_DIALOG_H

@@ -18,7 +18,6 @@ private:
     QDir _dir;
     void _initDir();
 
-//    Dialog _dialog;
     NMenu _pre;
     NMenu _cur;
     NMenu _next;
@@ -30,6 +29,9 @@ private:
     void _initMenuAttr();
 
     Op _op;
+
+    bool _confirmShowTime;
+    Dialog _confirmBox;
 };
 
 #endif // DIR_WIN_H

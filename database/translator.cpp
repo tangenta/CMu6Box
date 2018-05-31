@@ -18,6 +18,13 @@ static const std::map<std::string, std::string> cn = {
     {"Sequential", "顺序播放"},
     {"Loop", "列表循环"},
     {"Random", "随机播放"},
+    {"add to playinglist", "添加至播放列表"},
+    {"replace playinglist", "置换播放列表"},
+    {"add directory", "按文件夹添加"},
+    {"replace directory", "按文件夹置换"},
+    {"rename list", "重命名歌单"},
+    {"remove songlist", "移除歌单"},
+    {"*add list*", "*添加歌单*"}
 };
 
 Translator::Translator() {}

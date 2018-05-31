@@ -8,10 +8,19 @@ static const Position _curP(2, 20);
 static const Position _nextP(5, 60);
 
 Dir_win::Dir_win(Resources* res, NMenu const& listnames, NMenu const& songlist, Op const& op)
-    : Listedit_win(res, listnames, songlist), _op(op) {
+    : Listedit_win(res, listnames, songlist), _op(op), _confirmShowTime(false) {
     _initDir();
     _initMenus();
-//    _dialog = Dialog("Sure?", 10, 10, normal);
+
+    switch (_op) {
+    case Op::ADD_SONGLIST:
+        _confirmBox = Dialog("Sure?", 18, 5, normal);
+        break;
+    case Op::REPLACE_SONGLIST:
+        _confirmBox = Dialog("Sure??????????", 20, 5, normal);
+        break;
+    }
+    _confirmBox.setHighlight(highlight);
 }
 
 void Dir_win::_initDir() {
@@ -33,6 +42,46 @@ void Dir_win::_initMenus() {
 Dir_win::~Dir_win() {}
 
 Window* Dir_win::handleInput(int ch) {
+
+    // when confirm box appears
+    if (_confirmShowTime == true) {
+        // let confirm box handle keyboard input
+        switch (_confirmBox.handleInput(ch)) {
+            case Dialog::Attitude::HESITATE:
+                return this;
+                break;
+            case Dialog::Attitude::REFUSE:
+                _confirmShowTime = false;
+                return this;
+                break;
+            case Dialog::Attitude::OK:
+                if (_dir.cd(_cur.getFocusCont().c_str())) {
+
+                    // get all audio files
+                    QFileInfoList ls = _dir.entryInfoList((QStringList() << "*.mp3" << "*.flac"), QDir::Files);
+                    QStringList sl;
+                    for (const QFileInfo &fi : ls) {
+                        sl.push_back(fi.canonicalFilePath());
+                    }
+
+                    // match operation, add or replace
+                    switch (_op) {
+                    case Op::ADD_SONGLIST:
+                        Listname_win::addSonglist(_listnames.getFocusCont().c_str(), sl);
+                        break;
+                    case Op::REPLACE_SONGLIST:
+                        Listname_win::replaceSonglist(_listnames.getFocusCont().c_str(), sl);
+                        break;
+                    }
+
+                    Listname_win::_refreshMenus();
+                }
+
+                return new Listname_win(resource, _listnames, _songlist);
+            break;
+        }
+    }
+
     if (ch == NK::Up) {
         _cur.moveUp();
     } else if (ch == NK::Down) {
@@ -56,31 +105,9 @@ Window* Dir_win::handleInput(int ch) {
     } else if (ch == NK::Esc) {
         return new Listname_win(resource, _listnames, _songlist);
     } else if (ch == NK::Enter) {
-
-        if (_dir.cd(_cur.getFocusCont().c_str())) {
-
-            // get all audio files
-            QFileInfoList ls = _dir.entryInfoList((QStringList() << "*.mp3" << "*.flac"), QDir::Files);
-            QStringList sl;
-            for (const QFileInfo &fi : ls) {
-                sl.push_back(fi.canonicalFilePath());
-            }
-
-            // match operation, add or replace
-            switch (_op) {
-            case Op::ADD_SONGLIST:
-                Listname_win::addSonglist(_listnames.getFocusCont().c_str(), sl);
-                break;
-            case Op::REPLACE_SONGLIST:
-                Listname_win::replaceSonglist(_listnames.getFocusCont().c_str(), sl);
-                break;
-            }
-
-            Listname_win::_refreshMenus();
-        }
-
-        return new Listname_win(resource, _listnames, _songlist);
+        _confirmShowTime = true;
     }
+
     _fill_next();
     return this;
 }
@@ -105,7 +132,11 @@ void Dir_win::draw() {
     NBlock<NMenu, NBorder> bl(_cur, border, true, true);
     Window::draw(bl, _curP);
 
-//    Window::draw(_dialog, Position(10, 10));
+    if (_confirmShowTime == true) {
+        NBorder bord('-', '|', '+', normal);
+        bord.fit(_confirmBox);
+        Window::draw(NBlock<Dialog, NBorder>(_confirmBox, bord), Position(8, 25));
+    }
 }
 
 void Dir_win::_fill_cur() {
