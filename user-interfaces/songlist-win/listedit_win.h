@@ -2,6 +2,7 @@
 #define LISTMENU_WIN_H
 
 #include "listname_win.h"
+#include "../../ncurse-wrap/util_dialog.h"
 
 class Listedit_win : public Listname_win {
 public:
@@ -20,6 +21,10 @@ protected:
 private:
     void _initMenu();
     NMenu _menu;
+
+    bool _confirmShowTime;
+    Dialog _confirmBox;
+    void _setConfCont(std::string const& content);
 };
 
 #endif // LISTMENU_WIN_H

@@ -5,6 +5,7 @@
 #include "../../ncurse-wrap/util_nborder.h"
 #include "../../database/translator.h"
 
+
 static const Position LIST_NAME(4, 4);
 
 static const std::string OP0 = "add to playinglist";
@@ -17,34 +18,65 @@ static const std::string OP5 = "remove songlist";
 Listedit_win::Listedit_win(Resources* res, NMenu const& listnames, NMenu const& songlist)
     : Listname_win(res, listnames, songlist) {
     _initMenu();
+    _confirmShowTime = false;
 }
 
 Listedit_win::~Listedit_win() {}
 
 Window* Listedit_win::handleInput(int ch) {
+
+    if (_confirmShowTime == true) {
+        switch (_confirmBox.handleInput(ch)) {
+        case Dialog::Attitude::HESITATE:
+            return this;
+            break;
+        case Dialog::Attitude::REFUSE:
+            _confirmShowTime = false;
+            return this;
+            break;
+        case Dialog::Attitude::OK:
+            if (_menu.getFocusCont() == tl(OP0)) { // add to playinglist
+                resource->playingList.append(resource->songlists[_listnames.getFocus()]);
+                // remove duplicates
+                resource->playingList.removeDuplicates();
+
+                // refresh playinglist
+                resource->refreshPlayinglist();
+                return new Listname_win(resource, _listnames, _songlist);
+
+            } else if (_menu.getFocusCont() == tl(OP1)) { // replace playinglist
+                resource->playingList.clear();
+                resource->playingList.append(resource->songlists[_listnames.getFocus()]);
+                // remove duplicates
+                resource->playingList.removeDuplicates();
+
+                // refresh playinglist
+                resource->refreshPlayinglist();
+                return new Listname_win(resource, _listnames, _songlist);
+
+            } else if (_menu.getFocusCont() == tl(OP5)) { // remove songlist
+                resource->songlistNames.removeAt(_listnames.getFocus());
+                resource->songlists.removeAt(_listnames.getFocus());
+                Listname_win::_refreshMenus();
+                return new Listname_win(resource, _listnames, _songlist);
+            }
+            break;
+        }
+    }
+
+
     if (ch == NK::Down) {
         _menu.moveDown();
     } else if (ch == NK::Up) {
         _menu.moveUp();
     } else if (ch == NK::Enter) {
         if (_menu.getFocusCont() == tl(OP0)) {
-            resource->playingList.append(resource->songlists[_listnames.getFocus()]);
-            // remove duplicates
-            resource->playingList.removeDuplicates();
-
-            // refresh playinglist
-            resource->refreshPlayinglist();
-            return new Listname_win(resource, _listnames, _songlist);
+            _setConfCont("add????");
+            _confirmShowTime = true;
 
         } else if (_menu.getFocusCont() == tl(OP1)) {
-            resource->playingList.clear();
-            resource->playingList.append(resource->songlists[_listnames.getFocus()]);
-            // remove duplicates
-            resource->playingList.removeDuplicates();
-
-            // refresh playinglist
-            resource->refreshPlayinglist();
-            return new Listname_win(resource, _listnames, _songlist);
+            _setConfCont("replace????");
+            _confirmShowTime = true;
 
         } else if (_menu.getFocusCont() == tl(OP2)) {
             return new Dir_win(resource, _listnames, _songlist, Op::ADD_SONGLIST);
@@ -55,12 +87,7 @@ Window* Listedit_win::handleInput(int ch) {
         } else if (_menu.getFocusCont() == tl(OP4)) {
             // input name
             std::string n;
-            try {
-                n = getInput(LIST_NAME.getRow()-1, LIST_NAME.getCol(), 20);
-            } catch (Exception const&) {
-
-            }
-
+            n = getInput(LIST_NAME.getRow()-1, LIST_NAME.getCol(), 20);
 
             // if the name is not reduplicated or empty, then rename
             if (!n.empty() && !resource->songlistNames.contains(n.c_str())) {
@@ -70,11 +97,8 @@ Window* Listedit_win::handleInput(int ch) {
             return new Listname_win(resource, _listnames, _songlist);
 
         } else if (_menu.getFocusCont() == tl(OP5)) {
-            resource->songlistNames.removeAt(_listnames.getFocus());
-            resource->songlists.removeAt(_listnames.getFocus());
-            Listname_win::_refreshMenus();
-            return new Listname_win(resource, _listnames, _songlist);
-
+            _setConfCont("delete????");
+            _confirmShowTime = true;
         }
     } else if (ch == NK::Esc) {
         return new Listname_win(resource, _listnames, _songlist);
@@ -96,6 +120,12 @@ void Listedit_win::draw() {
     bord.fit(_menu);
     Window::draw(NBlock<NMenu, NBorder>(_menu, bord),
                  Position(5, 14));
+
+    if (_confirmShowTime == true) {
+        NBorder bord('-', '|', '+', normal);
+        bord.fit(_confirmBox);
+        Window::draw(NBlock<Dialog, NBorder>(_confirmBox, bord), Position(8, 25));
+    }
 }
 
 void Listedit_win::_initMenu() {
@@ -110,4 +140,9 @@ void Listedit_win::_initMenu() {
     _menu.addItem(NText(tl(OP3), normal));
     _menu.addItem(NText(tl(OP4), normal));
     _menu.addItem(NText(tl(OP5), normal));
+}
+
+void Listedit_win::_setConfCont(std::string const& content) {
+    _confirmBox = Dialog(content, 18, 5, normal);
+    _confirmBox.setHighlight(highlight);
 }
