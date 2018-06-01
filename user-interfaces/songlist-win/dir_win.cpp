@@ -6,6 +6,7 @@
 static const Position _preP(5, 4);
 static const Position _curP(2, 20);
 static const Position _nextP(5, 60);
+static const QStringList supportedFormat(QStringList() << "*.mp3" << "*.flac" << "*.wav");
 
 Dir_win::Dir_win(Resources* res, NMenu const& listnames, NMenu const& songlist, Op const& op)
     : Listedit_win(res, listnames, songlist), _op(op), _confirmShowTime(false) {
@@ -58,7 +59,7 @@ Window* Dir_win::handleInput(int ch) {
                 if (_dir.cd(_cur.getFocusCont().c_str())) {
 
                     // get all audio files
-                    QFileInfoList ls = _dir.entryInfoList((QStringList() << "*.mp3" << "*.flac"), QDir::Files);
+                    QFileInfoList ls = _dir.entryInfoList(supportedFormat, QDir::Files);
                     QStringList sl;
                     for (const QFileInfo &fi : ls) {
                         sl.push_back(fi.canonicalFilePath());
@@ -147,7 +148,7 @@ void Dir_win::draw() {
 void Dir_win::_fill_cur() {
     _cur.removeAll();
     QStringList ds = _dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-    ds.append(_dir.entryList((QStringList() << "*.mp3" << "*.flac"), QDir::Files));
+    ds.append(_dir.entryList(supportedFormat, QDir::Files));
     for (const QString &f : ds) {
         _cur.addItem(NText(f.toStdString(), normal));
     }
@@ -158,7 +159,7 @@ void Dir_win::_fill_pre() {
     QString can = _dir.canonicalPath();
     if (_dir.cdUp()) {
         QStringList ds = _dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-        ds.append(_dir.entryList((QStringList() << "*.mp3" << "*.flac"), QDir::Files));
+        ds.append(_dir.entryList(supportedFormat, QDir::Files));
         for (const QString &f : ds) {
             _pre.addItem(NText(f.toStdString(), normal));
         }
@@ -171,7 +172,7 @@ void Dir_win::_fill_next() {
     QString can = _dir.canonicalPath();
     if (_dir.cd(_cur.getFocusCont().c_str())) {
         QStringList ds = _dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-        ds.append(_dir.entryList((QStringList() << "*.mp3" << "*.flac"), QDir::Files));
+        ds.append(_dir.entryList(supportedFormat, QDir::Files));
         for (const QString &f : ds) {
             _next.addItem(NText(f.toStdString(), normal));
         }
