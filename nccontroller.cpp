@@ -26,7 +26,7 @@ NCController::NCController(QObject *parent)
     Ncurses::wrefresh_s(currentWindow->wp);
 
 
-    // move resource to other thread
+    // move to another thread
     this->moveToThread(&playerThread);
     playerThread.start();
 

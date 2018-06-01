@@ -1,5 +1,6 @@
 #include "listsongs_win.h"
 #include "../menu_win.h"
+#include "songedit_win.h"
 
 Listsongs_win::Listsongs_win(Resources* res, NMenu const& listnames, NMenu const& songlist)
     : Listname_win(res, listnames, songlist) {
@@ -17,6 +18,8 @@ Window* Listsongs_win::handleInput(int ch) {
         return new Listname_win(resource, _listnames, _songlist);
     } else if (ch == NK::Esc) {
         return new MenuWin(resource);
+    } else if (ch == NK::Enter) {
+        return new SongEditWin(resource, _listnames, _songlist);
     }
     return this;
 }

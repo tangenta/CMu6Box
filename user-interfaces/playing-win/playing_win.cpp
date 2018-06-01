@@ -96,10 +96,13 @@ void PlayingWin::drawVolume() {
 void PlayingWin::drawPlayingIcon() {
     int row = playingIconPos.getRow();
     int col = playingIconPos.getCol();
-    for (size_t i = 0; i != playIcon.size(); ++i) {
-        if (resource->player.state() == QMediaPlayer::PlayingState) {
+
+    if (resource->player.state() == QMediaPlayer::PlayingState) {
+        for (size_t i = 0; i != playIcon.size(); ++i) {
             Window::draw(NText(pauseIcon[i], normal), Position(row+i, col));
-        } else {
+        }
+    } else {
+        for (size_t i = 0; i != playIcon.size(); ++i) {
             Window::draw(NText(playIcon[i], normal), Position(row+i, col));
         }
     }
