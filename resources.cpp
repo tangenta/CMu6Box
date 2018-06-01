@@ -13,8 +13,6 @@ Resources::Resources(QObject *parent) : QObject(parent) {
     } catch (Exception const&) {
 
     }
-    songlistNames.push_back("*add list*");
-    songlists.push_back({});
 
     try {
         readPlayinglist("playinglist.json");
@@ -110,8 +108,7 @@ void Resources::writeSonglist(QString filename) {
     }
     QTextStream out(&file);
     QJsonObject obj;
-    // -1 : remove "*add list*"
-    for (int i = 0; i < songlistNames.size()-1; i++) {
+    for (int i = 0; i < songlistNames.size(); i++) {
         obj.insert(songlistNames.at(i), QJsonArray::fromStringList(songlists.at(i)));
     }
 

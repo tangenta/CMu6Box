@@ -29,7 +29,7 @@ Window* Listname_win::handleInput(int ch) {
     } else if (ch == NK::Esc) {
         return new MenuWin(resource);
     } else if (ch == NK::Enter) {
-        if (_listnames.getFocusCont() == DEFAULT) {
+        if (_listnames.getFocusCont() == tl(DEFAULT)) {
 
             // input name
             std::string n = getInput(LIST_NAME.getRow()-1, LIST_NAME.getCol(), 20);
@@ -51,7 +51,7 @@ Window* Listname_win::handleInput(int ch) {
             return new Listedit_win(resource, _listnames, _songlist);
         }
     } else if (ch == NK::Right) {
-        if (_listnames.getFocusCont() != DEFAULT) {
+        if (_listnames.getFocusCont() != tl(DEFAULT)) {
             return new Listsongs_win(resource, _listnames, _songlist);
         }
     }
@@ -118,6 +118,7 @@ void Listname_win::_initMenus() {
     for (QString const& s : resource->songlistNames) {
         _listnames.addItem(NText(s.toStdString(), normal));
     }
+    _listnames.addItem(NText(tl(DEFAULT), normal));
 
     // songs of the songlins
     _fill_list(_listnames.getFocus());
@@ -137,6 +138,7 @@ void Listname_win::_refreshMenus() {
     for (QString const& s : resource->songlistNames) {
         _listnames.addItem(NText(s.toStdString(), normal));
     }
+    _listnames.addItem(NText(tl(DEFAULT), normal));
     _initMenusAttr();
 
     // songs of the songlins
@@ -145,6 +147,8 @@ void Listname_win::_refreshMenus() {
 
 void Listname_win::_fill_list(int offPos) {
     _songlist.removeAll();
+    if (offPos == _listnames.size() - 1) return;
+
     int i = 0;
     for (QString const& s : resource->songlists.at(offPos)) {
         QUrl u(s);

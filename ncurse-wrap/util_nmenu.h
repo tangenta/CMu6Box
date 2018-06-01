@@ -17,6 +17,7 @@ public:
     int getWidth() const;
     int getFocus() const;
     std::string getFocusCont() const;
+    int size() const;
     void removeAll();
     void setAttr(Attr const& attr);
     void setHighlight(Attr const& attr);

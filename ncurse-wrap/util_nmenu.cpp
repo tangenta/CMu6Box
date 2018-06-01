@@ -31,6 +31,10 @@ void NMenu::removeAll() {
     focus = frame = 0;
 }
 
+int NMenu::size() const {
+    return items.size();
+}
+
 bool NMenu::isEmpty() const {
     return items.empty();
 }
