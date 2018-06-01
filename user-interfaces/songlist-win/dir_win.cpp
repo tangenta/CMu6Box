@@ -3,7 +3,7 @@
 #include "../../ncurse-wrap/util_nblock.h"
 #include "../../ncurse-wrap/util_nborder.h"
 
-static const Position _preP(5, 4);
+static const Position _preP(5, 3);
 static const Position _curP(2, 20);
 static const Position _nextP(5, 60);
 static const QStringList supportedFormat(QStringList() << "*.mp3" << "*.flac" << "*.wav");
@@ -31,9 +31,9 @@ void Dir_win::_initDir() {
 
 void Dir_win::_initMenus() {
     // pre and next are smaller and thinner
-    _pre = NMenu(10, 12);
+    _pre = NMenu(16, 12);
     _cur = NMenu(24, 18);
-    _next = NMenu(10, 12);
+    _next = NMenu(16, 12);
     _fill_pre();
     _fill_cur();
     _fill_next();
@@ -123,9 +123,9 @@ void Dir_win::update() {
 }
 
 void Dir_win::draw() {
-    Window::draw(NText("PREVIOUS", normal), _preP + Position(-2, 2));
-    Window::draw(NText("CURRENT", normal), _curP + Position(-1, 14));
-    Window::draw(NText("NEXT", normal), _nextP + Position(-2, 4));
+    Window::draw(NText(tl("PREVIOUS"), normal), _preP + Position(-2, 2));
+    Window::draw(NText(tl("CURRENT"), normal), _curP + Position(-1, 14));
+    Window::draw(NText(tl("NEXT"), normal), _nextP + Position(-2, 4));
     _initMenuAttr();
     Window::draw(_pre, _preP);
     Window::draw(_next, _nextP);

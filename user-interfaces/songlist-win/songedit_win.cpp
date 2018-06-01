@@ -9,7 +9,6 @@ static const std::vector<std::string> editOper = {
     "Sort list",
     "Remove song",
     "Move to..",
-    "Song information",
 };
 
 static const Position songEditMenuPos(4, 62);
@@ -37,9 +36,8 @@ SongEditWin::~SongEditWin() {}
 Window* SongEditWin::handleInput(int ch) {
     if (openedMoveToList) {
         return moveToListHandleInput(ch);
-    } else if (openedSongInfo) {
-        return songInfoHandleInput(ch);
     }
+
     return mainHandleInput(ch);
 }
 
@@ -57,14 +55,8 @@ void SongEditWin::draw() {
         Window::draw(NBlock<NMenu, NBorder>(moveToMenu, tmpBorder), moveToMenuPos);
     }
 
-    tmpBorder.fit(songInfoDialog);
-    if (openedSongInfo) {
-        Window::draw(NBlock<Dialog, NBorder>(songInfoDialog, tmpBorder), songInfoDialogPos);
-    }
     if (openedMoveToList) {
         Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ Enter Esc    ", normal), Position(23, 1));
-    } else if (openedSongInfo) {
-        Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ ← → Enter Esc    ", normal), Position(23, 1));
     } else {
         Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ Enter Esc    ", normal), Position(23, 1));
     }
@@ -107,20 +99,6 @@ Window* SongEditWin::moveToListHandleInput(int ch) {
     return this;
 }
 
-Window* SongEditWin::songInfoHandleInput(int ch) {
-    if (ch == NK::Enter || ch == NK::Esc) {
-        openedSongInfo = false;
-    } else if (ch == NK::Up) {
-        songInfoDialog.moveUp();
-    } else if (ch == NK::Down) {
-        songInfoDialog.moveDown();
-    } else if (ch == NK::Left) {
-        songInfoDialog.focusCancel();
-    } else if (ch == NK::Right) {
-        songInfoDialog.focusOk();
-    }
-    return this;
-}
 
 Window* SongEditWin::handleOperation(int index) {
     QStringList& playingList = resource->playingList;
@@ -148,10 +126,6 @@ Window* SongEditWin::handleOperation(int index) {
     case 3: /* Move to.. */
         openedMoveToList = true;
         return this;
-    case 4: /* Song Information */
-        getCurrentSongInfo();
-        openedSongInfo = true;
-        return this;
     }
     return new Listsongs_win(resource, _listnames, _songlist);
 }
@@ -161,6 +135,4 @@ void SongEditWin::getCurrentSongInfo() {
     QString infoStr;
     infoStr += tl("Information").c_str() + QString(":\n\n");
     infoStr += QString("Name: ") + _songlist.getFocusCont().c_str();
-    songInfoDialog = Dialog(infoStr.toStdString(), 30, 10, normal);
-    songInfoDialog.setHighlight(highlight);
 }

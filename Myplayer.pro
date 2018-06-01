@@ -30,7 +30,6 @@ SOURCES += main.cpp \
     user-interfaces/songlist-win/listname_win.cpp \
     user-interfaces/songlist-win/listsongs_win.cpp \
     user-interfaces/playing-win/playlistedit_win.cpp \
-    user-interfaces/songinfo_win.cpp \
     user-interfaces/songlist-win/songedit_win.cpp
 
 # The following define makes your compiler emit warnings if you use
@@ -67,7 +66,6 @@ HEADERS += \
     user-interfaces/songlist-win/listname_win.h \
     user-interfaces/songlist-win/listsongs_win.h \
     user-interfaces/playing-win/playlistedit_win.h \
-    user-interfaces/songinfo_win.h \
     user-interfaces/songlist-win/songedit_win.h
 
 LIBS += -lncursesw

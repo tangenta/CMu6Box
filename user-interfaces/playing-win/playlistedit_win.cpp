@@ -2,15 +2,14 @@
 #include "../../ncurse-wrap/util_nblock.h"
 #include "../../ncurse-wrap/util_nborder.h"
 #include "../../resources.h"
-#include "../songinfo_win.h"
 
 static const Position editWinPos(6, 54);
 static const std::vector<std::string> options =
-{"Play", "Play next", "Remove from list", "Song information"};
+{"Play", "Play next", "Remove from list"};
 
 PlaylistEditWin::PlaylistEditWin(Resources *res, const NMenu &list)
     : PlaylistWin(res, list), focusItem(list.getFocus()) {
-    editOptions = NMenu(22, 4);
+    editOptions = NMenu(22, 3);
     for (auto& i: options) {
         editOptions.addItem(NText("  " + tl(i), normal));
     }
@@ -35,8 +34,6 @@ Window* PlaylistEditWin::handleInput(int ch) {
                  break;
         case 1: setPlayNext(); break; /* play next */
         case 2: removeFromList(); break; /* remove from list */
-        case 3: /* song info */
-            return new SongInfoWin(resource, resource->playlist.media(focusItem));
         }
         return new PlaylistWin(resource, list);
     }
@@ -47,10 +44,10 @@ void PlaylistEditWin::update() {}
 
 void PlaylistEditWin::draw() {
     PlaylistWin::draw();
-    NBorder bord('=', '*', '#', normal);
+    NBorder bord('-', ' ', '-', normal);
     bord.fit(editOptions);
     Window::draw(NBlock<NMenu, NBorder>(editOptions, bord), editWinPos);
-    Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ Enter Esc      ", normal), Position(23, 1));
+    Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ Enter Esc         ", normal), Position(23, 1));
 }
 
 void PlaylistEditWin::setPlayNext() {

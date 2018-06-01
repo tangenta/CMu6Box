@@ -13,14 +13,11 @@ public:
 private:
     Window* mainHandleInput(int ch);
     Window* moveToListHandleInput(int ch);
-    Window* songInfoHandleInput(int ch);
     Window* handleOperation(int index);
     void getCurrentSongInfo();
     NMenu songEditMenu;
     NMenu moveToMenu;
-    Dialog songInfoDialog;
     bool openedMoveToList = false;
-    bool openedSongInfo = false;
 };
 
 #endif // SONGEDIT_WIN_H

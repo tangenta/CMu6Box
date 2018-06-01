@@ -24,8 +24,10 @@ Listname_win::~Listname_win() {}
 Window* Listname_win::handleInput(int ch) {
     if (ch == NK::Down) {
         _listnames.moveDown();
+        _fill_list(_listnames.getFocus());
     } else if (ch == NK::Up) {
         _listnames.moveUp();
+        _fill_list(_listnames.getFocus());
     } else if (ch == NK::Esc) {
         return new MenuWin(resource);
     } else if (ch == NK::Enter) {
@@ -56,7 +58,6 @@ Window* Listname_win::handleInput(int ch) {
         }
     }
 
-    _fill_list(_listnames.getFocus());
     return this;
 }
 
@@ -76,8 +77,8 @@ void Listname_win::draw() {
     Window::draw(bl, SONG_LIST + Position(-1, 0));
 
     // title
-    Window::draw(NText("> SONGLIST", highlight), LIST_NAME + Position(-2, 1));
-    Window::draw(NText("  CONTENT", normal), SONG_LIST + Position(-2, 12));
+    Window::draw(NText(std::string("> ") + tl("SONGLIST"), highlight), LIST_NAME + Position(-2, 1));
+    Window::draw(NText(std::string("  ") + tl("CONTENT"), normal), SONG_LIST + Position(-2, 12));
     Window::draw(NText(tl(std::string("available key")) + ": → ↑ ↓ Enter Esc", normal), Position(23, 1));
 }
 
