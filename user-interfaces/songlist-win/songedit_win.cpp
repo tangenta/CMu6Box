@@ -6,10 +6,10 @@
 
 static const std::vector<std::string> editOper = {
     "Play",
-    "Sort List",
-    "Remove Song",
+    "Sort list",
+    "Remove song",
     "Move to..",
-    "Song Information",
+    "Song information",
 };
 
 static const Position songEditMenuPos(4, 62);
@@ -20,15 +20,14 @@ SongEditWin::SongEditWin(Resources* res, NMenu const& listnames, NMenu const& so
     : Listsongs_win(res, listnames, songlist) {
     songEditMenu = NMenu(18, 5);
     for (auto const& i: editOper) {
-        songEditMenu.addItem(NText(i));
+        songEditMenu.addItem(NText(tl(i)));
     }
     songEditMenu.setAttr(normal);
     songEditMenu.setHighlight(highlight);
     moveToMenu = NMenu(14, 10);
-    auto& sln = resource->songlistNames;    // Song List Names
-    std::for_each(sln.begin(), sln.end()-1, [&](QString& i){
-        moveToMenu.addItem(NText(i.toStdString()));
-    });
+    for (auto const& listname: resource->songlistNames) {
+        moveToMenu.addItem(NText(listname.toStdString()));
+    }
     moveToMenu.setAttr(normal);
     moveToMenu.setHighlight(highlight);
 }

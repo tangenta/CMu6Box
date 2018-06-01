@@ -24,7 +24,13 @@ static const std::map<std::string, std::string> cn = {
     {"replace directory", "按文件夹置换"},
     {"rename list", "重命名歌单"},
     {"remove songlist", "移除歌单"},
-    {"*add list*", "*添加歌单*"}
+    {"*add list*", "*添加歌单*"},
+    {"Sort list", "排序"},
+    {"Remove song", "移除歌曲"},
+    {"Move to..", "移动到.."},
+    {"Song information", "歌曲信息"},
+    {"SONGLIST", "歌单"},
+    {"CONTENT", "内容"},
 };
 
 Translator::Translator() {}
