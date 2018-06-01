@@ -6,13 +6,13 @@
 
 static const Position editWinPos(6, 54);
 static const std::vector<std::string> options =
-{"play", "play next", "remove from list", "song info", "source song list"};
+{"Play", "Play next", "Remove from list", "Song information"};
 
 PlaylistEditWin::PlaylistEditWin(Resources *res, const NMenu &list)
     : PlaylistWin(res, list), focusItem(list.getFocus()) {
     editOptions = NMenu(22, 4);
     for (auto& i: options) {
-        editOptions.addItem(NText(">>  " + i, normal));
+        editOptions.addItem(NText("  " + tl(i), normal));
     }
     editOptions.setAttr(normal);
     editOptions.setHighlight(highlight);
@@ -31,11 +31,12 @@ Window* PlaylistEditWin::handleInput(int ch) {
         int localFocus = editOptions.getFocus();
         switch (localFocus) {
         case 0: resource->playlist.setCurrentIndex(focusItem);
+                resource->player.play();
+                 break;
         case 1: setPlayNext(); break; /* play next */
         case 2: removeFromList(); break; /* remove from list */
         case 3: /* song info */
             return new SongInfoWin(resource, resource->playlist.media(focusItem));
-        case 4: break; //// TODO: /* source song list */
         }
         return new PlaylistWin(resource, list);
     }
@@ -49,6 +50,7 @@ void PlaylistEditWin::draw() {
     NBorder bord('=', '*', '#', normal);
     bord.fit(editOptions);
     Window::draw(NBlock<NMenu, NBorder>(editOptions, bord), editWinPos);
+    Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ Enter Esc      ", normal), Position(23, 1));
 }
 
 void PlaylistEditWin::setPlayNext() {

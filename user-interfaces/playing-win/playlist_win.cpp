@@ -50,6 +50,7 @@ void PlaylistWin::draw() {
 
     Window::draw(NText("PLAYING LIST", normal), PLAYING_LIST + Position(-2, 4));
     Window::draw(list, PLAYING_LIST);
+    Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ Enter Esc Space     ", normal), Position(23, 1));
 }
 
 void PlaylistWin::initSongList() {

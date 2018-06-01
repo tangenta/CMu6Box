@@ -39,6 +39,7 @@ void Listsongs_win::draw() {
     static const Position SONG_LIST(4, 20);
     Window::draw(NText("  SONGLIST", normal), LIST_NAME + Position(-2, 1));
     Window::draw(NText("> CONTENT", highlight), SONG_LIST + Position(-2, 12));
+    Window::draw(NText(tl(std::string("available key")) + ": ← ↑ ↓ Enter Esc", normal), Position(23, 1));
 }
 
 void Listsongs_win::_initMenusAttr() {

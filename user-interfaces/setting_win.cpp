@@ -68,6 +68,7 @@ void SettingWin::draw() {
     }
     Window::draw(langBox, Position(4, 45));
     Window::draw(theme, Position(6, 45));
+    Window::draw(NText(tl(std::string("available key")) + ": ← → ↑ ↓ Enter Esc", normal), Position(23, 1));
 }
 
 void SettingWin::validateSetting() {
@@ -76,5 +77,6 @@ void SettingWin::validateSetting() {
     Attr attr(resource->parseColor(resource->themeColor));
     langBox.setAttr(attr);
     theme.setAttr(attr);
+    normal = attr;
     setBackground(resource->themeColor);
 }

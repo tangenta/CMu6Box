@@ -78,6 +78,7 @@ void Listname_win::draw() {
     // title
     Window::draw(NText("> SONGLIST", highlight), LIST_NAME + Position(-2, 1));
     Window::draw(NText("  CONTENT", normal), SONG_LIST + Position(-2, 12));
+    Window::draw(NText(tl(std::string("available key")) + ": → ↑ ↓ Enter Esc", normal), Position(23, 1));
 }
 
 void Listname_win::addSonglist(const QString &name, const QStringList &sl) {

@@ -136,6 +136,10 @@ void Dir_win::draw() {
         NBorder bord('-', '|', '+', normal);
         bord.fit(_confirmBox);
         Window::draw(NBlock<Dialog, NBorder>(_confirmBox, bord), Position(8, 25));
+        Window::draw(NText(tl(std::string("available key")) + ": ← → Enter Esc    ", normal), Position(23, 1));
+    }
+    else {
+        Window::draw(NText(tl(std::string("available key")) + ": ← → ↑ ↓ Enter Esc", normal), Position(23, 1));
     }
 }
 

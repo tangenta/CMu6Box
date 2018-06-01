@@ -31,6 +31,9 @@ static const std::map<std::string, std::string> cn = {
     {"Song information", "歌曲信息"},
     {"SONGLIST", "歌单"},
     {"CONTENT", "内容"},
+    {"available key", "可用键"},
+    {"Play next", "下一首播放"},
+    {"Remove from list", "从列表中移除"},
 };
 
 Translator::Translator() {}

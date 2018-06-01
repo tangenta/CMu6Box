@@ -96,6 +96,7 @@ void Listedit_win::draw() {
     bord.fit(_menu);
     Window::draw(NBlock<NMenu, NBorder>(_menu, bord),
                  Position(5, 14));
+    Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ Enter Esc    ", normal), Position(23, 1));
 }
 
 void Listedit_win::_initMenu() {

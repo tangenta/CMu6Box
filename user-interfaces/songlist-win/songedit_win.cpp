@@ -61,6 +61,13 @@ void SongEditWin::draw() {
     if (openedSongInfo) {
         Window::draw(NBlock<Dialog, NBorder>(songInfoDialog, tmpBorder), songInfoDialogPos);
     }
+    if (openedMoveToList) {
+        Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ Enter Esc    ", normal), Position(23, 1));
+    } else if (openedSongInfo) {
+        Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ ← → Enter Esc    ", normal), Position(23, 1));
+    } else {
+        Window::draw(NText(tl(std::string("available key")) + ": ↑ ↓ Enter Esc    ", normal), Position(23, 1));
+    }
 }
 
 /*---------handleInput------------*/
@@ -73,7 +80,9 @@ Window* SongEditWin::mainHandleInput(int ch) {
     } else if (ch == NK::Esc) {
         return new Listsongs_win(resource, _listnames, _songlist);
     } else if (ch == NK::Enter) {
-        return handleOperation(songEditMenu.getFocus());
+        if (!songEditMenu.isEmpty()) {
+            return handleOperation(songEditMenu.getFocus());
+        }
     }
     return this;
 }
@@ -150,9 +159,8 @@ Window* SongEditWin::handleOperation(int index) {
 void SongEditWin::getCurrentSongInfo() {
     // TODO: get song information
     QString infoStr;
-    for (int i = 0; i != 30; ++i) {
-        infoStr += "test" + QString::number(i) + "\n";
-    }
+    infoStr += tl("Information").c_str() + QString(":\n\n");
+    infoStr += QString("Name: ") + _songlist.getFocusCont().c_str();
     songInfoDialog = Dialog(infoStr.toStdString(), 30, 10, normal);
     songInfoDialog.setHighlight(highlight);
 }

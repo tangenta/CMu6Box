@@ -73,6 +73,7 @@ void PlayingWin::draw() {
     drawSongName();
     drawPlayingIcon();
     drawPlayMode();
+    Window::draw(NText(tl(std::string("available key")) + ": ← → ↑ ↓ Enter Esc Space", normal), Position(23, 1));
 }
 
 void PlayingWin::drawVolume() {

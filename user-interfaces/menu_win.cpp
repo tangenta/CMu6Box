@@ -56,4 +56,5 @@ void MenuWin::draw() {
         block.setAttr(attr);
         Window::draw(block, pos[i]);
     }
+    Window::draw(NText(tl(std::string("available key")) + ": ← → Enter Esc", normal), Position(23, 1));
 }
