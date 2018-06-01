@@ -105,6 +105,7 @@ Window* Dir_win::handleInput(int ch) {
     } else if (ch == NK::Esc) {
         return new Listname_win(resource, _listnames, _songlist);
     } else if (ch == NK::Enter) {
+        _confirmBox.focusCancel();
         _confirmShowTime = true;
     }
 

@@ -103,6 +103,7 @@ Window* Listedit_win::handleInput(int ch) {
     } else if (ch == NK::Esc) {
         return new Listname_win(resource, _listnames, _songlist);
     }
+
     return this;
 }
 
@@ -129,7 +130,6 @@ void Listedit_win::draw() {
 }
 
 void Listedit_win::_initMenu() {
-    // TODO: prettify
     _menu = NMenu(21, 6);
     _menu.setAttr(normal);
     _menu.setHighlight(highlight);
@@ -145,4 +145,5 @@ void Listedit_win::_initMenu() {
 void Listedit_win::_setConfCont(std::string const& content) {
     _confirmBox = Dialog(content, 18, 5, normal);
     _confirmBox.setHighlight(highlight);
+    _confirmBox.focusCancel();
 }
