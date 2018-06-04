@@ -5,9 +5,12 @@ Dialog::Dialog(): width(0), height(0), frame(0) {
     initializePrinter();
 }
 
-Dialog::Dialog(std::string const& str, int width, int height, Attr const& attr) :
-    content(str), width(width), height(height), normal(attr), highlight(attr), frame(0) {
+Dialog::Dialog(std::string const& str, int width, int height, Attr const& attr,
+               std::string const& optionLeft, std::string const& optionRight) :
+    content(str), width(width), height(height), normal(attr), highlight(attr),
+    optionLeft(optionLeft), optionRight(optionRight) {
     isOK = true;
+    frame = 0;
     cancelAttr = attr;
     okAttr = highlight;
     initializePrinter();
@@ -30,8 +33,8 @@ Printer Dialog::toPrinter() const {
         // move to the last line
         result.push_back(Printee("", normal, Bias(height-printerSize-1, 2)));
     }
-    result.push_back(Printee("Cancel", cancelAttr, Bias(0, width-8)));
-    result.push_back(Printee("OK", okAttr));
+    result.push_back(Printee(optionLeft, cancelAttr, Bias(0, width-8)));
+    result.push_back(Printee(optionRight, okAttr));
     return result;
 }
 

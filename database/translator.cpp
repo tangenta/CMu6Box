@@ -38,6 +38,13 @@ static const std::map<std::string, std::string> cn = {
     {"PREVIOUS", "上一级"},
     {"CURRENT", "当前文件夹"},
     {"NEXT", "下一级"},
+    {"Cancel", "取消"},
+    {"Ok", "确认"},
+    {"delete?", "确认删除？"},
+    {"replace?", "确认替换？"},
+    {"add?", "确认添加？"},
+    {"\nVersion: 0.8.0 (build-1232)\nKernel: Powered by QT\nRender: Powered by Ncurses\nCopyright (c) 2018 licensed under the MIT License",
+     "\n当前版本 0.8.0 (build-1232)\n内核 由QT驱动\n渲染器 由Ncurses驱动\nCopyright (c) 2018 本软件遵循MIT协议"}
 };
 
 Translator::Translator() {}

@@ -7,7 +7,8 @@ class Dialog
 {
 public:
     Dialog();
-    Dialog(std::string const& str, int width, int height, Attr const& attr = Attr());
+    Dialog(std::string const& str, int width, int height, Attr const& attr = Attr(),
+           std::string const& optionLeft = "Cancel", std::string const& optionRight = "Ok");
     Printer toPrinter() const;
     int getWidth() const { return width; }
     int getHeight() const { return height; }
@@ -38,6 +39,8 @@ private:
     Attr cancelAttr;
     Attr okAttr;
     bool isOK;
+    std::string optionLeft;
+    std::string optionRight;
 };
 
 #endif // UTIL_DIALOG_H

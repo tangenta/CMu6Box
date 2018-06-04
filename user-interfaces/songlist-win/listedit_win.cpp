@@ -71,11 +71,11 @@ Window* Listedit_win::handleInput(int ch) {
         _menu.moveUp();
     } else if (ch == NK::Enter) {
         if (_menu.getFocusCont() == tl(OP0)) {
-            _setConfCont("add????");
+            _setConfCont(tl("add?"));
             _confirmShowTime = true;
 
         } else if (_menu.getFocusCont() == tl(OP1)) {
-            _setConfCont("replace????");
+            _setConfCont(tl("replace?"));
             _confirmShowTime = true;
 
         } else if (_menu.getFocusCont() == tl(OP2)) {
@@ -97,7 +97,7 @@ Window* Listedit_win::handleInput(int ch) {
             return new Listname_win(resource, _listnames, _songlist);
 
         } else if (_menu.getFocusCont() == tl(OP5)) {
-            _setConfCont("delete????");
+            _setConfCont(tl("delete?"));
             _confirmShowTime = true;
         }
     } else if (ch == NK::Esc) {
@@ -146,7 +146,7 @@ void Listedit_win::_initMenu() {
 }
 
 void Listedit_win::_setConfCont(std::string const& content) {
-    _confirmBox = Dialog(content, 18, 5, normal);
+    _confirmBox = Dialog(content, 18, 5, normal, tl("Cancel"), tl("Ok"));
     _confirmBox.setHighlight(highlight);
     _confirmBox.focusCancel();
 }

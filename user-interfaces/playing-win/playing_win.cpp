@@ -133,7 +133,7 @@ void PlayingWin::drawProgressBar() {
     std::string posS = QDateTime::fromTime_t(pos/1000).toUTC().toString("mm:ss").toStdString();
     std::string durS = QDateTime::fromTime_t(dura/1000).toUTC().toString("mm:ss").toStdString();
 
-    int progress = (double)pos / dura * maxProgress;
+    int progress = dura == 0 ? 0 : (double)pos / dura * maxProgress;
 
     // two border
     Window::draw(NText(std::string("|"), normal), progressBar);

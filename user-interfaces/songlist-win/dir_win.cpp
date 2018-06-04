@@ -15,10 +15,10 @@ Dir_win::Dir_win(Resources* res, NMenu const& listnames, NMenu const& songlist, 
 
     switch (_op) {
     case Op::ADD_SONGLIST:
-        _confirmBox = Dialog("Sure?", 18, 5, normal);
+        _confirmBox = Dialog(tl("add?"), 18, 5, normal, tl("Cancel"), tl("Ok"));
         break;
     case Op::REPLACE_SONGLIST:
-        _confirmBox = Dialog("Sure??????????", 20, 5, normal);
+        _confirmBox = Dialog(tl("replace?"), 20, 5, normal, tl("Cancel"), tl("Ok"));
         break;
     }
     _confirmBox.setHighlight(highlight);

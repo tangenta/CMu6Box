@@ -3,6 +3,7 @@
 #include "../ncurse-wrap/util_window.h"
 #include <vector>
 #include "../ncurse-wrap/util_multitext.h"
+#include "../ncurse-wrap/util_dialog.h"
 class SettingWin: public Window {
 public:
     SettingWin(Resources* res);
@@ -15,6 +16,8 @@ private:
     int focus;
     MultiText langBox;
     MultiText theme;
+    bool aboutShow;
+    Dialog aboutPage;
 };
 
 #endif // SETTING_WIN_H
