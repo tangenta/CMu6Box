@@ -108,13 +108,17 @@ Window* SongEditWin::handleOperation(int index) {
     QString const& song = objSongList.at(_songlist.getFocus());
     switch(index) {
     case 0:  /* Play */
+        // remove from current playing list
         int songIndexInPlaylist;
-        if ((songIndexInPlaylist = playingList.indexOf(song)) == -1) {  //not found
-            songIndexInPlaylist = playingList.size();
-            playingList.push_back(song);
-            resource->refreshPlayinglist();
+        if ((songIndexInPlaylist = playingList.indexOf(song)) != -1) {
+            playingList.erase(playingList.begin() + songIndexInPlaylist);
+            resource->playlist.removeMedia(songIndexInPlaylist);
         }
-        emit setCurrentIndex(songIndexInPlaylist);
+
+        // add and set first play
+        playingList.push_front(song);
+        resource->refreshPlayinglist();
+        emit setCurrentIndex(0);
         emit play();
         return new PlayingWin(resource);
     case 1: /* Sort List */
