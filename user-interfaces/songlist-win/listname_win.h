@@ -18,9 +18,8 @@ protected:
     NMenu _listnames;
     NMenu _songlist;
     void _refreshMenus();
-
-private:
     void _fill_list(int offPos);
+private:
     void _initMenus();
     void _initMenusAttr();
 };

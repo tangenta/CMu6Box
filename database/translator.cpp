@@ -47,25 +47,24 @@ static const std::map<std::string, std::string> cn = {
      "\n当前版本 0.8.0 (build-1232)\n内核 由QT驱动\n渲染器 由Ncurses驱动\nCopyright (c) 2018 本软件遵循MIT协议"}
 };
 
+static const std::map<std::string, std::string> empty = {};
+
 Translator::Translator() {}
 
 Translator::Translator(std::string const& languageName) {
     if (languageName == "Chinese") {
-        dictionary = &cn;       // Chinese
+        dictionary = cn;       // Chinese
     } else {
-        dictionary = nullptr;   // Chinglish or unknown language
+        dictionary = empty;   // Chinglish or unknown language
     }
 }
 
 std::string Translator::operator() (std::string const& key) {
-    if (!dictionary) return key;
-    std::string ret;
-    try {
-        ret = dictionary->at(key);
-        return ret;
-    } catch (std::out_of_range const&) {
-        // no such element exist
+    auto it = dictionary.find(key);
+    if (it != dictionary.end()) {
+        return it->second;
     }
+
     return key;
 }
 
@@ -74,5 +73,5 @@ std::string Translator::operator ()(const char* key) {
 }
 
 bool Translator::isEnglish() {
-    return !dictionary;
+    return dictionary.empty();
 }

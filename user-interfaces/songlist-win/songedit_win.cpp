@@ -94,7 +94,7 @@ Window* SongEditWin::moveToListHandleInput(int ch) {
         int songIndex = _songlist.getFocus();
         objSonglist.push_back(sourceSongList.at(songIndex));
         sourceSongList.removeAt(songIndex);
-        _refreshMenus();
+        _fill_list(_listnames.getFocus());
         openedMoveToList = false;
         return new Listsongs_win(resource, _listnames, _songlist);
     }
@@ -114,18 +114,16 @@ Window* SongEditWin::handleOperation(int index) {
             playingList.push_back(song);
             resource->refreshPlayinglist();
         }
-//        resource->playlist.setCurrentIndex(songIndexInPlaylist);
-//        resource->player.play();    // Fixme: sometimes it doesn't work
         emit setCurrentIndex(songIndexInPlaylist);
         emit play();
         return new PlayingWin(resource);
     case 1: /* Sort List */
         std::sort(objSongList.begin(), objSongList.end());
-        _refreshMenus();
+        _fill_list(_listnames.getFocus());
         return new Listsongs_win(resource, _listnames, _songlist);
     case 2: /* Remove Song */
         objSongList.removeAt(_songlist.getFocus());
-        _refreshMenus();
+        _fill_list(_listnames.getFocus());
         return new Listsongs_win(resource, _listnames, _songlist);
     case 3: /* Move to.. */
         openedMoveToList = true;

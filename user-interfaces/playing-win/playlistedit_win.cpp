@@ -30,8 +30,8 @@ Window* PlaylistEditWin::handleInput(int ch) {
         int localFocus = editOptions.getFocus();
         switch (localFocus) {
         case 0: resource->playlist.setCurrentIndex(focusItem);
-                resource->player.play();
-                 break;
+                emit play();
+                break;
         case 1: setPlayNext(); break; /* play next */
         case 2: removeFromList(); break; /* remove from list */
         }

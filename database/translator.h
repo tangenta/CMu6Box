@@ -12,7 +12,7 @@ public:
     std::string operator()(const char* key);
     bool isEnglish();
 private:
-    std::map<std::string, std::string> const* dictionary;
+    std::map<std::string, std::string> dictionary;
 };
 
 #endif // TRANSLATOR_H
