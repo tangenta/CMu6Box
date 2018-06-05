@@ -29,6 +29,8 @@ SongEditWin::SongEditWin(Resources* res, NMenu const& listnames, NMenu const& so
     }
     moveToMenu.setAttr(normal);
     moveToMenu.setHighlight(highlight);
+    connect(this, SIGNAL(play()), &resource->player, SLOT(play()));
+    connect(this, SIGNAL(setCurrentIndex(int)), &resource->playlist, SLOT(setCurrentIndex(int)));
 }
 
 SongEditWin::~SongEditWin() {}
@@ -112,8 +114,10 @@ Window* SongEditWin::handleOperation(int index) {
             playingList.push_back(song);
             resource->refreshPlayinglist();
         }
-        resource->playlist.setCurrentIndex(songIndexInPlaylist);
-        resource->player.play();    // Fixme: sometimes it doesn't work
+//        resource->playlist.setCurrentIndex(songIndexInPlaylist);
+//        resource->player.play();    // Fixme: sometimes it doesn't work
+        emit setCurrentIndex(songIndexInPlaylist);
+        emit play();
         return new PlayingWin(resource);
     case 1: /* Sort List */
         std::sort(objSongList.begin(), objSongList.end());

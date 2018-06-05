@@ -4,12 +4,16 @@
 #include "../../ncurse-wrap/util_dialog.h"
 
 class SongEditWin: public Listsongs_win {
+    Q_OBJECT
 public:
     SongEditWin(Resources* res, NMenu const& listnames, NMenu const& songlist);
     ~SongEditWin();
     Window* handleInput(int ch) override;
     void update() override;
     void draw() override;
+signals:
+    void setCurrentIndex(int);
+    void play();
 private:
     Window* mainHandleInput(int ch);
     Window* moveToListHandleInput(int ch);

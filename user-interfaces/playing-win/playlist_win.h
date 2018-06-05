@@ -14,8 +14,6 @@ public:
 
 protected:
     NMenu list;
-
-private:
     void initSongList();
 };
 

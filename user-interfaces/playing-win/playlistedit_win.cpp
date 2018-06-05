@@ -61,7 +61,5 @@ void PlaylistEditWin::setPlayNext() {
 void PlaylistEditWin::removeFromList() {
     resource->playingList.removeAt(focusItem);
     resource->playlist.removeMedia(focusItem);
+    PlaylistWin::initSongList();
 }
-
-
-
