@@ -12,7 +12,7 @@ A music box based on terminal.
 
 
 
-### Install The Ncurses Library
+### Install the Ncurses library
 
 ```sh
 sudo apt-get install libncurses5-dev libncursesw5-dev
@@ -20,7 +20,7 @@ sudo apt-get install libncurses5-dev libncursesw5-dev
 
 
 
-### Build The Qt Application
+### Build the Qt application
 
 ```sh
 mkdir build && cd build
@@ -30,7 +30,7 @@ make
 
 
 
-### Run It
+### Run it
 
 ```sh
 ./Myplayer
@@ -44,7 +44,7 @@ make
 
 ## Character User Interface
 
-### Playing && Pause
+### Playing & Pause
 
 ![playing](img/playing.png)
 
@@ -52,7 +52,7 @@ make
 
 
 
-### Play List && Edit
+### Play List & Edit
 
 ![playlist](img/playlist.png)
 
@@ -60,7 +60,7 @@ make
 
 
 
-### Song List && Edit
+### Song List & Edit
 
 ![songlist](img/songlist.png)
 
